@@ -3,14 +3,15 @@
 PlaylistManager::PlaylistManager() {
 }
 
-void PlaylistManager::getPlaylist(int index) {
+Playlist& PlaylistManager::getPlaylist(int index) {
 }
 
 bool PlaylistManager::isExistPlayList(string name) {
     return false;
 }
 
-int PlaylistManager::createPlaylist(string name, Playlist) {
+int PlaylistManager::createPlaylist(string name, const Playlist &playlist)
+{
     return 0;
 }
 
