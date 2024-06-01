@@ -5,33 +5,58 @@
 #include "Handler.h"
 #include "PlaylistHandler.h"
 #include "HomeHandler.h"
+#include "Model.h"
+#include "configs.h"
 
-stack<Handler*> Controller::recentView;
+Model& Controller::model = Model::getInstance();
+deque<Handler*> Controller::recentView;
+int Controller::view_index = 0;
 
 Controller::Controller() {
-    Controller::recentView.push(HomeHandler::getInstance());
-    Controller::recentView.top()->onStart();
+    Controller::recentView.push_back(HomeHandler::getInstance());
+    Controller::recentView[view_index]->onStart();
 }
 
 void Controller::changeHandler(Handler* handler) {
-    Controller::recentView.push(handler);
-    Controller::recentView.top()->onStart();
+    int temp = view_index;
+    while (temp < recentView.size() - 1)
+    {
+        recentView.pop_back();
+    }
+    while (recentView.size() > MAX_HISTORY_PAGE - 1)
+    {
+        recentView.pop_front();
+    }
+    
+    Controller::recentView.push_back(handler);
+    view_index = recentView.size() - 1;
+    recentView[view_index]->onStart();
 }
 
 void Controller::run() {
     string command;
     while (true) {
         cin >> command;
-        if (command == "b") {
+        if (command == GO_BACK) {
             if (recentView.size() > 1) {
-                recentView.pop();
+                view_index--;
+                recentView[view_index]->onStart();
             }
-            recentView.top()->onStart();
-        } else if(command == "h") {
-            recentView.push(HomeHandler::getInstance());
-            recentView.top()->onStart();
+        } else if (command == FORWARD) {
+            if (recentView.size() - 1  > view_index) {
+                view_index++;
+                recentView[view_index]->onStart();
+            }
+        } else if (command == EXIT) {
+            for(Handler* e : recentView) {
+                e->handler_exit();
+            }
+            std::exit(0);
+        }
+        else if(command == HOME) {
+            Controller::changeHandler(HomeHandler::getInstance());
         } else {
-            Controller::recentView.top()->handle(command);
+            Controller::recentView[view_index]->handle(command);
         }
     }
 }

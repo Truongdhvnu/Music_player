@@ -1,15 +1,14 @@
-#pragma once
 #include "Handler.h"
-#include "PlaylistView.cpp"
+#include "PlaylistView.h"
 #include "Model.h"
 #include <string>
 #include <stack>
 #include "Controller.h"
 #include "PlaylistHandler.h"
+#include "configs.h"
 
 PlaylistHandler::PlaylistHandler() : model(Model::getInstance()) {
     callback = Controller::changeHandler;
-    // callback = foo;
 };
 
 PlaylistHandler* PlaylistHandler::getInstance() {
@@ -24,9 +23,9 @@ void PlaylistHandler::onStart() {
 
 void PlaylistHandler::handle(string command) {
     static int current_plist = 0;
-    if (command == "<") {
+    if (command == PREVIOUS_PAGE) {
         this->handle(to_string(current_plist - 1));
-    } else if (command == ">") {
+    } else if (command == NEXT_PAGE) {
         this->handle(to_string(current_plist + 1));  
     } else {
         try {
@@ -37,7 +36,7 @@ void PlaylistHandler::handle(string command) {
                 this->view.displayPlaylist(plist);
             }
         } catch (const exception& e) {
-            cout << "Please input valid command\n";
+            cout << "P No actions or Invalid command\n";
         }
     } 
 };  

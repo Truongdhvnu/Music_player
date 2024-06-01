@@ -1,6 +1,6 @@
 #pragma once
 #include "Handler.h"
-#include "HomeView.cpp"
+#include "HomeView.h"
 #include "Model.h"
 #include <string>
 

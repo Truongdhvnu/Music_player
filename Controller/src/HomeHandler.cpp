@@ -1,6 +1,5 @@
-#pragma once
 #include "Handler.h"
-#include "HomeView.cpp"
+#include "HomeView.h"
 #include "Model.h"
 #include "PlaylistHandler.h"
 #include "Controller.h"
@@ -28,8 +27,10 @@ void HomeHandler::handle(string command) {
         this->view.display_bottom();
     } else if (command == "2") {
         change_handler(PlaylistHandler::getInstance());
+    } else if (command == "3") {
+        exit(0);
     } else {
-        cout << "Invalid command";
+        cout << "No actions or Invalid command\n";
     }
 }
 

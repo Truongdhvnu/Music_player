@@ -1,13 +1,14 @@
 #pragma once
 #include "Model.h"
 #include "Handler.h"
-#include <stack>
+#include <deque>
 
 class Controller {
 private:
-    Model& model = Model::getInstance();
+    static Model& model;
+    static int view_index;
 public:
-    static stack<Handler*> recentView;
+    static deque<Handler*> recentView;
     Controller();
     static void changeHandler(Handler* handler);
     void run();

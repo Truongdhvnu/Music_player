@@ -3,7 +3,7 @@ CFLAGS = -Wall -Wextra $(LINK_DIRS)
 CC := g++
 EXECUTE_FILE := main
 
-MODULES := Controller Model 
+MODULES := Controller Model View
 SRCDIR = $(foreach module,$(MODULES),$(module)/src)
 INCDIR := View/src $(foreach module,$(MODULES),$(module)/inc)
 OBJDIR := Build
@@ -19,9 +19,11 @@ $(OBJDIR)/%.o: %.cpp
 
 # $(OBJDIR)/main.o : main.cpp
 # 	$(CC) $(CFLAGS) -c $< -o $(OBJDIR)/$@
+build: clean obj_build
 
-build: $(OBJS)
+obj_build: $(OBJS)
 	$(CC) $(OBJS) -o $(OBJDIR)/$(EXECUTE_FILE)
+
 
 .PHONY: run
 run:

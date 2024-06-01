@@ -6,7 +6,6 @@
 using namespace std;
 
 class Handler;
-void foo(Handler* handler);
 
 class Handler {
 public:
@@ -14,4 +13,5 @@ public:
     virtual void handle(string command) = 0;
     virtual void onStart() = 0;  
     void change_handler(Handler* handler);
+    virtual int handler_exit();
 };

@@ -1,6 +1,6 @@
 #pragma once
 #include "Handler.h"
-#include "PlaylistView.cpp"
+#include "PlaylistView.h"
 #include "Model.h"
 #include "string"
 
