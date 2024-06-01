@@ -33,6 +33,13 @@ void Controller::changeHandler(Handler* handler) {
     recentView[view_index]->onStart();
 }
 
+/*
+    Handel things before exit programs
+*/
+int Controller::exit() {
+    return 0;
+}
+
 void Controller::run() {
     string command;
     while (true) {
@@ -49,8 +56,9 @@ void Controller::run() {
             }
         } else if (command == EXIT) {
             for(Handler* e : recentView) {
-                e->handler_exit();
+                e->handler_exit();              // có th nào nhạc đang phát nhưng không tắt đi được không? do chang_handler đã xóa mất the handler khỏi danh sách
             }
+            this->exit();
             std::exit(0);
         }
         else if(command == HOME) {

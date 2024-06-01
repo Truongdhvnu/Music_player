@@ -9,4 +9,6 @@ void Handler::change_handler(Handler* handler) {
     Handler::callback(handler);
 }
 
-int Handler::handler_exit() {}
+int Handler::handler_exit() {
+    return 0;
+}

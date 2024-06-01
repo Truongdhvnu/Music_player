@@ -11,5 +11,6 @@ public:
     static deque<Handler*> recentView;
     Controller();
     static void changeHandler(Handler* handler);
+    int exit();
     void run();
 };

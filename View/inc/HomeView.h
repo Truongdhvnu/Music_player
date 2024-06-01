@@ -10,7 +10,6 @@ public:
         system("clear");
         cout << "Welcome. Select your option\n";
         cout << "1. Select dictionary\n";
-        cout << "2. Show playlist\n";   
-        cout << "3. Exit\n";   
+        cout << "2. Show playlist\n";    
     }
 };
