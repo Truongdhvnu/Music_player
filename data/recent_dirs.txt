@@ -1,0 +1,3 @@
+/home/dhtruong/Documents/MediaBrowserwww/data
+/home/dhtruong/Documents/MediaBrowser/data
+/home/dhtruong/Documents/MediaBrowser/data2

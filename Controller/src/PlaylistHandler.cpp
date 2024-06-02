@@ -5,7 +5,7 @@
 #include <stack>
 #include "Controller.h"
 #include "PlaylistHandler.h"
-#include "configs.h"
+#include "display.h"
 
 PlaylistHandler::PlaylistHandler() : model(Model::getInstance()) {
     callback = Controller::changeHandler;
