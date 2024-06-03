@@ -1,6 +1,6 @@
 # COMPILE CONFIGURE
-CFLAGS = -Wall -Wextra -std=c++17 $(LINK_DIRS)
-LDFLAGS = `pkg-config --libs sdl2 SDL2_mixer taglib` -pthread
+CFLAGS = -Wall -Wextra -std=c++17 $(LINK_DIRS) -I.lib/taglib
+LDFLAGS = `pkg-config --libs sdl2 SDL2_mixer` -L.lib/taglib -pthread
 CC := g++
 EXECUTE_FILE := main
 
