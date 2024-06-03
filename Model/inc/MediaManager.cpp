@@ -162,24 +162,24 @@ int main() {
     
     m.setActivePList(1);
     Playlist* current = m.getActivePlaylist();
-    (*current).addSong("/home/dhtruong/Documents/MediaBrowser/data/I Knew You Were Trouble - Taylor Swift.mp3");
-    (*current).deleteSong(0);
-    (*current).addSong("/home/dhtruong/Documents/MediaBrowser/data/Rolling in the Deep - Adele.mp3");
+    (*current).addSong("music/I Knew You Were Trouble - Taylor Swift.mp3");
+    // (*current).deleteSong(0);
+    (*current).addSong("music/Rolling in the Deep - Adele.mp3");
     // m.deletePlaylist(2);
 
     // Playlist p("BlackPink");
-    // p.addSong("/home/dhtruong/Documents/MediaBrowser/data/Teenage Dream.mp3");
+    // p.addSong("music/Teenage Dream.mp3");
     // m.createPlaylist(p);
 
     names = m.getPlaylistNames();
     for (string name: names) {
         cout << name << " ";
     }
+    cout << endl;
     m.updateDatabase();
-
     
     vector<Song> songs = m.sortCurrentList(SORT_AZ);
-    cout <<"Sort by name AZ\n";
+    cout <<"Sort by name AZ " << songs.size() << "\n";
     for (Song s: songs) {
         cout << s.getTitle() << "\n";
     }
@@ -187,7 +187,7 @@ int main() {
 
     m.sortCurrentList(SORT_ZA);
     songs = m.getCurrentSongList();
-    cout <<"Sort by name ZA\n";
+    cout <<"Sort by name ZA " << songs.size() << "\n";
     for (Song s: songs) {
         cout << s.getTitle() << "\n";
     }
@@ -195,7 +195,7 @@ int main() {
 
     m.sortCurrentList(SORT_ARTIST);
     songs = m.getCurrentSongList();
-    cout <<"Sort by name ARTIST\n";
+    cout <<"Sort by name ARTIST " << songs.size() << "\n";
     for (Song s: songs) {
         cout << s.getTitle() << "\n";
     }
@@ -203,7 +203,7 @@ int main() {
     
     m.setActiveLibrary();
     Library* now = m.getActiveLibrary();
-    (*now).getSongFromPath("/home/dhtruong/Documents/MediaBrowser/data");
+    (*now).getSongFromPath("music");
     m.sortCurrentList(SORT_ZA);
     songs = m.getPageOfSong(0);
     for(Song s: songs) {

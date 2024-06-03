@@ -1,5 +1,6 @@
-/home/dhtruong/Documents/MediaBrowser/data/Some Nights - Fun.mp3
-/home/dhtruong/Documents/MediaBrowser/data/Lost In The Echo - Linkin Park.mp3
-/home/dhtruong/Documents/MediaBrowser/data/The One That Got Away.mp3
-/home/dhtruong/Documents/MediaBrowser/data/I Knew You Were Trouble - Taylor Swift.mp3
-/home/dhtruong/Documents/MediaBrowser/data/Rolling in the Deep - Adele.mp3
+music/I Knew You Were Trouble - Taylor Swift.mp3
+music/Heart Attack - Demi Lovato.mp3
+music/Lost In The Echo - Linkin Park.mp3
+music/Teenage Dream.mp3
+music/Rolling in the Deep - Adele.mp3
+music/Lost In The Echo - Linkin Park.mp3
