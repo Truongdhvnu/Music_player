@@ -1,12 +1,8 @@
 #pragma once
 #include <iostream>
 #include <string>
-#include <filesystem>
-#include <taglib/fileref.h>
-#include <taglib/tag.h>
 
 using namespace std;
-namespace fs = std::filesystem;
 
 class Song {
 private:
@@ -20,32 +16,9 @@ public:
     /*
         Just initialize path of the song, but metadata 
     */
-    Song(string path, bool getMetadata=false) : path(path) {
-        if (getMetadata) {
-            this->getAllMetadata();
-        }
-    }
+    Song(string path, bool getMetadata=false);
 
-    void getAllMetadata() {
-        if (!fs::exists(this->path)) {
-            throw runtime_error("Song's path does not exist: " + this->path);
-        } else {
-            TagLib::FileRef ref(this->path.c_str());
-            if (!ref.isNull() && ref.tag()) {
-                TagLib::Tag *tag = ref.tag();
-                string title = string(tag->title().toCString(true));
-                if (title == "") {
-                    fs::path p(this->path);
-                    this->title = p.stem().string();
-                } else {
-                    this->title = title;
-                }
-                this->artist = string(tag->artist().toCString(true));
-                this->album = string(tag->album().toCString(true));
-                this->year = tag->year();
-            }
-        }
-    };
+    void getAllMetadata();
 
     void setTitle(const string& newdata);
     void setArtist(const string& newdata);
@@ -54,27 +27,15 @@ public:
     void setDuration(const string& newdata);
     int setMetadata(const Song& other);
     
-    string getPath() const {
-        return path;
-    }
+    string getPath() const;
 
-    string getTitle() const {
-        return title;
-    }
+    string getTitle() const;
 
-    string getArtist() const {
-        return artist;
-    }
+    string getArtist() const;
 
-    string getAlbum() const {
-        return album;
-    }
+    string getAlbum() const;
 
-    string getYear() const {
-        return year;
-    }
+    string getYear() const;
 
-    string getDuration() const {
-        return duration;
-    }
+    string getDuration() const;
 };
