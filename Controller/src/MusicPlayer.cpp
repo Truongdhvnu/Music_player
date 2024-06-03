@@ -98,11 +98,12 @@ MusicPlayer::~MusicPlayer() {
     SDL_Quit();
 }
 
-void MusicPlayer::play(const std::string& filePath) {
+void MusicPlayer::play(const Song& song) {
     if (playing) {
         stop();
     }
-    currentFile = filePath;
+    currentFile = song.getPath();
+    std::string filePath = song.getPath();
     music = Mix_LoadMUS(filePath.c_str());
     if (!music) {
         std::cerr << "Failed to load music: " << Mix_GetError() << std::endl;
@@ -111,7 +112,7 @@ void MusicPlayer::play(const std::string& filePath) {
     playing = true;
 
     //hien thi thoi gian
-    musicDuration = getFileDuration(filePath);
+    musicDuration = stoi(song.getDuration());
     paused = false;
     startTime = std::chrono::steady_clock::now();
     ////////
@@ -168,13 +169,13 @@ bool MusicPlayer::isPlaying() const {
     return playing;
 }
 
-void MusicPlayer::setPlaylist(const std::vector<std::string>& playlist) {
+void MusicPlayer::setPlaylist(const std::vector<Song>& playlist) {
     this->playlist = playlist;
     currentIndex = -1;
 }
 
-void MusicPlayer::addToPlaylist(const std::string& filePath) {
-    playlist.push_back(filePath);
+void MusicPlayer::addToPlaylist(const Song& song) {
+    playlist.push_back(song);
     if (currentIndex == -1) {
         currentIndex = 0;
         playCurrentSong();
