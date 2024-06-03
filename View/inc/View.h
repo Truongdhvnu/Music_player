@@ -1,6 +1,6 @@
 #pragma once
 #include <iostream>
-#include "configs.h"
+#include "display.h"
 
 using namespace std;
 

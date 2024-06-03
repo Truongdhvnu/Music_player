@@ -6,7 +6,7 @@
 #include "PlaylistHandler.h"
 #include "HomeHandler.h"
 #include "Model.h"
-#include "configs.h"
+#include "display.h"
 
 Model& Controller::model = Model::getInstance();
 deque<Handler*> Controller::recentView;

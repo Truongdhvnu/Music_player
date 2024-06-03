@@ -1,3 +1,4 @@
+#pragma once
 #include <iostream>
 #include <string>
 
@@ -15,7 +16,8 @@ public:
     /*
         Just initialize path of the song, but metadata 
     */
-    Song(string path) : path(path) {}
+    Song(string path, bool getMetadata=false);
+
     void getAllMetadata();
 
     void setTitle(const string& newdata);
@@ -25,27 +27,15 @@ public:
     void setDuration(const string& newdata);
     int setMetadata(const Song& other);
     
-    string getPath() const {
-        return title;
-    }
+    string getPath() const;
 
-    string getTitle() const {
-        return title;
-    }
+    string getTitle() const;
 
-    string getArtist() const {
-        return artist;
-    }
+    string getArtist() const;
 
-    string getAlbum() const {
-        return album;
-    }
+    string getAlbum() const;
 
-    string getYear() const {
-        return year;
-    }
+    string getYear() const;
 
-    string getDuration() const {
-        return duration;
-    }
+    string getDuration() const;
 };

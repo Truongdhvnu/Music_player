@@ -1,5 +1,6 @@
 # COMPILE CONFIGURE
-CFLAGS = -Wall -Wextra $(LINK_DIRS)
+CFLAGS = -Wall -Wextra -std=c++17 $(LINK_DIRS)
+LDFLAGS = `pkg-config --libs sdl2 SDL2_mixer taglib` -pthread
 CC := g++
 EXECUTE_FILE := main
 
@@ -15,14 +16,12 @@ OBJS := $(OBJDIR)/main.o $(patsubst %.cpp,./$(OBJDIR)/%.o,$(notdir $(SRCS)))
 vpath %.cpp $(SRCDIR)
 
 $(OBJDIR)/%.o: %.cpp
-	$(CC) $(CFLAGS) -c $< -o $@
+	$(CC) $(CFLAGS) -c $< $(LDFLAGS) -o $@
 
-# $(OBJDIR)/main.o : main.cpp
-# 	$(CC) $(CFLAGS) -c $< -o $(OBJDIR)/$@
 build: clean obj_build
 
 obj_build: $(OBJS)
-	$(CC) $(OBJS) -o $(OBJDIR)/$(EXECUTE_FILE)
+	$(CC) $(OBJS) $(LDFLAGS) -o $(OBJDIR)/$(EXECUTE_FILE)
 
 
 .PHONY: run
