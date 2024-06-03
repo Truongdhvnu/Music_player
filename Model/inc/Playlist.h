@@ -1,22 +1,23 @@
+#pragma once
 #include "Song.h"
 #include <vector>
 #include <string>
 #include "configs.h"
 #include <fstream>
+#include "MediaList.h"
 
 using namespace std;
 namespace fs = std::filesystem;
 
-class Playlist {
+class Playlist : public MediaList {
 private:
-    vector<Song> songList;
     string name;
     bool changed = false;  // set changed = true when data of the Playlist change by addSong, deleteSong methods
     bool fetchSong = false; 
 public:
     bool newCreated = false;
     Playlist(string name) : name(name) {};
-public:
+
     /*
         Songs of each playlist are stored in a .txt file in .data/playlist_name with "playlist_name" is name of playlist
         Initialize data for songs then add them to the songList vector
@@ -48,24 +49,8 @@ public:
         return *this;
     };
 
-    Song& getSong(int index) {
-        if ((songList.size() > index) && (index >= 0)) {
-            return songList[index];
-        } else {
-            throw out_of_range("getSong: song index is out of range\n");
-        }
-    };
-
-    vector<Song>& getSongList() {
-        return this->songList;        
-    }
-
     string getName() {
         return this->name;
-    }
-
-    int getNumberOfSong() {
-        return this->songList.size();
     }
 
     /*

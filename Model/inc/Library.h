@@ -1,5 +1,6 @@
-#pragma once
-// #include "Song.h"
+// #pragma once
+#include "Song.h"
+#include "MediaList.h"
 #include <vector>
 #include <string>
 #include "configs.h"
@@ -8,9 +9,8 @@
 using namespace std;
 namespace fs = std::filesystem;
 
-class Library {
-private:
-    vector<Song> songList;
+class Library : public MediaList{
+private:    
     vector<string> dirPaths;
     bool needToChange = false;
 
@@ -82,22 +82,6 @@ public:
             }
         }
     }
-
-    Song& getSong(int index) {
-        if ((songList.size() > index) && (index >= 0)) {
-            return songList[index];
-        } else {
-            throw out_of_range("getSong: song index is out of range\n");
-        }
-    };
-    
-    vector<Song>& getSongList() {
-        return this->songList;        
-    }
-
-    int getNumberOfSong() {
-        return this->songList.size();
-    }
 };
 
 // int main() {
@@ -125,6 +109,14 @@ public:
 //     l.getSongFromPath("/home/dhtruong/Documents/MediaBrowser/data");
 //     cout << news.getPath() << endl;
 //     cout << l.getNumberOfSong() << endl;
+
+//     l.sort(SORT_ZA);
+//     songs = l.getSongList();
+//     for(Song s: songs) {
+//         cout << s.getTitle() << endl;
+//     }
+
+//     cout << l.getPageOfSong(0).size();
 //     return 0;
 // }
 

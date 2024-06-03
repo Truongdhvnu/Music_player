@@ -4,15 +4,18 @@
 #include "configs.h"
 #include "display.h"
 #include "Library.h"
+#include "MediaList.h"
 
 using namespace std;
 namespace fs = std::filesystem;
 
 class MediaManager {
 private:
-    Library lib;
+    Library songLib;
     vector<Playlist> playlists;
     vector<string> listDeleted; 
+    MediaList* currentMediaList = nullptr;
+    bool playListActive = false;
 public:
     /*
         Initialize (just name) for playlists whose names are names of .txt files in "./data/playlists" directory
@@ -28,13 +31,35 @@ public:
         }
     };
 
-    Playlist& getPlaylistNum(int index) {
-        if ((0 <= index) && (index < playlists.size())) {
-            return playlists[index].initialize();
+    void setActivePList(int PlaylistNum) {
+        if (PlaylistNum < 0 || PlaylistNum >= this->playlists.size()) {
+            throw out_of_range("Playlist no." + to_string(PlaylistNum) + "does not exits");
         } else {
-            throw out_of_range("getPlaylist: Playlist index is out of bound\n");
+            this->currentMediaList = &playlists[PlaylistNum].initialize();
+            playListActive = true;
         }
-    };
+    }
+
+    Playlist* getActivePlaylist() {
+        if (playListActive == true) {
+            return (Playlist*)this->currentMediaList;
+        } else {
+            return nullptr;
+        }
+    }
+
+    void setActiveLibrary() {
+        this->currentMediaList = &this->songLib;
+        playListActive = false;
+    }
+
+    Library* getActiveLibrary() {
+        if (playListActive == false) {
+            return (Library*)this->currentMediaList;
+        } else {
+            return nullptr;
+        }
+    }
 
     vector<string> getPlaylistNames() {
         vector<string> result;
@@ -44,62 +69,16 @@ public:
         return result;
     };
 
-    vector<Song> getPlaylistSongs(int PlaylistNum, int pageNum) {
-        if (pageNum < 0 || PlaylistNum < 0 || PlaylistNum >= this->playlists.size()) {
-            throw out_of_range("No data for Playlist no." + to_string(PlaylistNum) + "/page " + to_string(pageNum));
-        }
-
-        Playlist& pl = this->getPlaylistNum(PlaylistNum);
-        if (pageNum * MAX_NUM_OF_LINES >= pl.getNumberOfSong()) {
-            throw out_of_range("No more data\n");
-        }
-        
-        int numberOfSong = pl.getNumberOfSong() - MAX_NUM_OF_LINES*(pageNum);
-        numberOfSong = numberOfSong < MAX_NUM_OF_LINES ? numberOfSong : MAX_NUM_OF_LINES; 
-        vector<Song> result;
-        for(int i = pageNum * MAX_NUM_OF_LINES; i < numberOfSong; i++) {
-            result.push_back(pl.getSong(i));
-        }
-        return result;
+    vector<Song> getPageOfSong(int pageNum) {
+        return this->currentMediaList->getPageOfSong(pageNum);
     };
 
-private:
-    static bool sortByNameAZ(const Song &a, const Song &b) {
-        return a.getTitle()[0] < b.getTitle()[0];
+    vector<Song>& sortCurrentList(int option) {
+        return this->currentMediaList->sort(option);
     }
 
-    static bool sortByNameZA(const Song &a, const Song &b) {
-        return !MediaManager::sortByNameAZ(a, b);
-    }
-
-    static bool sortByArtist(const Song &a, const Song &b) {
-        if (a.getArtist() == b.getArtist()) {
-            return MediaManager::sortByNameAZ(a, b);
-        } else {
-            return a.getArtist() < b.getArtist();
-        }
-    }
-public:
-    vector<Song>& sort(int PlaylistNum, int option) {
-        vector<Song>& songlist = playlists[PlaylistNum].initialize().getSongList();
-        if (PlaylistNum < 0 || PlaylistNum >= this->playlists.size()) {
-            throw out_of_range("Playlist rename: Index of playlist out of bound " + to_string(PlaylistNum) + "\n");
-        } else {
-            switch (option) {
-                case SORT_AZ:
-                    std::sort(songlist.begin(), songlist.end(), MediaManager::sortByNameAZ);
-                    break;
-                case SORT_ZA:
-                    std::sort(songlist.begin(), songlist.end(), MediaManager::sortByNameZA);
-                    break;
-                case SORT_ARTIST:
-                    std::sort(songlist.begin(), songlist.end(), MediaManager::sortByArtist);
-                    break;
-                default:
-                    break;
-            }
-            return songlist;
-        }
+    vector<Song>& getCurrentSongList() {
+        return this->currentMediaList->getSongList();
     }
 
     int isExistPlayList(string name) {
@@ -180,10 +159,12 @@ int main() {
         cout << name << " ";
     }
     cout << endl;
-
-    m.getPlaylistNum(1).addSong("/home/dhtruong/Documents/MediaBrowser/data/I Knew You Were Trouble - Taylor Swift.mp3");
-    m.getPlaylistNum(1).deleteSong(0);
-    m.getPlaylistNum(1).addSong("/home/dhtruong/Documents/MediaBrowser/data/Rolling in the Deep - Adele.mp3");
+    
+    m.setActivePList(1);
+    Playlist* current = m.getActivePlaylist();
+    (*current).addSong("/home/dhtruong/Documents/MediaBrowser/data/I Knew You Were Trouble - Taylor Swift.mp3");
+    (*current).deleteSong(0);
+    (*current).addSong("/home/dhtruong/Documents/MediaBrowser/data/Rolling in the Deep - Adele.mp3");
     // m.deletePlaylist(2);
 
     // Playlist p("BlackPink");
@@ -196,29 +177,37 @@ int main() {
     }
     m.updateDatabase();
 
-    m.sort(0, SORT_AZ);
-    vector<Song> songs = m.getPlaylistSongs(0, 0);
+    
+    vector<Song> songs = m.sortCurrentList(SORT_AZ);
     cout <<"Sort by name AZ\n";
     for (Song s: songs) {
         cout << s.getTitle() << "\n";
     }
     cout << endl;
 
-    m.sort(0, SORT_ZA);
-    songs = m.getPlaylistSongs(0, 0);
+    m.sortCurrentList(SORT_ZA);
+    songs = m.getCurrentSongList();
     cout <<"Sort by name ZA\n";
     for (Song s: songs) {
         cout << s.getTitle() << "\n";
     }
     cout << endl;
 
-    m.sort(0, SORT_ARTIST);
-    songs = m.getPlaylistSongs(0, 0);
+    m.sortCurrentList(SORT_ARTIST);
+    songs = m.getCurrentSongList();
     cout <<"Sort by name ARTIST\n";
     for (Song s: songs) {
         cout << s.getTitle() << "\n";
     }
+    cout << endl;
     
-    
+    m.setActiveLibrary();
+    Library* now = m.getActiveLibrary();
+    (*now).getSongFromPath("/home/dhtruong/Documents/MediaBrowser/data");
+    m.sortCurrentList(SORT_ZA);
+    songs = m.getPageOfSong(0);
+    for(Song s: songs) {
+        cout << s.getTitle() << endl;
+    }
     return 0;
 }

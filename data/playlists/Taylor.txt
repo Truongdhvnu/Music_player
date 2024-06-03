@@ -1,2 +1,5 @@
+/home/dhtruong/Documents/MediaBrowser/data/Some Nights - Fun.mp3
+/home/dhtruong/Documents/MediaBrowser/data/Lost In The Echo - Linkin Park.mp3
+/home/dhtruong/Documents/MediaBrowser/data/The One That Got Away.mp3
 /home/dhtruong/Documents/MediaBrowser/data/I Knew You Were Trouble - Taylor Swift.mp3
 /home/dhtruong/Documents/MediaBrowser/data/Rolling in the Deep - Adele.mp3
