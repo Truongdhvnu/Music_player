@@ -32,7 +32,7 @@ int main() {
     
     m.setActivePList(1);
     Playlist* current = m.getActivePlaylist();
-    (*current).addSong("music/I Knew You Were Trouble - Taylor Swift.mp3");
+    (*current).addSong(" music/I Knew You Were Trouble - Taylor Swift.mp3");
     // (*current).deleteSong(0);
     (*current).addSong("music/Rolling in the Deep - Adele.mp3");
     // m.deletePlaylist(2);
