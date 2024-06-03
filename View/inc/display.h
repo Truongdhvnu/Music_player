@@ -1,7 +1,7 @@
 #ifndef DISPLAY_H
 #define DISPLAY_H
 
-#define MAX_NUM_OF_LINES 25
+#define MAX_LINES 3
 
 /*
     Define navigator letters
@@ -17,5 +17,18 @@
 #define MAX_HISTORY_PAGE 10
 #define NEXT_PAGE "n"
 #define PREVIOUS_PAGE "p"
+#define SORT_BY_NAME "s"
+#define SORT_BY_ARTIST "a"
+
+enum PLAYOPTION {
+    PLAY,
+    PAUSE,
+    RESUME,
+    SHUFFLE,
+    NEXT,
+    PREVIOUS,
+    VOLUME_UP,
+    VOLUME_DOWN,
+};
 
 #endif

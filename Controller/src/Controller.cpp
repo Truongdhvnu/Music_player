@@ -17,20 +17,21 @@ Controller::Controller() {
     Controller::recentView[view_index]->onStart();
 }
 
-void Controller::changeHandler(Handler* handler) {
+void Controller::changeHandler(Handler* handler, void* paras) {
+    while (recentView.size() > MAX_HISTORY_PAGE - 1)
+    {
+        recentView.pop_front();
+        view_index--;
+    }
     int temp = view_index;
     while (temp < recentView.size() - 1)
     {
         recentView.pop_back();
     }
-    while (recentView.size() > MAX_HISTORY_PAGE - 1)
-    {
-        recentView.pop_front();
-    }
-    
+
     Controller::recentView.push_back(handler);
-    view_index = recentView.size() - 1;
-    recentView[view_index]->onStart();
+    view_index++;
+    recentView[view_index]->onStart(paras);
 }
 
 /*
@@ -45,7 +46,7 @@ void Controller::run() {
     while (true) {
         cin >> command;
         if (command == GO_BACK) {
-            if (recentView.size() > 1) {
+            if (view_index >= 1) {
                 view_index--;
                 recentView[view_index]->onStart();
             }

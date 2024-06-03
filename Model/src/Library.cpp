@@ -49,9 +49,9 @@ void Library::getSongFromCurrentDirs() {
             this->needToChange = true;
         }
     }
-    if (message != "") {
-        throw runtime_error(message);
-    }
+    // if (message != "") {
+    //     throw runtime_error(message);
+    // }
 }
 
 void Library::getSongFromPath(string path) {

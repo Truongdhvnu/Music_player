@@ -16,7 +16,7 @@ PlaylistHandler* PlaylistHandler::getInstance() {
     return &pl;
 }
 
-void PlaylistHandler::onStart() {
+void PlaylistHandler::onStart(void* passData) {
     this->view.display();
     this->view.display_bottom();
 }
