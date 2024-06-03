@@ -33,15 +33,56 @@ void Song::getAllMetadata() {
             this->year = tag->year();
         }
     }
-};
+}
 
-void Song::setTitle(const string& newdata){};
-void Song::setArtist(const string& newdata){};
-void Song::setAlbum(const string& newdata){};
-void Song::setYear(const string& newdata){};
-void Song::setDuration(const string& newdata){};
-int Song::setMetadata(const Song& other){};
-    
+void Song::setTitle(const string& newdata) {
+    if (!fs::exists(this->path)) {
+        throw runtime_error("Song's path does not exist: " + this->path);
+    } else {
+        TagLib::FileRef ref(this->path.c_str());
+        if (!ref.isNull() && ref.tag()) {
+            TagLib::Tag *tag = ref.tag();
+            tag->setTitle(newdata);
+        }
+    }
+}
+void Song::setArtist(const string& newdata) {
+    if (!fs::exists(this->path)) {
+        throw runtime_error("Song's path does not exist: " + this->path);
+    } else {
+        TagLib::FileRef ref(this->path.c_str());
+        if (!ref.isNull() && ref.tag()) {
+            TagLib::Tag *tag = ref.tag();
+            tag->setArtist(newdata);
+        }
+    }
+}
+void Song::setAlbum(const string& newdata) {
+    if (!fs::exists(this->path)) {
+        throw runtime_error("Song's path does not exist: " + this->path);
+    } else {
+        TagLib::FileRef ref(this->path.c_str());
+        if (!ref.isNull() && ref.tag()) {
+            TagLib::Tag *tag = ref.tag();
+            tag->setAlbum(newdata);
+        }
+    }
+}
+void Song::setYear(const unsigned int& newdata) {
+    if (!fs::exists(this->path)) {
+        throw runtime_error("Song's path does not exist: " + this->path);
+    } else {
+        TagLib::FileRef ref(this->path.c_str());
+        if (!ref.isNull() && ref.tag()) {
+            TagLib::Tag *tag = ref.tag();
+            tag->setYear(newdata);
+        }
+    }
+}
+void Song::setDuration(const string& newdata) {
+
+}
+
 string Song::getPath() const {
     return path;
 }
