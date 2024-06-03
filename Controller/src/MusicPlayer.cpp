@@ -112,7 +112,8 @@ void MusicPlayer::play(const Song& song) {
     playing = true;
 
     //hien thi thoi gian
-    musicDuration = stoi(song.getDuration());
+    // musicDuration = stoi(song.getDuration());
+    musicDuration = getFileDuration(filePath);
     paused = false;
     startTime = std::chrono::steady_clock::now();
     ////////

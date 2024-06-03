@@ -4,6 +4,7 @@
 #include "Controller.h"
 #include "Handler.h"
 #include "PlaylistHandler.h"
+#include "MusicPlayer.h"
 #include "HomeHandler.h"
 #include "Model.h"
 #include "display.h"
