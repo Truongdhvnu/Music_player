@@ -105,7 +105,7 @@ private:
     std::atomic<bool> paused;
     std::atomic<int> volume;
 
-    std::vector<Song> playlist;
+    std::vector<Song>& playlist;
     int currentIndex;
 
     int musicDuration;
