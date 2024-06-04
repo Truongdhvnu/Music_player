@@ -5,11 +5,11 @@ using namespace std;
 /*
     Test MVC
 */
-int main() {
-    Controller c;
-    c.run();
-    return 0;
-}
+// int main() {
+//     Controller c;
+//     c.run();
+//     return 0;
+// }
 
 /*
     Test media manager
@@ -79,8 +79,9 @@ int main() {
     // for(Song s: songs) {
     //     cout << s.getTitle() << endl;
     // }
-    // Song abc("/home/cuongnk168/test_media/audio/Hoa-Trinh-Nu-Viet-Tu.mp3");
-    // Song wer("/home/cuongnk168/test_media/audio/Anh-Cu-Di-Di-Hari-Won.mp3");
+// }
+
+int main() {
     Playlist p("BlackPink");
     p.addSong("/home/cuongnk168/test_media/audio/Hoa-Trinh-Nu-Viet-Tu.mp3");
     p.addSong("/home/cuongnk168/test_media/audio/Anh-Cu-Di-Di-Hari-Won.mp3");
@@ -92,50 +93,53 @@ int main() {
     xyz.play(p.getSongList()[index]);
     int x;
     while(1){
-    std::cin >> x;
-    if (x == 1) xyz.pause();
-    if (x == 2) xyz.resume();
-    if (x == 3) xyz.next();
-    if (x == 4) xyz.previous();
-    if (x == 5) p.addSong("/home/cuongnk168/test_media/audio/Ngay-Chua-Giong-Bao-Bui-Lan-Huong.mp3");
-    if (x == 0) break;
+        std::cin >> x;
+        if (x == 1) xyz.pause();
+        if (x == 2) xyz.resume();
+        if (x == 3) xyz.next();
+        if (x == 4) xyz.previous();
+        if (x == 5) p.addSong("/home/cuongnk168/test_media/audio/Ngay-Chua-Giong-Bao-Bui-Lan-Huong.mp3");
+        if (x == 0) break;
     }
-int main() {
-    Song test("/home/phuongvn/Desktop/Grenade - Bruno Mars.mp3", true);
 
-    cout << "Testing: " << endl;
-    cout << "Path: " << test.getPath() << endl;
-    cout << "Title: " << test.getTitle() << endl;
-    cout << "Artist: " << test.getArtist() << endl;
-    cout << "Album: " << test.getAlbum() << endl;
-    cout << "Year: " << test.getYear() << endl;
-    cout << "Duration: " << test.getDuration() << endl;
-
-    string temp;
-    cout << "Title: ";
-    cin >> temp;
-    cout << endl;
-    test.setTitle(temp);
-    cout << "Artist: ";
-    cin >> temp;
-    cout << endl;
-    test.setArtist(temp);
-    cout << "Album: ";
-    cin >> temp;
-    cout << endl;
-    test.setAlbum(temp);
-    int temp1;
-    cout << "Year: ";
-    cin >> temp1;
-    cout << endl;
-    test.setYear(temp1);
-
-    cout << "After edit: " << endl;
-    cout << "Title: " << test.getTitle() << endl;
-    cout << "Artist: " << test.getArtist() << endl;
-    cout << "Album: " << test.getAlbum() << endl;
-    cout << "Year: " << test.getYear() << endl;
-    cout << "Duration: " << test.getDuration() << endl;
-
-    return 0;
 }
+
+// int main() {
+//     Song test("/home/phuongvn/Desktop/Grenade - Bruno Mars.mp3", true);
+
+//     cout << "Testing: " << endl;
+//     cout << "Path: " << test.getPath() << endl;
+//     cout << "Title: " << test.getTitle() << endl;
+//     cout << "Artist: " << test.getArtist() << endl;
+//     cout << "Album: " << test.getAlbum() << endl;
+//     cout << "Year: " << test.getYear() << endl;
+//     cout << "Duration: " << test.getDuration() << endl;
+
+//     string temp;
+//     cout << "Title: ";
+//     cin >> temp;
+//     cout << endl;
+//     test.setTitle(temp);
+//     cout << "Artist: ";
+//     cin >> temp;
+//     cout << endl;
+//     test.setArtist(temp);
+//     cout << "Album: ";
+//     cin >> temp;
+//     cout << endl;
+//     test.setAlbum(temp);
+//     int temp1;
+//     cout << "Year: ";
+//     cin >> temp1;
+//     cout << endl;
+//     test.setYear(temp1);
+
+//     cout << "After edit: " << endl;
+//     cout << "Title: " << test.getTitle() << endl;
+//     cout << "Artist: " << test.getArtist() << endl;
+//     cout << "Album: " << test.getAlbum() << endl;
+//     cout << "Year: " << test.getYear() << endl;
+//     cout << "Duration: " << test.getDuration() << endl;
+
+//     return 0;
+// }
