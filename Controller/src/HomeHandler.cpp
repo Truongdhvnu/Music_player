@@ -29,11 +29,13 @@ void HomeHandler::handle(string command) {
             this->view.display_bottom();
         } else if (command == "2") {
             change_handler(PlaylistHandler::getInstance());
-        } else if(command == "3") {
+        } else if (command == "3") {
             this->model.media_manager.setActiveLibrary();
             Library* mylib = this->model.media_manager.getActiveLibrary();
             (*mylib).getSongFromCurrentDirs();
             change_handler(SongListHandler::getInstance());
+        } else if (command == "4") {
+            // change_handler();
         }
         else {
             cout << "No actions or Invalid command\n";

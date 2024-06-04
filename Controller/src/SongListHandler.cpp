@@ -22,8 +22,9 @@ SongListHandler* SongListHandler::getInstance() {
 
 void SongListHandler::onStart(void* passData) {
     try {
-        // cout << this->model.media_manager.getCurrentSongList().size();
+        // if (passData != nullptr) nếu không để = 0, có thể lỗi khi đổi giữa lib và plist
         vector<Song> songs = this->model.media_manager.getPageOfSong(0);
+        SongListHandler::currentPage = 0;
         this->view.displaySongs(songs, 0);
     } catch (out_of_range& e) {
         // cout << e.what() << endl;
@@ -59,7 +60,7 @@ void SongListHandler::handle(string command) {
             } else {
                 try {
                     int selectedSong = stoi(command);
-                    if (selectedSong >= 1 && selectedSong <= this->model.media_manager.getCurrentSongList().size()) {
+                    if (selectedSong >= 1 && selectedSong <= this->model.media_manager.getNumberofSong()) {
                         SongListHandler::currentSongIndex = selectedSong;
                         this->change_handler(PlayHandler::getInstance(), (void*)&SongListHandler::currentSongIndex);
                     }

@@ -19,7 +19,35 @@ MediaManager::MediaManager() {
             }
         }
     }
-};
+}
+
+bool MediaManager::isPlaylistActive() {
+    return playListActive;
+}
+
+int MediaManager::getCurrentSongIndex() {
+    if (playListActive) {
+        return currentPlistSongIndex;
+    } else {
+        return currentLibSongIndex;
+    }
+}
+
+void MediaManager::setCurrentSongIndex(int data) {
+    if (playListActive) {
+        currentPlistSongIndex = data;
+    } else {
+        currentLibSongIndex = data;
+    }
+}
+
+int MediaManager::getNumberofSong() {
+    if (this->currentMediaList != nullptr) {
+        return this->currentMediaList->getNumberOfSong();
+    } else {
+        return 0;
+    }
+}
 
 void MediaManager::setActivePList(int PlaylistNum) {
     if (PlaylistNum < 0 || PlaylistNum >= this->playlists.size()) {
@@ -67,8 +95,8 @@ vector<Song>& MediaManager::sortCurrentList(int option) {
     return this->currentMediaList->sort(option);
 }
 
-vector<Song>& MediaManager::getCurrentSongList() {
-    return this->currentMediaList->getSongList();
+vector<Song>* MediaManager::getCurrentSongList() {
+    return &this->currentMediaList->getSongList();
 }
 
 int MediaManager::isExistPlayList(string name) {

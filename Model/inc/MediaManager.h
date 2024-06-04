@@ -15,12 +15,22 @@ private:
     vector<string> listDeleted; 
     MediaList* currentMediaList = nullptr;
     bool playListActive = false;
+    int currentLibSongIndex = 0;
+    int currentPlistSongIndex = 0;
 public:
     /*
         Initialize (just name) for playlists whose names are names of .txt files in "./data/playlists" directory
     */
     MediaManager();
 
+    bool isPlaylistActive();
+
+    int getCurrentSongIndex();
+    
+    void setCurrentSongIndex(int data);
+
+    int getNumberofSong();
+    
     void setActivePList(int PlaylistNum);
 
     Playlist* getActivePlaylist();
@@ -35,7 +45,7 @@ public:
 
     vector<Song>& sortCurrentList(int option);
 
-    vector<Song>& getCurrentSongList();
+    vector<Song>* getCurrentSongList();
 
     int isExistPlayList(string name);
 

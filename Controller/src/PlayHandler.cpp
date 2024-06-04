@@ -7,6 +7,12 @@
 #include "PlayHandler.h"
 #include "display.h"
 
+
+/*
+
+    ! Change currentSongIndex to media_maner.getCurrentSongIndex()
+
+*/
 int PlayHandler::currentSongIndex = 0;
 
 PlayHandler::PlayHandler() : model(Model::getInstance()) {
@@ -23,7 +29,7 @@ void PlayHandler::onStart(void* passData) {
         if (passData != nullptr) {
             PlayHandler::currentSongIndex = *((int*)passData) - 1;
         }
-        Song currentSong = this->model.media_manager.getCurrentSongList()[PlayHandler::currentSongIndex];
+        Song currentSong = (*this->model.media_manager.getCurrentSongList())[PlayHandler::currentSongIndex];
         this->view.display(currentSong);
         // Gọi hàm phát nhạc cho currentSong
     } catch (out_of_range& e) {
