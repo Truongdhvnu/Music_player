@@ -72,13 +72,34 @@ int main() {
 //     }
 //     cout << endl;
     
-//     m.setActiveLibrary();
-//     Library* now = m.getActiveLibrary();
-//     (*now).getSongFromPath("music");
-//     m.sortCurrentList(SORT_ZA);
-//     songs = m.getPageOfSong(0);
-//     for(Song s: songs) {
-//         cout << s.getTitle() << endl;
-//     }
-//     return 0;
-// }
+    // m.setActiveLibrary();
+    // Library* now = m.getActiveLibrary();
+    // (*now).getSongFromPath("music");
+    // m.sortCurrentList(SORT_ZA);
+    // songs = m.getPageOfSong(0);
+    // for(Song s: songs) {
+    //     cout << s.getTitle() << endl;
+    // }
+    // Song abc("/home/cuongnk168/test_media/audio/Hoa-Trinh-Nu-Viet-Tu.mp3");
+    // Song wer("/home/cuongnk168/test_media/audio/Anh-Cu-Di-Di-Hari-Won.mp3");
+    Playlist p("BlackPink");
+    p.addSong("/home/cuongnk168/test_media/audio/Hoa-Trinh-Nu-Viet-Tu.mp3");
+    p.addSong("/home/cuongnk168/test_media/audio/Anh-Cu-Di-Di-Hari-Won.mp3");
+    p.addSong("/home/cuongnk168/test_media/audio/Di-De-Tro-Ve-Soobin-Hoang-Son.mp3");
+    MusicPlayer xyz;
+    xyz.setPlaylist(&(p.getSongList()));
+    int index = 1;
+    xyz.setCurrentIndex(index);
+    xyz.play(p.getSongList()[index]);
+    int x;
+    while(1){
+    std::cin >> x;
+    if (x == 1) xyz.pause();
+    if (x == 2) xyz.resume();
+    if (x == 3) xyz.next();
+    if (x == 4) xyz.previous();
+    if (x == 5) p.addSong("/home/cuongnk168/test_media/audio/Ngay-Chua-Giong-Bao-Bui-Lan-Huong.mp3");
+    if (x == 0) break;
+    }
+    return 0;
+}
