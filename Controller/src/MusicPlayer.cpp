@@ -1,85 +1,3 @@
-// #include "controller/MusicPlayer.h"
-// #include <iostream>
-
-// MusicPlayer::MusicPlayer() : music(nullptr), playing(false), paused(false), volume(50) {
-//     if (SDL_Init(SDL_INIT_AUDIO) < 0) {
-//         std::cerr << "Failed to initialize SDL: " << SDL_GetError() << std::endl;
-//     }
-//     if (Mix_OpenAudio(44100, MIX_DEFAULT_FORMAT, 2, 2048) < 0) {
-//         std::cerr << "Failed to initialize SDL_mixer: " << Mix_GetError() << std::endl;
-//     }
-// }
-// MusicPlayer::~MusicPlayer() {
-//     stop();
-//     Mix_CloseAudio();
-//     SDL_Quit();
-// }
-
-// void MusicPlayer::play(const std::string& filePath) {
-//     if (playing) {
-//         stop();
-//     }
-//     currentFile = filePath;
-//     music = Mix_LoadMUS(filePath.c_str());
-//     if (!music) {
-//         std::cerr << "Failed to load music: " << Mix_GetError() << std::endl;
-//         return;
-//     }
-//    playing = true;
-//     musicThread = std::thread(&MusicPlayer::musicThreadFunc, this);
-//     musicThread.detach();
-// }
-
-// void MusicPlayer::pause() {
-//     if (playing && !paused) {
-//         Mix_PauseMusic();
-//         paused = true;
-//     }
-// }
-
-// void MusicPlayer::resume() {
-//     if (playing && paused) {
-//         Mix_ResumeMusic();
-//         paused = false;
-//     }
-// }
-
-// void MusicPlayer::stop() {
-//     if (playing) {
-//         playing = false;
-//         Mix_HaltMusic();
-//         if (music) {
-//             Mix_FreeMusic(music);
-//             music = nullptr;
-//         }
-//     }
-// }
-
-// void MusicPlayer::next() {
-//     // Implement next song logic
-// }
-
-// void MusicPlayer::previous() {
-//     // Implement previous song logic
-// }
-
-// void MusicPlayer::setVolume(int volume) {
-//     this->volume = volume;
-//     Mix_VolumeMusic(volume);
-// }
-
-// bool MusicPlayer::isPlaying() const {
-//     return playing;
-// }
-
-// void MusicPlayer::musicThreadFunc() {
-//     Mix_PlayMusic(music, 1);
-//     while (playing && Mix_PlayingMusic()) {
-//         SDL_Delay(100);
-//     }
-//     stop();
-// }
-
 #include "MusicPlayer.h"
 #include <iostream>
 
@@ -166,6 +84,18 @@ void MusicPlayer::setVolume(int volume) {
     Mix_VolumeMusic(volume);
 }
 
+void MusicPlayer::volumeUp() {
+    if(this->volume <= 90) this->volume += 10;
+    else this->volume = 100;
+    Mix_VolumeMusic(this->volume);
+}
+
+void MusicPlayer::volumeDown() {
+    if(this->volume >= 10) this->volume -= 10;
+    else this->volume = 0;
+    Mix_VolumeMusic(this->volume);
+}
+
 bool MusicPlayer::isPlaying() const {
     return playing;
 }
@@ -187,14 +117,6 @@ void MusicPlayer::clearPlaylist() {
     playlist->clear();
     currentIndex = -1;
 }
-
-// void MusicPlayer::musicThreadFunc() {
-//     Mix_PlayMusic(music, 1);
-//     while (playing && Mix_PlayingMusic()) {
-//         SDL_Delay(100);
-//     }
-//     stop();
-// }
 
 void MusicPlayer::musicThreadFunc() {
     if (Mix_PlayMusic(music, 1) == -1) {
@@ -257,4 +179,13 @@ int MusicPlayer::getFileDuration(const std::string& filePath) {
         return file.audioProperties()->length();
     }
     return 0;
+}
+
+void MusicPlayer::shuffle() {
+    // Khởi tạo công cụ sinh số ngẫu nhiên
+    std::random_device rd;
+    std::mt19937 g(rd());
+
+    // Sử dụng std::shuffle để trộn các phần tử trong vector
+    std::shuffle(playlist->begin(), playlist->end(), g);
 }

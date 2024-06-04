@@ -1,7 +1,6 @@
 #include "Controller.h"
 #include "MediaManager.h"
 #include "MusicPlayer.h"
-#include "USBDetect.h"
 
 
 #include "Playlist.h"

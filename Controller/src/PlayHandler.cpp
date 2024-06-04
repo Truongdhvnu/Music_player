@@ -31,6 +31,8 @@ void PlayHandler::onStart(void* passData) {
         }
         Song currentSong = (*this->model.media_manager.getCurrentSongList())[PlayHandler::currentSongIndex];
         this->view.display(currentSong);
+        this->musicPlayer.setPlaylist(this->model.media_manager.getCurrentSongList());
+        this->musicPlayer.setCurrentIndex(PlayHandler::currentSongIndex);  
         // Gọi hàm phát nhạc cho currentSong
     } catch (out_of_range& e) {
         // do Nothing
@@ -42,28 +44,30 @@ void PlayHandler::handle(string command) {
         int option = stoi(command) - 1;
         switch(option) { 
             case PLAY:
-                cout << "Playing\n";
+                musicPlayer.play((*this->model.media_manager.getCurrentSongList())[musicPlayer.getCurrentIndex()]);
                 break;
             case PAUSE:
-                cout << "Pause\n";
+                musicPlayer.pause();
                 break;
             case RESUME:
-                cout << "Resume\n";
+                musicPlayer.resume();
                 break;
             case SHUFFLE:
-                cout << "Shiffle\n";
+                musicPlayer.shuffle();
                 break;
             case NEXT:
-                cout << "Next\n";
+                musicPlayer.next();
+                view.display((*this->model.media_manager.getCurrentSongList())[musicPlayer.getCurrentIndex()]);
                 break;
             case PREVIOUS:
-                cout << "Previous\n";
+                musicPlayer.previous();
+                view.display((*this->model.media_manager.getCurrentSongList())[musicPlayer.getCurrentIndex()]);
                 break;
             case VOLUME_UP:
-                cout << "Volume up\n";
+                musicPlayer.volumeUp();
                 break;
             case VOLUME_DOWN:
-                cout << "Volume down\n";
+                musicPlayer.volumeDown();
                 break;
             default:
                 cout << "Invalid\n";

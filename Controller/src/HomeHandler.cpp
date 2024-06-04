@@ -46,7 +46,7 @@ void HomeHandler::handle(string command) {
 
 void HomeHandler::onStart(void* passData) {
     this->view.display();
-    this->view.display_bottom();
+    // this->view.display_bottom();
 }
 
 

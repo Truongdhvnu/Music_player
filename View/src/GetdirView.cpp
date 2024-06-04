@@ -2,11 +2,20 @@
 
 using namespace std;
 void GetdirView::display() {
-    system("clear");
-    cout << "============================SELECT DIRECRTORY=========================\n\n";
-    cout << "Welcome. Select your direction path\n";
-    cout << "1. Select USB direction path\n";
-    cout << "2. Choose another path\n";
+    int linesPrinted = 0;
+    cout << View::alignMiddle("SELECT DIRECRTORY", '=', WIDTH) << endl;
+    cout << endl;
+    linesPrinted++;
+    cout << "Welcome. Select your option" << endl;
+    linesPrinted++;
+    cout << "1. Select USB direction path" << endl;
+    linesPrinted++;
+    cout << "2. Choose another path" << endl;
+    linesPrinted++;
+    while (linesPrinted < LENGTH - 1) {
+        cout << endl;
+        linesPrinted++;
+    }
     View::display_bottom();
 }
 

@@ -24,9 +24,6 @@ GetdirHandler* GetdirHandler::getInstance() {
 void GetdirHandler::handle(string command) {
     try {
         if (command == "1") {
-            cout << "Using USB, waiting for USB inserted"<<endl;
-            cout << "If USB inserted, press 1 again"<<endl;
-            cout << "If USB not detected, remove and insert again"<<endl;
             if(usbmonitor.USBGetStatus()==1)    //da co USB
             {
                 directory=usbmonitor.getUserPathValue();
@@ -35,6 +32,12 @@ void GetdirHandler::handle(string command) {
                 Library* lib=this->model.media_manager.getActiveLibrary();
                 (*lib).getSongFromPath(directory);
                 change_handler(SongListHandler::getInstance());
+            }
+            else{
+                change_handler(GetdirHandler::getInstance());
+                cout << "Waiting for USB inserted..."<<endl;
+                cout << "If USB inserted, press 1 again"<<endl;
+                cout << "If USB not detected, remove and insert again"<<endl;
             }
             
         } else if (command == "2") {
