@@ -14,7 +14,7 @@ private:
     string duration;
 public:
     /*
-        Just initialize path of the song, but metadata 
+        Just initialize path of the song, but metadata
     */
     Song(string path, bool getMetadata=false);
 
@@ -23,10 +23,10 @@ public:
     void setTitle(const string& newdata);
     void setArtist(const string& newdata);
     void setAlbum(const string& newdata);
-    void setYear(const string& newdata);
-    void setDuration(const string& newdata);
+    void setYear(const unsigned int& newdata);
+
     int setMetadata(const Song& other);
-    
+
     string getPath() const;
 
     string getTitle() const;

@@ -4,10 +4,14 @@
 #include "Playlist.h"
 
 using namespace std;
-
 /*
     Test MVC
 */
+// int main() {
+//     Controller c;
+//     c.run();
+//     return 0;
+// }
 // int main() {
 //     Controller c;
 //     c.run();
