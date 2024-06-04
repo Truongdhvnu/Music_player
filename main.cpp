@@ -1,6 +1,7 @@
 #include "Controller.h"
 #include "MediaManager.h"
 #include "MusicPlayer.h"
+#include "USBDetect.h"
 using namespace std;
 
 /*
@@ -82,23 +83,38 @@ int main() {
     // }
     // Song abc("/home/cuongnk168/test_media/audio/Hoa-Trinh-Nu-Viet-Tu.mp3");
     // Song wer("/home/cuongnk168/test_media/audio/Anh-Cu-Di-Di-Hari-Won.mp3");
-    Playlist p("BlackPink");
-    p.addSong("/home/cuongnk168/test_media/audio/Hoa-Trinh-Nu-Viet-Tu.mp3");
-    p.addSong("/home/cuongnk168/test_media/audio/Anh-Cu-Di-Di-Hari-Won.mp3");
-    p.addSong("/home/cuongnk168/test_media/audio/Di-De-Tro-Ve-Soobin-Hoang-Son.mp3");
-    MusicPlayer xyz;
-    xyz.setPlaylist(p.getSongList());
-    int index = 1;
-    xyz.setCurrentIndex(index);
-    xyz.play(p.getSongList()[index]);
-    int x;
-    while(1){
-    std::cin >> x;
-    if (x == 1) xyz.pause();
-    if (x == 2) xyz.resume();
-    if (x == 3) xyz.next();
-    if (x == 4) xyz.previous();
-    if (x == 0) break;
+    // Playlist p("BlackPink");
+    // p.addSong("/home/tiennamthach0508/Documents/Code/Git/Music_player/music/I Knew You Were Trouble - Taylor Swift.mp3");
+    // // p.addSong("/home/cuongnk168/test_media/audio/Anh-Cu-Di-Di-Hari-Won.mp3");
+    // // p.addSong("/home/cuongnk168/test_media/audio/Di-De-Tro-Ve-Soobin-Hoang-Son.mp3");
+    // MusicPlayer xyz;
+    // xyz.setPlaylist(p.getSongList());
+    // int index = 1;
+    // xyz.setCurrentIndex(index);
+    // xyz.play(p.getSongList()[index]);
+    // int x;
+    // while(1){
+    // std::cin >> x;
+    // if (x == 1) xyz.pause();
+    // if (x == 2) xyz.resume();
+    // if (x == 3) xyz.next();
+    // if (x == 4) xyz.previous();
+    // if (x == 0) break;
+    // }
+    // return 0;
+    USBMonitor usbMonitor;
+    usbMonitor.startMonitoring();
+    cout <<"Waiting USB"<<endl;
+    while(usbMonitor.USBGetStatus()==0)    //chua co USB
+    {
+        ;//WAIT
     }
+    if(usbMonitor.USBGetStatus()==1)    //da co USB
+    {
+        usbMonitor.stopMonitoring();
+    }
+    string path=usbMonitor.getUserPathValue();
+    cout <<"Path: "<<path<<endl;
+
     return 0;
 }
