@@ -166,6 +166,18 @@ void MusicPlayer::setVolume(int volume) {
     Mix_VolumeMusic(volume);
 }
 
+void MusicPlayer::volumeUp() {
+    if(this->volume <= 90) this->volume += 10;
+    else this->volume = 100;
+    Mix_VolumeMusic(this->volume);
+}
+
+void MusicPlayer::volumeDown() {
+    if(this->volume >= 10) this->volume -= 10;
+    else this->volume = 0;
+    Mix_VolumeMusic(this->volume);
+}
+
 bool MusicPlayer::isPlaying() const {
     return playing;
 }

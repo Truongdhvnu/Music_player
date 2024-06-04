@@ -82,6 +82,8 @@ public:
     void next();
     void previous();
     void setVolume(int volume);
+    void volumeUp();
+    void volumeDown();
     bool isPlaying() const;
     
     void setPlaylist(std::vector<Song>* playlist);
