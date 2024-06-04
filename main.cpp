@@ -2,6 +2,8 @@
 #include "MediaManager.h"
 #include "MusicPlayer.h"
 #include "USBDetect.h"
+
+
 using namespace std;
 
 /*
@@ -16,7 +18,7 @@ using namespace std;
 /*
     Test media manager
 */
-int main() {
+// int main() {
     // cout.setf(std::ios::unitbuf);
     // MediaManager m;
     // vector<string> names = m.getPlaylistNames();
@@ -102,6 +104,9 @@ int main() {
     // if (x == 0) break;
     // }
     // return 0;
+    // }
+
+    int main(){
     USBMonitor usbMonitor;
     usbMonitor.startMonitoring();
     cout <<"Waiting USB"<<endl;
