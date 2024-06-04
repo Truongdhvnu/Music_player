@@ -19,13 +19,12 @@ public:
     Song(string path, bool getMetadata=false);
 
     void getAllMetadata();
-    void setMetadata(int index);
 
     void setTitle(const string& newdata);
     void setArtist(const string& newdata);
     void setAlbum(const string& newdata);
     void setYear(const unsigned int& newdata);
-    void setDuration(const string& newdata);
+
     int setMetadata(const Song& other);
 
     string getPath() const;

@@ -1,7 +1,6 @@
 #include "Controller.h"
 #include "MediaManager.h"
 using namespace std;
-
 /*
     Test MVC
 */
@@ -15,69 +14,41 @@ using namespace std;
     Test media manager
 */
 int main() {
-    cout.setf(std::ios::unitbuf);
-    MediaManager m;
-    vector<string> names = m.getPlaylistNames();
-    for (string name: names) {
-        cout << name << " ";
-    }
-    cout << endl;
+    Song test("/home/phuongvn/Desktop/Grenade - Bruno Mars.mp3", true);
 
-    // m.renamePlaylist(1, "Taylor");
-    names = m.getPlaylistNames();
-    for (string name: names) {
-        cout << name << " ";
-    }
-    cout << endl;
-    
-    m.setActivePList(1);
-    Playlist* current = m.getActivePlaylist();
-    (*current).addSong("music/I Knew You Were Trouble - Taylor Swift.mp3");
-    // (*current).deleteSong(0);
-    (*current).addSong("music/Rolling in the Deep - Adele.mp3");
-    // m.deletePlaylist(2);
+    cout << "Testing: " << endl;
+    cout << "Path: " << test.getPath() << endl;
+    cout << "Title: " << test.getTitle() << endl;
+    cout << "Artist: " << test.getArtist() << endl;
+    cout << "Album: " << test.getAlbum() << endl;
+    cout << "Year: " << test.getYear() << endl;
+    cout << "Duration: " << test.getDuration() << endl;
 
-    // Playlist p("BlackPink");
-    // p.addSong("music/Teenage Dream.mp3");
-    // m.createPlaylist(p);
+    string temp;
+    cout << "Title: ";
+    cin >> temp;
+    cout << endl;
+    test.setTitle(temp);
+    cout << "Artist: ";
+    cin >> temp;
+    cout << endl;
+    test.setArtist(temp);
+    cout << "Album: ";
+    cin >> temp;
+    cout << endl;
+    test.setAlbum(temp);
+    int temp1;
+    cout << "Year: ";
+    cin >> temp1;
+    cout << endl;
+    test.setYear(temp1);
 
-    names = m.getPlaylistNames();
-    for (string name: names) {
-        cout << name << " ";
-    }
-    cout << endl;
-    m.updateDatabase();
-    
-    vector<Song> songs = m.sortCurrentList(SORT_AZ);
-    cout <<"Sort by name AZ " << songs.size() << "\n";
-    for (Song s: songs) {
-        cout << s.getTitle() << "\t\t" << s.getArtist() <<  "\n";
-    }
-    cout << endl;
+    cout << "After edit: " << endl;
+    cout << "Title: " << test.getTitle() << endl;
+    cout << "Artist: " << test.getArtist() << endl;
+    cout << "Album: " << test.getAlbum() << endl;
+    cout << "Year: " << test.getYear() << endl;
+    cout << "Duration: " << test.getDuration() << endl;
 
-    m.sortCurrentList(SORT_ZA);
-    songs = m.getCurrentSongList();
-    cout <<"Sort by name ZA " << songs.size() << "\n";
-    for (Song s: songs) {
-        cout << s.getTitle() << "\n";
-    }
-    cout << endl;
-
-    m.sortCurrentList(SORT_ARTIST);
-    songs = m.getCurrentSongList();
-    cout <<"Sort by name ARTIST " << songs.size() << "\n";
-    for (Song s: songs) {
-        cout << s.getTitle() << "\n";
-    }
-    cout << endl;
-    
-    m.setActiveLibrary();
-    Library* now = m.getActiveLibrary();
-    (*now).getSongFromPath("music");
-    m.sortCurrentList(SORT_ZA);
-    songs = m.getPageOfSong(0);
-    for(Song s: songs) {
-        cout << s.getTitle() << endl;
-    }
     return 0;
 }

@@ -30,7 +30,8 @@ void Song::getAllMetadata() {
             }
             this->artist = string(tag->artist().toCString(true));
             this->album = string(tag->album().toCString(true));
-            this->year = tag->year();
+            this->year = to_string(tag->year());
+            this->duration = to_string(ref.audioProperties()->lengthInSeconds());
         }
     }
 }
@@ -44,6 +45,8 @@ void Song::setTitle(const string& newdata) {
             TagLib::Tag *tag = ref.tag();
             tag->setTitle(newdata);
         }
+        ref.save();
+        this->title = newdata;
     }
 }
 void Song::setArtist(const string& newdata) {
@@ -55,6 +58,8 @@ void Song::setArtist(const string& newdata) {
             TagLib::Tag *tag = ref.tag();
             tag->setArtist(newdata);
         }
+        ref.save();
+        this->artist = newdata;
     }
 }
 void Song::setAlbum(const string& newdata) {
@@ -66,6 +71,8 @@ void Song::setAlbum(const string& newdata) {
             TagLib::Tag *tag = ref.tag();
             tag->setAlbum(newdata);
         }
+        ref.save();
+        this->album = newdata;
     }
 }
 void Song::setYear(const unsigned int& newdata) {
@@ -77,10 +84,9 @@ void Song::setYear(const unsigned int& newdata) {
             TagLib::Tag *tag = ref.tag();
             tag->setYear(newdata);
         }
+        ref.save();
+        this->year = to_string(newdata);
     }
-}
-void Song::setDuration(const string& newdata) {
-
 }
 
 string Song::getPath() const {
