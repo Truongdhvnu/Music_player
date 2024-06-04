@@ -1,5 +1,6 @@
 #include "Controller.h"
 #include "MediaManager.h"
+#include "MusicPlayer.h"
 using namespace std;
 
 /*
