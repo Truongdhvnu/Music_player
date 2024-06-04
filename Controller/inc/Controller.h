@@ -10,7 +10,7 @@ private:
 public:
     static deque<Handler*> recentView;
     Controller();
-    static void changeHandler(Handler* handler);
+    static void changeHandler(Handler* handler, void* paras = nullptr);
     int exit();
     void run();
 };

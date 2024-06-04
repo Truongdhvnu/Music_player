@@ -84,7 +84,7 @@ public:
     void setVolume(int volume);
     bool isPlaying() const;
     
-    void setPlaylist(const std::vector<Song>& playlist);
+    void setPlaylist(std::vector<Song>* playlist);
     void addToPlaylist(const Song& song);
     void clearPlaylist();
     void setCurrentIndex(const int& index);
@@ -105,7 +105,7 @@ private:
     std::atomic<bool> paused;
     std::atomic<int> volume;
 
-    std::vector<Song> playlist;
+    std::vector<Song>* playlist;
     int currentIndex;
 
     int musicDuration;

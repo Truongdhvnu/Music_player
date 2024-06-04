@@ -11,6 +11,6 @@ private:
     PlaylistHandler();
 public:
     static PlaylistHandler* getInstance();
-    void onStart();
+    void onStart(void* passData = nullptr);
     void handle(string command);
 };

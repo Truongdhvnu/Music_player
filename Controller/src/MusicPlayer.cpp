@@ -150,14 +150,14 @@ void MusicPlayer::stop() {
 }
 
 void MusicPlayer::next() {
-    if ((long unsigned int)(currentIndex + 1) < playlist.size()) currentIndex++;
+    if ((long unsigned int)(currentIndex + 1) < playlist->size()) currentIndex++;
     else currentIndex = 0;
     playCurrentSong();
 }
 
 void MusicPlayer::previous() {
     if (currentIndex > 0) currentIndex--;
-    else currentIndex = (int)playlist.size();
+    else currentIndex = (int)playlist->size();
     playCurrentSong();
 }
 
@@ -170,13 +170,13 @@ bool MusicPlayer::isPlaying() const {
     return playing;
 }
 
-void MusicPlayer::setPlaylist(const std::vector<Song>& playlist) {
+void MusicPlayer::setPlaylist(std::vector<Song>* playlist) {
     this->playlist = playlist;
     currentIndex = -1;
 }
 
 void MusicPlayer::addToPlaylist(const Song& song) {
-    playlist.push_back(song);
+    playlist->push_back(song);
     if (currentIndex == -1) {
         currentIndex = 0;
         playCurrentSong();
@@ -184,7 +184,7 @@ void MusicPlayer::addToPlaylist(const Song& song) {
 }
 
 void MusicPlayer::clearPlaylist() {
-    playlist.clear();
+    playlist->clear();
     currentIndex = -1;
 }
 
@@ -209,8 +209,8 @@ void MusicPlayer::musicThreadFunc() {
     }
 }
 void MusicPlayer::playCurrentSong() {
-    if (currentIndex >= 0 && (long unsigned int) currentIndex < playlist.size()) {
-        play(playlist[currentIndex]);
+    if (currentIndex >= 0 && (long unsigned int) currentIndex < playlist->size()) {
+        play((*playlist)[currentIndex]);
     }
 }
 

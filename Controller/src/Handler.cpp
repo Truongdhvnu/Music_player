@@ -5,8 +5,8 @@
 
 using namespace std;
 
-void Handler::change_handler(Handler* handler) {
-    Handler::callback(handler);
+void Handler::change_handler(Handler* handler, void* passData) {
+    Handler::callback(handler, passData);
 }
 
 int Handler::handler_exit() {

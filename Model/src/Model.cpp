@@ -45,4 +45,17 @@ vector<string> Model::getPlaylist(int num) {
         temp.push_back(database[(num - 1) * 25 + i]);
     }
     return temp;
-}     
+}
+
+// vector<Song> Model::getPageOfSong(int pageNum) {
+//     vector<Song> result;
+//     this->media_manager.getPageOfSong(pageNum);
+// }
+
+// void Model::setActivePlist(int PlistNum){
+//     this->media_manager.setActivePList(PlistNum); 
+// }
+
+// void Model::setActiveLibrary() {
+//     this->media_manager.setActiveLibrary();
+// }
