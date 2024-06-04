@@ -15,11 +15,11 @@ using namespace std;
 //     c.run();
 //     return 0;
 // }
-// int main() {
-//     Controller c;
-//     c.run();
-//     return 0;
-// }
+int main() {
+    Controller c;
+    c.run();
+    return 0;
+}
 
 /*
     Test media manager
@@ -95,25 +95,43 @@ using namespace std;
 /*
     Test playmusic
 */
-int main() {
-    Playlist p("BlackPink");
-    p.addSong("music/Heart Attack - Demi Lovato.mp3");
-    p.addSong("music/Teenage Dream.mp3");
-    p.addSong("music/Teenage Dream.mp3");
-    MusicPlayer xyz;
-    xyz.setPlaylist(&(p.getSongList()));
-    int index = 1;
-    xyz.setCurrentIndex(index);
-    xyz.play(p.getSongList()[index]);
-    int x;
-    while(1){
-        std::cin >> x;
-        if (x == 1) xyz.pause();
-        if (x == 2) xyz.resume();
-        if (x == 3) xyz.next();
-        if (x == 4) xyz.previous();
-        if (x == 5) p.addSong("music/Whistle - Flo Rida.mp3");
-        if (x == 0) break;
-    }
-    return 0;
-}
+// int main() {
+//     Playlist p("BlackPink");
+//     p.addSong("music/Heart Attack - Demi Lovato.mp3");
+//     p.addSong("music/Teenage Dream.mp3");
+//     p.addSong("music/Teenage Dream.mp3");
+//     MusicPlayer xyz;
+//     xyz.setPlaylist(&(p.getSongList()));
+//     int index = 1;
+//     xyz.setCurrentIndex(index);
+//     xyz.play(p.getSongList()[index]);
+//     int x;
+//     while(1){
+//         std::cin >> x;
+//         if (x == 1) xyz.pause();
+//         if (x == 2) xyz.resume();
+//         if (x == 3) xyz.next();
+//         if (x == 4) xyz.previous();
+//         if (x == 5) p.addSong("music/Whistle - Flo Rida.mp3");
+//         if (x == 0) break;
+//     }
+//     return 0;
+// }
+
+// int main(){
+//     USBMonitor usbMonitor;
+//     usbMonitor.startMonitoring();
+//     cout <<"Waiting USB"<<endl;
+//     while(usbMonitor.USBGetStatus()==0)    //chua co USB
+//     {
+//         ;//WAIT
+//     }
+//     if(usbMonitor.USBGetStatus()==1)    //da co USB
+//     {
+//         usbMonitor.stopMonitoring();
+//     }
+//     string path=usbMonitor.getUserPathValue();
+//     cout <<"Path: "<<path<<endl;
+
+//     return 0;
+// }

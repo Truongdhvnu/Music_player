@@ -5,6 +5,7 @@
 #include "Controller.h"
 #include "HomeHandler.h"
 #include "SongListHandler.h"
+#include "GetdirHandler.h"
 
 HomeHandler* HomeHandler::instancePtr = nullptr;
 
@@ -24,9 +25,7 @@ HomeHandler* HomeHandler::getInstance() {
 void HomeHandler::handle(string command) {
     try {
         if (command == "1") {
-            system("clear");
-            cout << "do sth here\n";
-            this->view.display_bottom();
+            change_handler(GetdirHandler::getInstance());
         } else if (command == "2") {
             change_handler(PlaylistHandler::getInstance());
         } else if (command == "3") {

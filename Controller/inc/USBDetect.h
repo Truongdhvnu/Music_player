@@ -1,6 +1,6 @@
 #ifndef USBDETECT_H
 #define USBDETECT_H
-
+#pragma once
 #include <libudev.h>
 #include <iostream>
 #include <atomic>
