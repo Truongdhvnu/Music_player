@@ -10,7 +10,7 @@ void HomeView::display() {
     linesPrinted++;
     cout << "Welcome. Select your option" << endl;
     linesPrinted++;
-    cout << "1. Select dictionary" << endl;
+    cout << "1. Select direction" << endl;
     linesPrinted++;
     cout << "2. Play a playlist" << endl;
     linesPrinted++;

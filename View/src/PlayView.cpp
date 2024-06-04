@@ -30,7 +30,7 @@ void PlayView::display(Song s) {
 
 void PlayView::display_bottom() {
     cout << alignLeft("",'-', WIDTH) << endl;
-    cout << alignLeft("1. PLay", ' ', WIDTH/4) 
+    cout << alignLeft("1. Play", ' ', WIDTH/4) 
          << alignLeft("2. Pause", ' ', WIDTH/4) 
          << alignLeft("3. Resume", ' ', WIDTH/4)
          << alignLeft("4. Shuffle", ' ', WIDTH/4)

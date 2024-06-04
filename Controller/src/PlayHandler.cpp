@@ -53,7 +53,7 @@ void PlayHandler::handle(string command) {
                 musicPlayer.resume();
                 break;
             case SHUFFLE:
-                cout << "Shiffle\n";
+                musicPlayer.shuffle();
                 break;
             case NEXT:
                 musicPlayer.next();

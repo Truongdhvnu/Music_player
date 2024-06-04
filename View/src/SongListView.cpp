@@ -2,7 +2,6 @@
 #include <iostream>
 
 void SongListView::display_bottom() {
-    cout << alignLeft("",'-', WIDTH) << endl; 
     string next = "-Next: [";
     next = next + NEXT_PAGE + "]";
     string pre = "Previous: [";
@@ -11,7 +10,7 @@ void SongListView::display_bottom() {
     sortname = sortname + SORT_BY_NAME + "]";
     string sortartist = "SortArtist: [";
     sortartist = sortartist + SORT_BY_ARTIST + "]-";
-    // cout << alignLeft("",'-', WIDTH) << endl;
+    cout << alignLeft("",'-', WIDTH) << endl;
     cout << alignLeft(next,' ', 28)
          << alignLeft(pre,' ', 28)
          << alignLeft(sortname,' ', 28)
