@@ -24,6 +24,10 @@ GetdirHandler* GetdirHandler::getInstance() {
     return &in;
 }
 
+void GetdirHandler::setGetdirViewPath(string path) {
+    view.path = path;    
+}
+
 void GetdirHandler::handle(string command) {
     try {
         if (command == "1") {
