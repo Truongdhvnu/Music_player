@@ -17,7 +17,7 @@ int PlayHandler::currentSongIndex = 0;
 
 PlayHandler::PlayHandler() : model(Model::getInstance()) {
     callback = Controller::changeHandler;
-    musicPlayer.setSongEndCallback(std::bind(&PlayHandler::updateView, this)); // Đặt callback cho musicPlayer
+    musicPlayer.setSongEndCallback(std::bind(&PlayHandler::updateView, this)); // Đặt callback cho musicPlayer  
 };
 
 PlayHandler* PlayHandler::getInstance() {
