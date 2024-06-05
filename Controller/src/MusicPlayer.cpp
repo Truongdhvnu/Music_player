@@ -1,7 +1,7 @@
 #include "MusicPlayer.h"
 #include <iostream>
 
-MusicPlayer::MusicPlayer() : music(nullptr), playing(false), paused(false), volume(50), currentIndex(-1) {
+MusicPlayer::MusicPlayer() : music(nullptr), playing(false), paused(false), volume(50), currentIndex(-1), stopProgress(false) {
     if (SDL_Init(SDL_INIT_AUDIO) < 0) {
         std::cerr << "Failed to initialize SDL: " << SDL_GetError() << std::endl;
     }
@@ -14,6 +14,10 @@ MusicPlayer::~MusicPlayer() {
     stop();
     Mix_CloseAudio();
     SDL_Quit();
+}
+
+void MusicPlayer::setSongEndCallback(std::function<void()> callback) {
+    songEndCallback = callback;
 }
 
 void MusicPlayer::play(const Song& song) {
@@ -37,6 +41,10 @@ void MusicPlayer::play(const Song& song) {
     ////////
     musicThread = std::thread(&MusicPlayer::musicThreadFunc, this);
     musicThread.detach();
+
+    stopProgress = false; // Đặt lại biến dừng progress
+    progressThread = std::thread(&MusicPlayer::displayProgress, this); // Bắt đầu thread cho displayProgress
+    progressThread.detach();
 }
 
 void MusicPlayer::pause() {
@@ -44,6 +52,7 @@ void MusicPlayer::pause() {
         Mix_PauseMusic();
         paused = true;
         pauseTime = std::chrono::steady_clock::now();
+        stopProgress =true;
     }
 }
 
@@ -53,6 +62,7 @@ void MusicPlayer::resume() {
         paused = false;
         auto pausedDuration = std::chrono::steady_clock::now() - pauseTime;
         startTime += pausedDuration;  // Adjust start time to account for pause
+        stopProgress =false;
     }
 }
 
@@ -64,6 +74,7 @@ void MusicPlayer::stop() {
             Mix_FreeMusic(music);
             music = nullptr;
         }
+        stopProgress=true;
     }
 }
 
@@ -128,6 +139,9 @@ void MusicPlayer::musicThreadFunc() {
     }
     if (playing) { // If playing was not stopped manually
         next(); // Automatically play next song
+        if (songEndCallback) {
+            songEndCallback(); // Gọi callback khi bài hát kết thúc
+        }
     }
 }
 void MusicPlayer::playCurrentSong() {
@@ -181,11 +195,33 @@ int MusicPlayer::getFileDuration(const std::string& filePath) {
     return 0;
 }
 
-void MusicPlayer::shuffle() {
-    // Khởi tạo công cụ sinh số ngẫu nhiên
-    std::random_device rd;
-    std::mt19937 g(rd());
+// void MusicPlayer::shuffle() {
+//     // Khởi tạo công cụ sinh số ngẫu nhiên
+//     std::random_device rd;
+//     std::mt19937 g(rd());
 
-    // Sử dụng std::shuffle để trộn các phần tử trong vector
-    std::shuffle(playlist->begin(), playlist->end(), g);
+//     // Sử dụng std::shuffle để trộn các phần tử trong vector
+//     std::shuffle(playlist->begin(), playlist->end(), g);
+// }
+
+void MusicPlayer::displayProgress() {
+    while (!stopProgress) {
+        std::string currentTime = getCurrentTime();
+        std::string totalTime = getDuration();
+
+        int totalDuration = musicDuration;
+        int elapsedSeconds = std::chrono::duration_cast<std::chrono::seconds>(std::chrono::steady_clock::now() - startTime).count();
+        if (paused) {
+            elapsedSeconds = std::chrono::duration_cast<std::chrono::seconds>(pauseTime - startTime).count();
+        }
+        int progressLength = 70;
+        int pos = static_cast<int>((static_cast<double>(elapsedSeconds) / totalDuration) * progressLength);
+        std::string progressBar = std::string(pos, '#') + std::string(progressLength - pos, '.');
+        {
+            std::lock_guard<std::mutex> lock(mtx);
+            std::cout << "\r" << currentTime << " [" << progressBar << "] " << totalTime<< std::flush;
+        }
+        std::this_thread::sleep_for(std::chrono::milliseconds(500));
+    }
+    std::cout << std::endl;
 }

@@ -26,7 +26,7 @@ enum PLAYOPTION {
     PLAY,
     PAUSE,
     RESUME,
-    SHUFFLE,
+    EDIT_META_DATA,
     NEXT,
     PREVIOUS,
     VOLUME_UP,

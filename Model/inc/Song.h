@@ -14,6 +14,8 @@ private:
     string album;
     string year;
     string duration;
+
+    //void convertMP4toMP3();
 public:
     /*
         Just initialize path of the song, but metadata
