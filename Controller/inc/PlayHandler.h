@@ -3,6 +3,7 @@
 #include "PlayView.h"
 #include "Model.h"
 #include "string"
+#include "MusicPlayer.h"
 
 class PlayHandler : public Handler {
 private:
@@ -15,4 +16,5 @@ public:
     static PlayHandler* getInstance();
     void onStart(void* passData = nullptr);
     void handle(string command);
+    MusicPlayer musicPlayer;
 };

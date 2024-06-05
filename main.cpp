@@ -1,6 +1,8 @@
 #include "Controller.h"
 #include "MediaManager.h"
 #include "MusicPlayer.h"
+
+
 #include "Playlist.h"
 
 using namespace std;
@@ -8,6 +10,11 @@ using namespace std;
 /*
     Test MVC
 */
+// int main() {
+//     Controller c;
+//     c.run();
+//     return 0;
+// }
 int main() {
     Controller c;
     c.run();
@@ -32,7 +39,7 @@ int main() {
 //         cout << name << " ";
 //     }
 //     cout << endl;
-    
+
 //     m.setActivePList(1);
 //     Playlist* current = m.getActivePlaylist();
 //     (*current).addSong("music/I Knew You Were Trouble - Taylor Swift.mp3");
@@ -50,7 +57,7 @@ int main() {
 //     }
 //     cout << endl;
 //     m.updateDatabase();
-    
+
 //     vector<Song> songs = m.sortCurrentList(SORT_AZ);
 //     cout <<"Sort by name AZ " << songs.size() << "\n";
 //     for (Song s: songs) {
@@ -73,7 +80,7 @@ int main() {
 //         cout << s.getTitle() << "\t\t" << s.getArtist() <<  "\n";
 //     }
 //     cout << endl;
-    
+
 //     m.setActiveLibrary();
 //     Library* now = m.getActiveLibrary();
 //     (*now).getSongFromPath("music");
@@ -108,5 +115,23 @@ int main() {
 //         if (x == 5) p.addSong("music/Whistle - Flo Rida.mp3");
 //         if (x == 0) break;
 //     }
+//     return 0;
+// }
+
+// int main(){
+//     USBMonitor usbMonitor;
+//     usbMonitor.startMonitoring();
+//     cout <<"Waiting USB"<<endl;
+//     while(usbMonitor.USBGetStatus()==0)    //chua co USB
+//     {
+//         ;//WAIT
+//     }
+//     if(usbMonitor.USBGetStatus()==1)    //da co USB
+//     {
+//         usbMonitor.stopMonitoring();
+//     }
+//     string path=usbMonitor.getUserPathValue();
+//     cout <<"Path: "<<path<<endl;
+
 //     return 0;
 // }
