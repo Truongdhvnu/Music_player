@@ -27,7 +27,7 @@ void SongListView::displaySongs(vector<Song> songs, int pageNum) {
     cout << endl;
     linesPrinted++;   
     cout << alignLeft("No", ' ', 5)
-         << alignLeft("Title", ' ', 35) 
+         << alignLeft("Title", ' ', 30) 
          << alignLeft("Artist", ' ', 25) 
          << alignLeft("Album", ' ', 25)
          << alignLeft("Duration", ' ', 10)
