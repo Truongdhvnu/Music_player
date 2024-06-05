@@ -27,19 +27,21 @@ void SongListView::displaySongs(vector<Song> songs, int pageNum) {
     cout << endl;
     linesPrinted++;   
     cout << alignLeft("No", ' ', 5)
-         << alignLeft("Title", ' ', 35) 
+         << alignLeft("Title", ' ', 30) 
          << alignLeft("Artist", ' ', 25) 
          << alignLeft("Album", ' ', 25)
          << alignLeft("Duration", ' ', 10)
+         << alignLeft("Year", ' ', 5)
          << endl;
     linesPrinted++;
     int count = pageNum * MAX_LINES + 1;
     for (auto it = songs.begin(); it != songs.end(); ++it) {
         cout << alignLeft(to_string(count), ' ', 5)
-             << alignLeft((*it).getTitle(), ' ', 35) 
+             << alignLeft((*it).getTitle(), ' ', 30) 
              << alignLeft((*it).getArtist(), ' ', 25) 
              << alignLeft((*it).getAlbum(), ' ', 25)
              << alignLeft((*it).getDuration(), ' ', 10)
+             << alignLeft((*it).getYear(), ' ', 5)
              << endl;
         linesPrinted++;
         count++;

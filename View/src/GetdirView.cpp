@@ -13,8 +13,13 @@ void GetdirView::display() {
     linesPrinted++;
     cout << "2. Choose another path" << endl;
     linesPrinted++;
+<<<<<<< HEAD
     cout <<"3. Use old path" <<endl;
     linesPrinted++;
+=======
+    cout << "3. Current path: " << path << endl;
+
+>>>>>>> origin/cuong
     while (linesPrinted < LENGTH - 1) {
         cout << endl;
         linesPrinted++;

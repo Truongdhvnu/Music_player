@@ -1,10 +1,10 @@
-#include "PlayView.h"
+#include "EditMetadataView.h"
 #include <iostream>
 
-void PlayView::display(Song s) {
+void EditMetadataView::display(Song s) {
     int linesPrinted = 0;
     system("clear");
-    cout << alignMiddle("MEDIA PLAYING", '=', WIDTH) << endl;
+    cout << alignMiddle("CHANGE METADATA", '=', WIDTH) << endl;
     linesPrinted++;
     cout << endl;
     linesPrinted++;
@@ -30,17 +30,12 @@ void PlayView::display(Song s) {
     this->display_bottom();     
 }
 
-void PlayView::display_bottom() {
+void EditMetadataView::display_bottom() {
     cout << alignLeft("",'-', WIDTH) << endl;
-    cout << alignLeft("1. Play", ' ', WIDTH/4) 
-         << alignLeft("2. Pause", ' ', WIDTH/4) 
-         << alignLeft("3. Resume", ' ', WIDTH/4)
-         << alignLeft("4. Edit Metadata", ' ', WIDTH/4)
-         << endl;
-    cout << alignLeft("5. Next", ' ', WIDTH/4) 
-         << alignLeft("6. Previous", ' ', WIDTH/4) 
-         << alignLeft("7. Volume Up", ' ', WIDTH/4)
-         << alignLeft("8. Volume Down", ' ', WIDTH/4)
+    cout << alignLeft("1. Set Title", ' ', WIDTH/4) 
+         << alignLeft("2. Set Artist", ' ', WIDTH/4) 
+         << alignLeft("3. Set Album", ' ', WIDTH/4)
+         << alignLeft("4. Set Yeat", ' ', WIDTH/4)
          << endl;  
     View::display_bottom();       
 }

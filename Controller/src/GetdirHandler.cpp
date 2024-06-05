@@ -7,6 +7,7 @@
 #include "SongListHandler.h"
 
 // GetdirHandler* GetdirHandler::instancePtr = nullptr;
+// GetdirHandler* GetdirHandler::instancePtr = nullptr;
 
 GetdirHandler::GetdirHandler() : model(Model::getInstance()){
     callback = Controller::changeHandler;
@@ -43,19 +44,19 @@ void GetdirHandler::handle(string command) {
             }
             
         } else if (command == "2") {
+            usbmonitor.stopMonitoring();
             cout <<"Input Directory: ";
             cin >> directory;
-            usbmonitor.stopMonitoring();
+            setGetdirViewPath(directory);
             this->model.media_manager.setActiveLibrary();
             Library* lib=this->model.media_manager.getActiveLibrary();
             (*lib).getSongFromPath(directory);
             change_handler(SongListHandler::getInstance());
-        }
-        else if (command == "3") {
+        } else if (command == "3") {
             usbmonitor.stopMonitoring();
             this->model.media_manager.setActiveLibrary();
             Library* lib=this->model.media_manager.getActiveLibrary();
-            (*lib).getSongFromPath(directory);
+            (*lib).getSongFromPath(view.path);
             change_handler(SongListHandler::getInstance());
         }
         else {
@@ -68,7 +69,6 @@ void GetdirHandler::handle(string command) {
 
 void GetdirHandler::onStart(void* passData) {
     this->view.display();
-    this->view.displaypath(directory);
     usbmonitor.stopMonitoring();
     usbmonitor.startMonitoring();
 }
