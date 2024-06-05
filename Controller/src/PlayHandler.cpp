@@ -44,16 +44,20 @@ void PlayHandler::handle(string command) {
         int option = stoi(command) - 1;
         switch(option) { 
             case PLAY:
+                view.display((*this->model.media_manager.getCurrentSongList())[musicPlayer.getCurrentIndex()]);
                 musicPlayer.play((*this->model.media_manager.getCurrentSongList())[musicPlayer.getCurrentIndex()]);
                 break;
             case PAUSE:
                 musicPlayer.pause();
+                view.display((*this->model.media_manager.getCurrentSongList())[musicPlayer.getCurrentIndex()]);
                 break;
             case RESUME:
                 musicPlayer.resume();
+                view.display((*this->model.media_manager.getCurrentSongList())[musicPlayer.getCurrentIndex()]);
                 break;
             case SHUFFLE:
                 musicPlayer.shuffle();
+                view.display((*this->model.media_manager.getCurrentSongList())[musicPlayer.getCurrentIndex()]);
                 break;
             case NEXT:
                 musicPlayer.next();
@@ -65,9 +69,11 @@ void PlayHandler::handle(string command) {
                 break;
             case VOLUME_UP:
                 musicPlayer.volumeUp();
+                view.display((*this->model.media_manager.getCurrentSongList())[musicPlayer.getCurrentIndex()]);
                 break;
             case VOLUME_DOWN:
                 musicPlayer.volumeDown();
+                view.display((*this->model.media_manager.getCurrentSongList())[musicPlayer.getCurrentIndex()]);
                 break;
             default:
                 cout << "Invalid\n";

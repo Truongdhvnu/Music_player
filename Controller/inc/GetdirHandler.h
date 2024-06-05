@@ -11,7 +11,7 @@ private:
     GetdirView view;
     Model& model;
     GetdirHandler();
-    static GetdirHandler* instancePtr;
+    // static GetdirHandler* instancePtr;
     std::string directory;
     USBMonitor usbmonitor;
 public:
