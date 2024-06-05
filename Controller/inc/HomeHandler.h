@@ -13,5 +13,5 @@ private:
 public:
     static HomeHandler* getInstance();
     void handle(string command);
-    void onStart();
+    void onStart(void* passData = nullptr);
 };

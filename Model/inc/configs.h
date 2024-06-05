@@ -3,7 +3,7 @@
 
 #define PLAYLIST_FILES_DIR "./data/playlists"
 #define DEFAULT_PLIST_NAME "default"
-#define RECENT_PLAYING_DIRS_FILEDATA "/home/dhtruong/Documents/Debug/data/recent_dirs.txt"
+#define RECENT_PLAYING_DIRS_FILEDATA "data/recent_dirs.txt"
 
 /*
 */

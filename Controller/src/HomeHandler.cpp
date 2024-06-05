@@ -4,6 +4,8 @@
 #include "PlaylistHandler.h"
 #include "Controller.h"
 #include "HomeHandler.h"
+#include "SongListHandler.h"
+#include "GetdirHandler.h"
 
 HomeHandler* HomeHandler::instancePtr = nullptr;
 
@@ -21,20 +23,30 @@ HomeHandler* HomeHandler::getInstance() {
 }
 
 void HomeHandler::handle(string command) {
-    if (command == "1") {
-        system("clear");
-        cout << "do sth here\n";
-        this->view.display_bottom();
-    } else if (command == "2") {
-        change_handler(PlaylistHandler::getInstance());
-    } else {
-        cout << "No actions or Invalid command\n";
+    try {
+        if (command == "1") {
+            change_handler(GetdirHandler::getInstance());
+        } else if (command == "2") {
+            change_handler(PlaylistHandler::getInstance());
+        } else if (command == "3") {
+            this->model.media_manager.setActiveLibrary();
+            Library* mylib = this->model.media_manager.getActiveLibrary();
+            (*mylib).getSongFromCurrentDirs();
+            change_handler(SongListHandler::getInstance());
+        } else if (command == "4") {
+            // change_handler();
+        }
+        else {
+            cout << "No actions or Invalid command\n";
+        }
+    } catch (runtime_error& e) {
+        cout << e.what() << endl;
     }
 }
 
-void HomeHandler::onStart() {
+void HomeHandler::onStart(void* passData) {
     this->view.display();
-    this->view.display_bottom();
+    // this->view.display_bottom();
 }
 
 
