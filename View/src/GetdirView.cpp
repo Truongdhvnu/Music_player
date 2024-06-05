@@ -2,6 +2,7 @@
 
 using namespace std;
 void GetdirView::display() {
+    system("clear");
     int linesPrinted = 0;
     cout << View::alignMiddle("SELECT DIRECRTORY", '=', WIDTH) << endl;
     cout << endl;
@@ -12,6 +13,8 @@ void GetdirView::display() {
     linesPrinted++;
     cout << "2. Choose another path" << endl;
     linesPrinted++;
+    cout << "3. Current path: " << path << endl;
+
     while (linesPrinted < LENGTH - 1) {
         cout << endl;
         linesPrinted++;

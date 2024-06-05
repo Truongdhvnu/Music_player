@@ -20,6 +20,9 @@ GetdirHandler* GetdirHandler::getInstance() {
         return instancePtr;
     }
 }
+void GetdirHandler::setGetdirViewPath(string path) {
+    view.path = path;    
+}
 
 void GetdirHandler::handle(string command) {
     try {
@@ -43,9 +46,15 @@ void GetdirHandler::handle(string command) {
         } else if (command == "2") {
             cout <<"Input Directory: ";
             cin >> directory;
+            setGetdirViewPath(directory);
             this->model.media_manager.setActiveLibrary();
             Library* lib=this->model.media_manager.getActiveLibrary();
             (*lib).getSongFromPath(directory);
+            change_handler(SongListHandler::getInstance());
+        } else if (command == "3") {
+            this->model.media_manager.setActiveLibrary();
+            Library* lib=this->model.media_manager.getActiveLibrary();
+            (*lib).getSongFromPath(view.path);
             change_handler(SongListHandler::getInstance());
         }
         else {
