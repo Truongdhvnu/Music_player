@@ -8,16 +8,20 @@ void EditPlaylistView::display(Song s) {
     linesPrinted++;
     cout << endl;
     linesPrinted++;
-    cout << alignLeft("Title", ' ', 40) 
-         << alignLeft("Artist", ' ', 25) 
-         << alignLeft("Album", ' ', 25)
-         << alignLeft("Duration", ' ', 10)
+    cout << alignLeft("", ' ', NO_COL)
+         << alignLeft("TITLE", ' ', TITLE_COL) 
+         << alignLeft("ARTIST", ' ', ARTIST_COL) 
+         << alignLeft("ALBUM", ' ', ALBUM_COL)
+         << alignLeft("DURATION", ' ', DURATION_COL)
+         << alignLeft("",' ', YEAR_COL)
          << endl;
     linesPrinted++;
-    cout << alignLeft(s.getTitle(), ' ', 40) 
-         << alignLeft(s.getArtist(), ' ', 25) 
-         << alignLeft(s.getAlbum(), ' ', 25)
-         << alignLeft(s.getDuration(), ' ', 10)
+    cout << alignLeft("", ' ', NO_COL)
+         << alignLeft(truncate(s.getTitle(),TITLE_COL), ' ', TITLE_COL) 
+         << alignLeft(truncate(s.getArtist(), ARTIST_COL), ' ', ARTIST_COL) 
+         << alignLeft(truncate(s.getAlbum(), ALBUM_COL), ' ', ALBUM_COL)
+         << alignLeft(truncate(s.getDuration(), DURATION_COL), ' ', DURATION_COL)
+         << alignLeft("", ' ', YEAR_COL)
          << endl;
     linesPrinted++;
 

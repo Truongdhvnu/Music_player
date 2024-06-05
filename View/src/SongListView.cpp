@@ -26,22 +26,22 @@ void SongListView::displaySongs(vector<Song> songs, int pageNum) {
     linesPrinted++;
     cout << endl;
     linesPrinted++;   
-    cout << alignLeft("No", ' ', 5)
-         << alignLeft("Title", ' ', 30) 
-         << alignLeft("Artist", ' ', 25) 
-         << alignLeft("Album", ' ', 25)
-         << alignLeft("Duration", ' ', 10)
-         << alignLeft("Year", ' ', 5)
+        cout << alignLeft("NO", ' ', NO_COL)
+         << alignLeft("TITLE", ' ', TITLE_COL) 
+         << alignLeft("ARTIST", ' ', ARTIST_COL) 
+         << alignLeft("ALBUM", ' ', ALBUM_COL)
+         << alignLeft("DURATION", ' ', DURATION_COL)
+         << alignLeft("YEAR",' ', YEAR_COL)
          << endl;
     linesPrinted++;
     int count = pageNum * MAX_LINES + 1;
     for (auto it = songs.begin(); it != songs.end(); ++it) {
-        cout << alignLeft(to_string(count), ' ', 5)
-             << alignLeft((*it).getTitle(), ' ', 30) 
-             << alignLeft((*it).getArtist(), ' ', 25) 
-             << alignLeft((*it).getAlbum(), ' ', 25)
-             << alignLeft((*it).getDuration(), ' ', 10)
-             << alignLeft((*it).getYear(), ' ', 5)
+        cout << alignLeft(to_string(count), ' ', NO_COL)
+             << alignLeft(truncate((*it).getTitle(), TITLE_COL), ' ', TITLE_COL) 
+             << alignLeft(truncate((*it).getArtist(), ARTIST_COL), ' ', ARTIST_COL) 
+             << alignLeft(truncate((*it).getAlbum(), ALBUM_COL), ' ', ALBUM_COL)
+             << alignLeft(truncate((*it).getDuration(), DURATION_COL), ' ', DURATION_COL)
+             << alignLeft(truncate((*it).getYear(), YEAR_COL), ' ', YEAR_COL)
              << endl;
         linesPrinted++;
         count++;

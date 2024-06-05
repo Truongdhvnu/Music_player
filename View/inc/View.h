@@ -13,8 +13,6 @@
 #include <iomanip>
 #include <codecvt>
 
-#define WIDTH 100
-#define LENGTH 10
 using namespace std;
 
 class View {
@@ -23,6 +21,7 @@ public:
     std::string alignLeft(const std::string& str, const char& gap, int width);
     std::string alignRight(const std::string& str, const char& gap, int width);
     std::string alignMiddle(const std::string& str, const char& gap, int width);
+    string truncate(const string& text, int width);
 
     virtual void display_bottom(); 
         // cout << "--------------------------------------------------------------------------------------\n";
