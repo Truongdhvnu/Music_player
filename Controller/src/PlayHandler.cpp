@@ -6,7 +6,7 @@
 #include "Controller.h"
 #include "PlayHandler.h"
 #include "display.h"
-
+#include "EditMetadataHandler.h"
 
 /*
 
@@ -32,7 +32,7 @@ void PlayHandler::onStart(void* passData) {
         Song currentSong = (*this->model.media_manager.getCurrentSongList())[PlayHandler::currentSongIndex];
         this->view.display(currentSong);
         this->musicPlayer.setPlaylist(this->model.media_manager.getCurrentSongList());
-        this->musicPlayer.setCurrentIndex(PlayHandler::currentSongIndex);  
+        this->musicPlayer.setCurrentIndex(PlayHandler::currentSongIndex);
         // Gọi hàm phát nhạc cho currentSong
     } catch (out_of_range& e) {
         // do Nothing
@@ -42,7 +42,7 @@ void PlayHandler::onStart(void* passData) {
 void PlayHandler::handle(string command) {
     try {
         int option = stoi(command) - 1;
-        switch(option) { 
+        switch(option) {
             case PLAY:
                 musicPlayer.play((*this->model.media_manager.getCurrentSongList())[musicPlayer.getCurrentIndex()]);
                 break;
@@ -53,7 +53,7 @@ void PlayHandler::handle(string command) {
                 musicPlayer.resume();
                 break;
             case SHUFFLE:
-                musicPlayer.shuffle();
+                change_handler(EditMetadataHandler::getInstance());
                 break;
             case NEXT:
                 musicPlayer.next();
@@ -76,4 +76,4 @@ void PlayHandler::handle(string command) {
     } catch (exception& e) {
         cout << "Invalid Input" << endl;
     }
-};  
+};
