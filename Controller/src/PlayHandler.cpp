@@ -17,6 +17,7 @@ int PlayHandler::currentSongIndex = 0;
 
 PlayHandler::PlayHandler() : model(Model::getInstance()) {
     callback = Controller::changeHandler;
+    musicPlayer.setSongEndCallback(std::bind(&PlayHandler::updateView, this)); // Đặt callback cho musicPlayer
 };
 
 PlayHandler* PlayHandler::getInstance() {
@@ -39,6 +40,12 @@ void PlayHandler::onStart(void* passData) {
     }
 }
 
+void PlayHandler::updateView() {
+    Song currentSong = (*this->model.media_manager.getCurrentSongList())[musicPlayer.getCurrentIndex()];
+    view.display(currentSong);
+}
+
+
 void PlayHandler::handle(string command) {
     try {
         int option = stoi(command) - 1;
@@ -55,7 +62,7 @@ void PlayHandler::handle(string command) {
                 musicPlayer.resume();
                 view.display((*this->model.media_manager.getCurrentSongList())[musicPlayer.getCurrentIndex()]);
                 break;
-            case SHUFFLE:
+            case EDIT_META_DATA:
                 change_handler(EditMetadataHandler::getInstance());
                 break;
             case NEXT:

@@ -41,6 +41,8 @@ public:
     std::string getCurrentTime();
     std::string getDuration();
 
+    void setSongEndCallback(std::function<void()> callback);
+
 private:
     void musicThreadFunc();
     void playCurrentSong();
@@ -64,6 +66,8 @@ private:
     std::thread progressThread; // Thêm biến thread cho displayProgress
     std::atomic<bool> stopProgress; // Thêm biến atomic để dừng progressThread
     std::mutex mtx; // Thêm mutex để đảm bảo an toàn trong multi-threading
+
+    std::function<void()> songEndCallback; // Thêm callback
 };
 
 #endif // MUSICPLAYER_H

@@ -16,6 +16,10 @@ MusicPlayer::~MusicPlayer() {
     SDL_Quit();
 }
 
+void MusicPlayer::setSongEndCallback(std::function<void()> callback) {
+    songEndCallback = callback;
+}
+
 void MusicPlayer::play(const Song& song) {
     if (playing) {
         stop();
@@ -48,6 +52,7 @@ void MusicPlayer::pause() {
         Mix_PauseMusic();
         paused = true;
         pauseTime = std::chrono::steady_clock::now();
+        stopProgress =true;
     }
 }
 
@@ -57,6 +62,7 @@ void MusicPlayer::resume() {
         paused = false;
         auto pausedDuration = std::chrono::steady_clock::now() - pauseTime;
         startTime += pausedDuration;  // Adjust start time to account for pause
+        stopProgress =false;
     }
 }
 
@@ -133,6 +139,9 @@ void MusicPlayer::musicThreadFunc() {
     }
     if (playing) { // If playing was not stopped manually
         next(); // Automatically play next song
+        if (songEndCallback) {
+            songEndCallback(); // Gọi callback khi bài hát kết thúc
+        }
     }
 }
 void MusicPlayer::playCurrentSong() {
@@ -186,14 +195,14 @@ int MusicPlayer::getFileDuration(const std::string& filePath) {
     return 0;
 }
 
-void MusicPlayer::shuffle() {
-    // Khởi tạo công cụ sinh số ngẫu nhiên
-    std::random_device rd;
-    std::mt19937 g(rd());
+// void MusicPlayer::shuffle() {
+//     // Khởi tạo công cụ sinh số ngẫu nhiên
+//     std::random_device rd;
+//     std::mt19937 g(rd());
 
-    // Sử dụng std::shuffle để trộn các phần tử trong vector
-    std::shuffle(playlist->begin(), playlist->end(), g);
-}
+//     // Sử dụng std::shuffle để trộn các phần tử trong vector
+//     std::shuffle(playlist->begin(), playlist->end(), g);
+// }
 
 void MusicPlayer::displayProgress() {
     while (!stopProgress) {
@@ -205,7 +214,7 @@ void MusicPlayer::displayProgress() {
         if (paused) {
             elapsedSeconds = std::chrono::duration_cast<std::chrono::seconds>(pauseTime - startTime).count();
         }
-        int progressLength = 50;
+        int progressLength = 70;
         int pos = static_cast<int>((static_cast<double>(elapsedSeconds) / totalDuration) * progressLength);
         std::string progressBar = std::string(pos, '#') + std::string(progressLength - pos, '.');
         {
