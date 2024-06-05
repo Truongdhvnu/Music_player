@@ -10,6 +10,7 @@
 #include <algorithm>
 #include <cctype>
 #include <string>
+#include <limits>
 
 EditMetadataHandler* EditMetadataHandler::instancePtr = nullptr;
 
@@ -30,6 +31,8 @@ void EditMetadataHandler::handle(string command) {
     try {
         int option = stoi(command);
         std::string input;
+        /* Clear cin buffer */
+        std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
         switch (option) {
             case 1:
                 cout << "Input new Title: " << endl;
