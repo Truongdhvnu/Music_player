@@ -2,6 +2,7 @@
 
 using namespace std;
 void GetdirView::display() {
+    system("clear");
     int linesPrinted = 0;
     cout << View::alignMiddle("SELECT DIRECRTORY", '=', WIDTH) << endl;
     cout << endl;

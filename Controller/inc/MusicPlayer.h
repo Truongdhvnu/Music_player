@@ -13,6 +13,7 @@
 #include <taglib/fileref.h>
 #include <taglib/tag.h>
 #include "Song.h"
+#include <mutex>
 
 class MusicPlayer {
 public:
@@ -58,6 +59,11 @@ private:
     int musicDuration;
     std::chrono::time_point<std::chrono::steady_clock> startTime;
     std::chrono::time_point<std::chrono::steady_clock> pauseTime;
+
+    void displayProgress(); // Thêm khai báo hàm displayProgress
+    std::thread progressThread; // Thêm biến thread cho displayProgress
+    std::atomic<bool> stopProgress; // Thêm biến atomic để dừng progressThread
+    std::mutex mtx; // Thêm mutex để đảm bảo an toàn trong multi-threading
 };
 
 #endif // MUSICPLAYER_H

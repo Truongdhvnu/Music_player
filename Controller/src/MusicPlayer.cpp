@@ -1,7 +1,7 @@
 #include "MusicPlayer.h"
 #include <iostream>
 
-MusicPlayer::MusicPlayer() : music(nullptr), playing(false), paused(false), volume(50), currentIndex(-1) {
+MusicPlayer::MusicPlayer() : music(nullptr), playing(false), paused(false), volume(50), currentIndex(-1), stopProgress(false) {
     if (SDL_Init(SDL_INIT_AUDIO) < 0) {
         std::cerr << "Failed to initialize SDL: " << SDL_GetError() << std::endl;
     }
@@ -37,6 +37,10 @@ void MusicPlayer::play(const Song& song) {
     ////////
     musicThread = std::thread(&MusicPlayer::musicThreadFunc, this);
     musicThread.detach();
+
+    stopProgress = false; // Đặt lại biến dừng progress
+    progressThread = std::thread(&MusicPlayer::displayProgress, this); // Bắt đầu thread cho displayProgress
+    progressThread.detach();
 }
 
 void MusicPlayer::pause() {
@@ -64,6 +68,7 @@ void MusicPlayer::stop() {
             Mix_FreeMusic(music);
             music = nullptr;
         }
+        stopProgress=true;
     }
 }
 
@@ -188,4 +193,26 @@ void MusicPlayer::shuffle() {
 
     // Sử dụng std::shuffle để trộn các phần tử trong vector
     std::shuffle(playlist->begin(), playlist->end(), g);
+}
+
+void MusicPlayer::displayProgress() {
+    while (!stopProgress) {
+        std::string currentTime = getCurrentTime();
+        std::string totalTime = getDuration();
+
+        int totalDuration = musicDuration;
+        int elapsedSeconds = std::chrono::duration_cast<std::chrono::seconds>(std::chrono::steady_clock::now() - startTime).count();
+        if (paused) {
+            elapsedSeconds = std::chrono::duration_cast<std::chrono::seconds>(pauseTime - startTime).count();
+        }
+        int progressLength = 50;
+        int pos = static_cast<int>((static_cast<double>(elapsedSeconds) / totalDuration) * progressLength);
+        std::string progressBar = std::string(pos, '#') + std::string(progressLength - pos, '.');
+        {
+            std::lock_guard<std::mutex> lock(mtx);
+            std::cout << "\r" << currentTime << " [" << progressBar << "] " << totalTime<< std::flush;
+        }
+        std::this_thread::sleep_for(std::chrono::milliseconds(500));
+    }
+    std::cout << std::endl;
 }
