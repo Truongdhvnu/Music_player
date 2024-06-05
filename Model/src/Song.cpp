@@ -6,7 +6,7 @@
 #include "Song.h"
 
 //#include <MediaInfo/MediaInfo.h> // Thêm thư viện MediaInfo
-
+//#include <taglib/mpegfile.h>
 
 using namespace std;
 namespace fs = std::filesystem;
@@ -38,6 +38,47 @@ void Song::getAllMetadata() {
         }
     }
 }
+
+// void Song::convertMP4toMP3() {
+//     fs::path mp3Path = fs::path(this->path).replace_extension(".mp3");
+
+//     // Check if corresponding MP3 file exists
+//     if (!fs::exists(mp3Path)) {
+//         // If MP3 file doesn't exist, convert MP4 to MP3
+//         string convertCommand = "ffmpeg -i \"" + this->path + "\" \"" + mp3Path.string() + "\"";
+//         int result = system(convertCommand.c_str());
+//         if (result == 0) {
+//             cout << "File converted successfully: " << mp3Path << endl;
+//         } else {
+//             cerr << "Failed to convert file: " << this->path << endl;
+//             return;
+//         }
+//     }
+// }
+
+// void Song::getAllMetadata() {
+//     // Check and convert MP4 to MP3 if needed
+//     this->convertMP4toMP3();
+
+//     // Get metadata from MP3 file
+//     fs::path mp3Path = fs::path(this->path).replace_extension(".mp3");
+//     if (fs::exists(mp3Path)) {
+//         TagLib::MPEG::File file(mp3Path.c_str());
+//         if (!file.isValid()) {
+//             cerr << "Invalid MP3 file: " << mp3Path << endl;
+//             return;
+//         }
+
+//         TagLib::Tag *tag = file.tag();
+//         this->title = tag->title().toCString(true);
+//         this->artist = tag->artist().toCString(true);
+//         this->album = tag->album().toCString(true);
+//         this->year = to_string(tag->year());
+//         this->duration = to_string(file.audioProperties()->lengthInSeconds());
+//     } else {
+//         cerr << "MP3 file not found: " << mp3Path << endl;
+//     }
+// }
 
 // void Song::getAllMetadata() {
 //     if (!fs::exists(this->path)) {
