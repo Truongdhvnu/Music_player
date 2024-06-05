@@ -11,8 +11,8 @@ private:
     Model& model;
     PlayHandler();
     static int currentPage;
-    static int currentSongIndex;
 public:
+    static int currentSongIndex;
     static PlayHandler* getInstance();
     void onStart(void* passData = nullptr);
     void handle(string command);

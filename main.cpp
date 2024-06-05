@@ -6,6 +6,7 @@
 #include "Playlist.h"
 
 using namespace std;
+
 /*
     Test MVC
 */
@@ -38,7 +39,7 @@ int main() {
 //         cout << name << " ";
 //     }
 //     cout << endl;
-    
+
 //     m.setActivePList(1);
 //     Playlist* current = m.getActivePlaylist();
 //     (*current).addSong("music/I Knew You Were Trouble - Taylor Swift.mp3");
@@ -56,7 +57,7 @@ int main() {
 //     }
 //     cout << endl;
 //     m.updateDatabase();
-    
+
 //     vector<Song> songs = m.sortCurrentList(SORT_AZ);
 //     cout <<"Sort by name AZ " << songs.size() << "\n";
 //     for (Song s: songs) {
@@ -79,7 +80,7 @@ int main() {
 //         cout << s.getTitle() << "\t\t" << s.getArtist() <<  "\n";
 //     }
 //     cout << endl;
-    
+
 //     m.setActiveLibrary();
 //     Library* now = m.getActiveLibrary();
 //     (*now).getSongFromPath("music");
