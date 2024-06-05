@@ -53,6 +53,9 @@ void MusicPlayer::pause() {
         paused = true;
         pauseTime = std::chrono::steady_clock::now();
         stopProgress =true;
+        if (progressThread.joinable()) {
+            progressThread.join(); // Chờ thread displayProgress dừng lại
+        }
     }
 }
 
@@ -63,6 +66,9 @@ void MusicPlayer::resume() {
         auto pausedDuration = std::chrono::steady_clock::now() - pauseTime;
         startTime += pausedDuration;  // Adjust start time to account for pause
         stopProgress =false;
+        // Khởi động lại thread displayProgress
+        progressThread = std::thread(&MusicPlayer::displayProgress, this);
+        progressThread.detach();
     }
 }
 
@@ -75,6 +81,9 @@ void MusicPlayer::stop() {
             music = nullptr;
         }
         stopProgress=true;
+        if (progressThread.joinable()) {
+            progressThread.join(); // Chờ thread displayProgress dừng lại
+        }
     }
 }
 
@@ -195,15 +204,6 @@ int MusicPlayer::getFileDuration(const std::string& filePath) {
     return 0;
 }
 
-// void MusicPlayer::shuffle() {
-//     // Khởi tạo công cụ sinh số ngẫu nhiên
-//     std::random_device rd;
-//     std::mt19937 g(rd());
-
-//     // Sử dụng std::shuffle để trộn các phần tử trong vector
-//     std::shuffle(playlist->begin(), playlist->end(), g);
-// }
-
 void MusicPlayer::displayProgress() {
     while (!stopProgress) {
         std::string currentTime = getCurrentTime();
@@ -218,10 +218,27 @@ void MusicPlayer::displayProgress() {
         int pos = static_cast<int>((static_cast<double>(elapsedSeconds) / totalDuration) * progressLength);
         std::string progressBar = std::string(pos, '#') + std::string(progressLength - pos, '.');
         {
-            std::lock_guard<std::mutex> lock(mtx);
-            std::cout << "\r" << currentTime << " [" << progressBar << "] " << totalTime<< std::flush;
+            //std::lock_guard<std::mutex> lock(mtx);
+            //std::cout << "\r" << currentTime << " [" << progressBar << "] " << totalTime<< std::flush;
+               
+            // Save current cursor position
+            std::cout << "\033[s";
+            // Move cursor to a specific line (for example, line 25)
+            std::cout << "\033[25;1H";
+            // Print the progress bar at the specific position
+            std::cout << currentTime << " [" << progressBar << "] " << totalTime << std::flush;
+            // Restore cursor position
+            std::cout << "\033[u";
+
+            // std::lock_guard<std::mutex> lock(mtx);
+            // std::streampos oldPos = std::cout.tellp(); // Lưu vị trí hiện tại của con trỏ
+            // std::cout << currentTime << " [" << progressBar << "] " << totalTime << std::endl; // In ra thông tin mới
+            // std::cout.seekp(oldPos - (currentTime.length() + progressLength + 6 + totalTime.length() + 2)); // Di chuyển con trỏ lên 2 dòng
+            // std::cout << currentTime << " [" << progressBar << "] " << totalTime << std::endl << std::endl; // In ra thông tin mới
+            // std::cout.seekp(oldPos); // Trả con trỏ về vị trí cũ
         }
-        std::this_thread::sleep_for(std::chrono::milliseconds(500));
+        std::this_thread::sleep_for(std::chrono::milliseconds(1000));
     }
+    stopProgress = true; // Đảm bảo rằng biến này được đặt lại khi thread kết thúc
     std::cout << std::endl;
 }
