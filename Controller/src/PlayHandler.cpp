@@ -6,7 +6,7 @@
 #include "Controller.h"
 #include "PlayHandler.h"
 #include "display.h"
-
+#include "EditMetadataHandler.h"
 
 /*
 
@@ -51,7 +51,7 @@ void PlayHandler::handle(string command) {
                 cout << "Resume\n";
                 break;
             case SHUFFLE:
-                cout << "Shiffle\n";
+                change_handler(EditMetadataHandler::getInstance());
                 break;
             case NEXT:
                 cout << "Next\n";

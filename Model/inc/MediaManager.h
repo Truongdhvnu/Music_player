@@ -41,6 +41,8 @@ public:
 
     vector<string> getPlaylistNames();
 
+    Song& getCurrentSong(); 
+    
     vector<Song> getPageOfSong(int pageNum);
 
     vector<Song>& sortCurrentList(int option);
