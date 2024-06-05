@@ -53,7 +53,7 @@ void PlayHandler::handle(string command) {
                 musicPlayer.resume();
                 break;
             case SHUFFLE:
-                musicPlayer.shuffle();
+                change_handler(EditMetadataHandler::getInstance());
                 break;
             case NEXT:
                 musicPlayer.next();
