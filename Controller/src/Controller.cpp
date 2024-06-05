@@ -31,6 +31,7 @@ void Controller::changeHandler(Handler* handler, void* paras) {
     }
 
     Controller::recentView.push_back(handler);
+    recentView[view_index]->leavePage();
     view_index++;
     recentView[view_index]->onStart(paras);
 }
@@ -48,11 +49,13 @@ void Controller::run() {
         cin >> command;
         if (command == GO_BACK) {
             if (view_index >= 1) {
+                recentView[view_index]->leavePage();
                 view_index--;
                 recentView[view_index]->onStart();
             }
         } else if (command == FORWARD) {
             if (recentView.size() - 1  > view_index) {
+                recentView[view_index]->leavePage();
                 view_index++;
                 recentView[view_index]->onStart();
             }

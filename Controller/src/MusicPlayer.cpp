@@ -20,6 +20,18 @@ void MusicPlayer::setSongEndCallback(std::function<void()> callback) {
     songEndCallback = callback;
 }
 
+void MusicPlayer::hiddenProgressBar() { 
+    stopProgress = true;
+}
+
+void MusicPlayer::unhideProgressBar() {
+    if(playing) {
+        stopProgress = false;
+        progressThread = std::thread(&MusicPlayer::displayProgress, this); // Bắt đầu thread cho displayProgress
+        progressThread.detach(); 
+    } 
+}
+
 void MusicPlayer::play(const Song& song) {
     if (playing) {
         stop();
@@ -52,7 +64,7 @@ void MusicPlayer::pause() {
         Mix_PauseMusic();
         paused = true;
         pauseTime = std::chrono::steady_clock::now();
-        stopProgress =true;
+        stopProgress = true;
     }
 }
 
@@ -62,7 +74,9 @@ void MusicPlayer::resume() {
         paused = false;
         auto pausedDuration = std::chrono::steady_clock::now() - pauseTime;
         startTime += pausedDuration;  // Adjust start time to account for pause
-        stopProgress =false;
+        stopProgress = false;
+        progressThread = std::thread(&MusicPlayer::displayProgress, this); 
+        progressThread.detach();
     }
 }
 
@@ -74,7 +88,7 @@ void MusicPlayer::stop() {
             Mix_FreeMusic(music);
             music = nullptr;
         }
-        stopProgress=true;
+        stopProgress = true;
     }
 }
 
@@ -161,7 +175,6 @@ int MusicPlayer::getCurrentIndex(){
 std::string MusicPlayer::getCurrentTime() {
     int minute;
     int second;
-    std::string currentTime;
     if (playing) {
         if (paused) {
             // return std::chrono::duration_cast<std::chrono::milliseconds>(pauseTime - startTime).count();
@@ -174,7 +187,8 @@ std::string MusicPlayer::getCurrentTime() {
             second = std::chrono::duration_cast<std::chrono::milliseconds>(std::chrono::steady_clock::now() - startTime).count() /1000 % 60;
             // currentTime = std::to_string(minute) + ":" + std::to_string(second);
         }
-        currentTime = std::to_string(minute) + ":" + std::to_string(second);
+        std::string currentTime = (minute < 10 ? "0" : "") + std::to_string(minute) + ":" +
+                                  (second < 10 ? "0" : "") + std::to_string(second);
         return currentTime;
     }
     return "00:00";
@@ -183,7 +197,8 @@ std::string MusicPlayer::getCurrentTime() {
 std::string MusicPlayer::getDuration() {
     int minute = musicDuration/60;
     int second = musicDuration%60;
-    std::string duration = std::to_string(minute) + ":" + std::to_string(second);
+    std::string duration = (minute < 10 ? "0" : "") + std::to_string(minute) + ":" +
+                           (second < 10 ? "0" : "") + std::to_string(second);
     return duration;
 }
 
@@ -214,7 +229,7 @@ void MusicPlayer::displayProgress() {
         if (paused) {
             elapsedSeconds = std::chrono::duration_cast<std::chrono::seconds>(pauseTime - startTime).count();
         }
-        int progressLength = 70;
+        int progressLength = 86;
         int pos = static_cast<int>((static_cast<double>(elapsedSeconds) / totalDuration) * progressLength);
         std::string progressBar = std::string(pos, '#') + std::string(progressLength - pos, '.');
         {
@@ -223,5 +238,6 @@ void MusicPlayer::displayProgress() {
         }
         std::this_thread::sleep_for(std::chrono::milliseconds(500));
     }
-    std::cout << std::endl;
+    stopProgress = true;
+    // std::cout << std::endl;
 }
