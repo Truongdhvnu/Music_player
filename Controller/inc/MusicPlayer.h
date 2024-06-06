@@ -43,6 +43,10 @@ public:
 
     void setSongEndCallback(std::function<void()> callback);
 
+    void hiddenProgressBar();
+    void unhideProgressBar();
+    // void setProgressThread() { stopProgress = false;}
+
 private:
     void musicThreadFunc();
     void playCurrentSong();

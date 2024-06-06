@@ -51,3 +51,25 @@ void View::display_bottom() {
          << endl;
     cout << alignLeft("",'-', WIDTH) << endl;
 }
+
+// string View::truncate(const string& text, int width) {
+//     if ((int)text.length() <= width-1) {
+//         return text;
+//     } else {
+//         return text.substr(0, width - 4) + "...";
+//     }
+// }
+
+string View::truncate(const std::string& str, int width) {
+    // std::wstring_convert<std::codecvt_utf8_utf16<char16_t>, char16_t> converter;
+    std::wstring_convert<std::codecvt_utf8<wchar_t>> converter;
+    std::wstring wide_str = converter.from_bytes(str);
+
+    if (wide_str.length() <= width - 1) {
+        return converter.to_bytes(wide_str); 
+    
+    } else {
+        wide_str = wide_str.substr(0, width - 4);
+        return converter.to_bytes(wide_str) + "...";
+    }
+}

@@ -34,10 +34,15 @@ void PlayHandler::onStart(void* passData) {
         this->view.display(currentSong);
         this->musicPlayer.setPlaylist(this->model.media_manager.getCurrentSongList());
         this->musicPlayer.setCurrentIndex(PlayHandler::currentSongIndex);
+        this->musicPlayer.unhideProgressBar();
         // Gọi hàm phát nhạc cho currentSong
     } catch (out_of_range& e) {
         // do Nothing
     }
+}
+
+void PlayHandler::leavePage() {
+    musicPlayer.hiddenProgressBar();
 }
 
 void PlayHandler::updateView() {
@@ -82,10 +87,10 @@ void PlayHandler::handle(string command) {
                 view.display((*this->model.media_manager.getCurrentSongList())[musicPlayer.getCurrentIndex()]);
                 break;
             default:
-                cout << "Invalid\n";
+                cout << "Invalid";
                 break;
         }
     } catch (exception& e) {
-        cout << "Invalid Input" << endl;
+        cout << "Invalid Input";
     }
 };

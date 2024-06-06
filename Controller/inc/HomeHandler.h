@@ -14,4 +14,5 @@ public:
     static HomeHandler* getInstance();
     void handle(string command);
     void onStart(void* passData = nullptr);
+    void leavePage(){}
 };

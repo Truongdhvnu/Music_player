@@ -17,6 +17,7 @@ public:
     void onStart(void* passData = nullptr);
     void handle(string command);
     MusicPlayer musicPlayer;
+    void leavePage();
 
     void updateView(); // Thêm phương thức updateView
 };
