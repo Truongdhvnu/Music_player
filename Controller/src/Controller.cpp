@@ -25,7 +25,7 @@ void Controller::changeHandler(Handler* handler, void* paras) {
         view_index--;
     }
     int temp = view_index;
-    while (temp < recentView.size() - 1)
+    while ((long unsigned int)temp < recentView.size() - 1)
     {
         recentView.pop_back();
     }
@@ -54,7 +54,7 @@ void Controller::run() {
                 recentView[view_index]->onStart();
             }
         } else if (command == FORWARD) {
-            if (recentView.size() - 1  > view_index) {
+            if (recentView.size() - 1  > (long unsigned int)view_index) {
                 recentView[view_index]->leavePage();
                 view_index++;
                 recentView[view_index]->onStart();

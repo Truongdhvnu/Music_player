@@ -23,7 +23,7 @@ public:
     std::string alignMiddle(const std::string& str, const char& gap, int width);
     string truncate(const string& text, int width);
 
-    virtual void display_bottom(); 
+    virtual void display_bottom();
         // cout << "--------------------------------------------------------------------------------------\n";
         // cout << "- Home: ["<< HOME << "]\t\t Go back: [" << GO_BACK << "]\t\t Forward: [" << FORWARD << "]\t\t Exit: [" << EXIT << "]   -\n";
         // cout << "--------------------------------------------------------------------------------------\n";

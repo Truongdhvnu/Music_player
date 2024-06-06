@@ -65,7 +65,7 @@ string View::truncate(const std::string& str, int width) {
     std::wstring_convert<std::codecvt_utf8<wchar_t>> converter;
     std::wstring wide_str = converter.from_bytes(str);
 
-    if (wide_str.length() <= width - 1) {
+    if (wide_str.length() <= (long unsigned int)(width - 1)) {
         return converter.to_bytes(wide_str); 
     
     } else {

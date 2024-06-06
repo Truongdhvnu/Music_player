@@ -64,6 +64,7 @@ void EditMetadataHandler::handle(string command) {
 }
 
 void EditMetadataHandler::onStart(void* passData) {
+    (void)passData;
     try {
         Song currentSong = this->model.media_manager.getCurrentSong();
         this->view.display(currentSong);

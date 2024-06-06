@@ -72,6 +72,7 @@ void GetdirHandler::handle(string command) {
 }
 
 void GetdirHandler::onStart(void* passData) {
+    (void)passData;
     this->view.display();
     usbmonitor.stopMonitoring();
     usbmonitor.startMonitoring();

@@ -70,7 +70,7 @@ Playlist& Playlist::addSong(string absolute_path) {
 }
 
 Playlist& Playlist::deleteSong(int index) {
-    if ((songList.size() > index) && (index >= 0)) {
+    if ((songList.size() > (long unsigned int)index) && (index >= 0)) {
         songList.erase(songList.begin() + index);
         this->changed = true;
         return *this;

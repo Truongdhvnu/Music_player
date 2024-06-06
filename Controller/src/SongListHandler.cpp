@@ -21,6 +21,7 @@ SongListHandler* SongListHandler::getInstance() {
 }
 
 void SongListHandler::onStart(void* passData) {
+    (void)passData;
     try {
         // if (passData != nullptr) nếu không để = 0, có thể lỗi khi đổi giữa lib và plist
         vector<Song> songs = this->model.media_manager.getPageOfSong(0);
