@@ -68,12 +68,11 @@ void PlayHandler::handle(string command) {
                 break;
             case PAUSE:
                 musicPlayer.pause();
-                // cout << "\033[F" << "\033[K";
-                view.display((*this->model.media_manager.getCurrentSongList())[musicPlayer.getCurrentIndex()]);
+                cout << "\033[F" << "\033[101C" << "\b \b" << flush;
                 break;
             case RESUME:
                 musicPlayer.resume();
-                view.display((*this->model.media_manager.getCurrentSongList())[musicPlayer.getCurrentIndex()]);
+                cout << "\033[F" << "\033[101C" << "\b \b" << flush;
                 break;
             case EDIT_META_DATA:
                 change_handler(EditMetadataHandler::getInstance());
@@ -90,19 +89,18 @@ void PlayHandler::handle(string command) {
                 break;
             case VOLUME_UP:
                 musicPlayer.volumeUp();
-                view.display((*this->model.media_manager.getCurrentSongList())[musicPlayer.getCurrentIndex()]);
+                cout << "\033[F" << "\033[101C" << "\b \b" << flush;
                 break;
             case VOLUME_DOWN:
                 musicPlayer.volumeDown();
-                view.display((*this->model.media_manager.getCurrentSongList())[musicPlayer.getCurrentIndex()]);
+                cout << "\033[F" << "\033[101C" << "\b \b" << flush;
                 break;
             default:
-                // view.display((*this->model.media_manager.getCurrentSongList())[musicPlayer.getCurrentIndex()]);
-                
-                cout << "\033[F" << "\033[K" << "Invalid";
+                // view.display((*this->model.media_manager.getCurrentSongList())[musicPlayer.getCurrentIndex()]);    
+                cout << "\033[F" << "\033[K" << "Invalid" << flush;
                 break;
         }
     } catch (exception& e) {
-        cout << "\033[F" << "\033[K" <<"Invalid Input";
+        cout << "\033[F" << "\033[K" <<"Invalid Input" << flush;
     }
 };
