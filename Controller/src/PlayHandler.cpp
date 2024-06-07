@@ -70,7 +70,7 @@ void PlayHandler::handle(string command) {
                 musicPlayer.volumeDown();
                 break;
             default:
-                cout << "Invalid\n";
+                cout << "Invalid" << endl;
                 break;
         }
     } catch (exception& e) {

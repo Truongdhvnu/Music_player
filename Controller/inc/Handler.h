@@ -11,7 +11,8 @@ class Handler {
 public:
     function<void(Handler*, void*)> callback;
     virtual void handle(string command) = 0;
-    virtual void onStart(void* passData = nullptr) = 0;  
+    virtual void onStart(void* passData = nullptr) = 0;
     void change_handler(Handler* handler, void* passData = nullptr);
+    // void remove_handler();
     virtual int handler_exit();
 };

@@ -110,5 +110,13 @@ string Song::getYear() const {
 }
 
 string Song::getDuration() const {
-    return duration;
+    int totalSeconds = stoi(duration);
+    int minutes = totalSeconds / 60;
+    int seconds = totalSeconds % 60;
+    
+    std::ostringstream oss;
+    oss << std::setw(2) << std::setfill('0') << minutes << ":"
+        << std::setw(2) << std::setfill('0') << seconds;
+    
+    return oss.str();
 }

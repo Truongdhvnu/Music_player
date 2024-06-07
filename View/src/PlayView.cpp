@@ -35,7 +35,7 @@ void PlayView::display_bottom() {
     cout << alignLeft("1. Play", ' ', WIDTH/4) 
          << alignLeft("2. Pause", ' ', WIDTH/4) 
          << alignLeft("3. Resume", ' ', WIDTH/4)
-         << alignLeft("4. Shuffle", ' ', WIDTH/4)
+         << alignLeft("4. Edit Metadata", ' ', WIDTH/4)
          << endl;
     cout << alignLeft("5. Next", ' ', WIDTH/4) 
          << alignLeft("6. Previous", ' ', WIDTH/4) 

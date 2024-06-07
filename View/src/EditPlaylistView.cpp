@@ -1,39 +1,31 @@
 #include "EditPlaylistView.h"
 #include <iostream>
 
-void EditPlaylistView::display(Song s) {
-    int linesPrinted = 0;
-    system("clear");
-    cout << alignMiddle("EDIT PLAYLIST", '=', WIDTH) << endl;
-    linesPrinted++;
-    cout << endl;
-    linesPrinted++;
-    cout << alignLeft("Title", ' ', 40) 
-         << alignLeft("Artist", ' ', 25) 
-         << alignLeft("Album", ' ', 25)
-         << alignLeft("Duration", ' ', 10)
-         << endl;
-    linesPrinted++;
-    cout << alignLeft(s.getTitle(), ' ', 40) 
-         << alignLeft(s.getArtist(), ' ', 25) 
-         << alignLeft(s.getAlbum(), ' ', 25)
-         << alignLeft(s.getDuration(), ' ', 10)
-         << endl;
-    linesPrinted++;
-
-    while (linesPrinted < LENGTH - 1) {
-        cout << endl;
-        linesPrinted++;
-    }
-    this->display_bottom();      
+void EditPlaylistView::displaySongs(vector<Song> songs, int pageNum) {
+    View::displaySongs(songs, pageNum);
+    this->display_bottom();
 }
 
 void EditPlaylistView::display_bottom() {
     cout << alignLeft("",'-', WIDTH) << endl;
-    cout << alignLeft("1. Create", ' ', WIDTH/4) 
-         << alignLeft("2. Rename", ' ', WIDTH/4) 
-         << alignLeft("3. Add", ' ', WIDTH/4)
-         << alignLeft("4. Remove", ' ', WIDTH/4)
-         << endl;  
-    SongListView::display_bottom(); 
+    // cout << alignLeft("1. Create", ' ', WIDTH/4)
+    cout << alignLeft("1. Rename", ' ', WIDTH/4)
+         << alignLeft("2. Add", ' ', WIDTH/4)
+         << alignLeft("3. Remove", ' ', WIDTH/4)
+         << endl;
+    string next = "-Next: [";
+    next = next + NEXT_PAGE + "]";
+    string pre = "Previous: [";
+    pre = pre + PREVIOUS_PAGE + "]";
+    string sortname = "SortName: [";
+    sortname = sortname + SORT_BY_NAME + "]";
+    string sortartist = "SortArtist: [";
+    sortartist = sortartist + SORT_BY_ARTIST + "]-";
+    cout << alignLeft("",'-', WIDTH) << endl;
+    cout << alignLeft(next,' ', 28)
+         << alignLeft(pre,' ', 28)
+         << alignLeft(sortname,' ', 28)
+         << alignRight(sortartist,' ', 0)
+         << endl;
+    View::display_bottom();
 }
