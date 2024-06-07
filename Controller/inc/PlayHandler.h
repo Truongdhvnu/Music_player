@@ -11,6 +11,7 @@ private:
     Model& model;
     PlayHandler();
     static int currentPage;
+    static bool onDisplay;
 public:
     static int currentSongIndex;
     static PlayHandler* getInstance();

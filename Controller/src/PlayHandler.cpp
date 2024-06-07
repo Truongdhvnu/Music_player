@@ -14,6 +14,7 @@
 
 */
 int PlayHandler::currentSongIndex = 0;
+bool PlayHandler::onDisplay = false;
 
 PlayHandler::PlayHandler() : model(Model::getInstance()) {
     callback = Controller::changeHandler;
@@ -36,6 +37,7 @@ void PlayHandler::onStart(void* passData) {
         this->musicPlayer.setCurrentIndex(PlayHandler::currentSongIndex);
         this->musicPlayer.unhideProgressBar();
         // Gọi hàm phát nhạc cho currentSong
+        onDisplay=true;
     } catch (out_of_range& e) {
         // do Nothing
     }
@@ -43,17 +45,25 @@ void PlayHandler::onStart(void* passData) {
 
 void PlayHandler::leavePage() {
     musicPlayer.hiddenProgressBar();
+    onDisplay=false;
 }
 
 void PlayHandler::updateView() {
-    Song currentSong = (*this->model.media_manager.getCurrentSongList())[musicPlayer.getCurrentIndex()];
-    view.display(currentSong);
+    PlayHandler::currentSongIndex++;
+    // Song currentSong = (*this->model.media_manager.getCurrentSongList())[musicPlayer.getCurrentIndex()];
+    // view.display(currentSong);
+    if(onDisplay==true){
+    this->change_handler(PlayHandler::getInstance());   //change handler goi onStart nen ko can them update view
+    }
+    else{
+        musicPlayer.hiddenProgressBar();
+    }
 }
 
 
 void PlayHandler::handle(string command) {
     try {
-        int option = stoi(command) - 1;
+        int option = stoi(command) - 1; 
         switch(option) {
             case PLAY:
                 view.display((*this->model.media_manager.getCurrentSongList())[musicPlayer.getCurrentIndex()]);
@@ -71,10 +81,12 @@ void PlayHandler::handle(string command) {
                 change_handler(EditMetadataHandler::getInstance());
                 break;
             case NEXT:
+                PlayHandler::currentSongIndex++;
                 musicPlayer.next();
                 view.display((*this->model.media_manager.getCurrentSongList())[musicPlayer.getCurrentIndex()]);
                 break;
             case PREVIOUS:
+                PlayHandler::currentSongIndex--;
                 musicPlayer.previous();
                 view.display((*this->model.media_manager.getCurrentSongList())[musicPlayer.getCurrentIndex()]);
                 break;
