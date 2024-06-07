@@ -50,12 +50,21 @@ int MediaManager::getNumberofSong() {
 }
 
 void MediaManager::setActivePList(int PlaylistNum) {
-    if (PlaylistNum < 0 || PlaylistNum >= this->playlists.size()) {
+    if (PlaylistNum < 0 || (long unsigned int)PlaylistNum >= this->playlists.size()) {
         throw out_of_range("Playlist no." + to_string(PlaylistNum) + "does not exits");
     } else {
         this->currentMediaList = &playlists[PlaylistNum].initialize();
         playListActive = true;
+        this->activePlistIndex = PlaylistNum;
     }
+}
+
+int MediaManager::getActivePListIndex() {
+    // if (playListActive) {
+        return this->activePlistIndex;
+    // } else {
+    //     return -1;
+    // }
 }
 
 Playlist* MediaManager::getActivePlaylist() {
@@ -114,12 +123,12 @@ int MediaManager::isExistPlayList(string name) {
     return -1;
 };
 
-int MediaManager::renamePlaylist(int PlaylistNum, const string& newName) {        
+int MediaManager::renamePlaylist(int PlaylistNum, const string& newName) {
     if (this->isExistPlayList(newName) >= 0) {
         throw runtime_error("rename Plist: Plist with name " + newName + "has already exíted\n");
     }
 
-    if (PlaylistNum < 0 || PlaylistNum >= this->playlists.size()) {
+    if (PlaylistNum < 0 || (long unsigned int)PlaylistNum >= this->playlists.size()) {
         throw out_of_range("Playlist rename: Index of playlist out of bound " + to_string(PlaylistNum) + "\n");
     } else {
         return this->playlists[PlaylistNum].rename(newName);
@@ -139,7 +148,7 @@ void MediaManager::createPlaylist(Playlist& playlist) {
     Remeber to store name to listDeleted to update data when close program
 */
 int MediaManager::deletePlaylist(int pos) {
-    if (pos >= 0 && pos < this->playlists.size()) {
+    if (pos >= 0 && (long unsigned int)pos < this->playlists.size()) {
         this->listDeleted.push_back(this->playlists[pos].getName());
         this->playlists.erase(this->playlists.begin() + pos);
         return 0;
@@ -180,7 +189,7 @@ void MediaManager::updateDatabase() {
 //         cout << name << " ";
 //     }
 //     cout << endl;
-    
+
 //     m.setActivePList(1);
 //     Playlist* current = m.getActivePlaylist();
 //     (*current).addSong("music/I Knew You Were Trouble - Taylor Swift.mp3");
@@ -198,7 +207,7 @@ void MediaManager::updateDatabase() {
 //     }
 //     cout << endl;
 //     m.updateDatabase();
-    
+
 //     vector<Song> songs = m.sortCurrentList(SORT_AZ);
 //     cout <<"Sort by name AZ " << songs.size() << "\n";
 //     for (Song s: songs) {
@@ -221,7 +230,7 @@ void MediaManager::updateDatabase() {
 //         cout << s.getTitle() << "\n";
 //     }
 //     cout << endl;
-    
+
 //     m.setActiveLibrary();
 //     Library* now = m.getActiveLibrary();
 //     (*now).getSongFromPath("music");

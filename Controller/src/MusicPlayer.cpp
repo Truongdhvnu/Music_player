@@ -184,15 +184,11 @@ std::string MusicPlayer::getCurrentTime() {
     int second;
     if (playing) {
         if (paused) {
-            // return std::chrono::duration_cast<std::chrono::milliseconds>(pauseTime - startTime).count();
             minute = std::chrono::duration_cast<std::chrono::milliseconds>(pauseTime - startTime).count() / 60000;
             second = std::chrono::duration_cast<std::chrono::milliseconds>(pauseTime - startTime).count() /1000 % 60;
-            // currentTime = std::to_string(minute) + ":" + std::to_string(second);
         } else {
-            // return std::chrono::duration_cast<std::chrono::milliseconds>(std::chrono::steady_clock::now() - startTime).count();
             minute = std::chrono::duration_cast<std::chrono::milliseconds>(std::chrono::steady_clock::now() - startTime).count() / 60000;
             second = std::chrono::duration_cast<std::chrono::milliseconds>(std::chrono::steady_clock::now() - startTime).count() /1000 % 60;
-            // currentTime = std::to_string(minute) + ":" + std::to_string(second);
         }
         std::string currentTime = (minute < 10 ? "0" : "") + std::to_string(minute) + ":" +
                                   (second < 10 ? "0" : "") + std::to_string(second);

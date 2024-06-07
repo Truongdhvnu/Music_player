@@ -22,9 +22,9 @@ Playlist& Playlist::initialize() {
     if(!fetchSong) {
         fs::path plist_datafile_path;
         plist_datafile_path.append(PLAYLIST_FILES_DIR).append(this->name + ".txt");
-        
+
         ifstream file(plist_datafile_path);
-        
+
         if (!file.is_open()) {
             cout << "Error while opening playlist data file: " << plist_datafile_path.string();
         } else {
@@ -38,7 +38,7 @@ Playlist& Playlist::initialize() {
             }
             file.close();
         }
-        
+
         fetchSong = true;
     }
     return *this;
@@ -50,7 +50,7 @@ string Playlist::getName() {
 
 /*
     add a Song to playlist
-    some case of input: 
+    some case of input:
         + absolute_path is not found
         + the song has been already in the playlist
 */
@@ -63,14 +63,14 @@ Playlist& Playlist::addSong(string absolute_path) {
         }
     }
     if (!isExist) {
-        songList.push_back(Song(absolute_path));
+        songList.push_back(Song(absolute_path, true));
         this->changed = true;
     }
     return *this;
 }
 
 Playlist& Playlist::deleteSong(int index) {
-    if ((songList.size() > index) && (index >= 0)) {
+    if ((songList.size() > (long unsigned int)index) && (index >= 0)) {
         songList.erase(songList.begin() + index);
         this->changed = true;
         return *this;

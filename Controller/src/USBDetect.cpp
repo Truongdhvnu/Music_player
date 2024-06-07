@@ -70,11 +70,11 @@ void USBMonitor::DetectUSBEvents() {
 
                 if (action) {
                     if (strcmp(action, "add") == 0) {
-                        std::cout << "USB Inserted\n";
+                        std::cout << "USB Inserted" << std::endl;
                         status = 1;
                         setUserPath();
                     } else if (strcmp(action, "remove") == 0) {
-                        std::cout << "USB Removed\n";
+                        std::cout << "USB Removed" << std::endl;
                         status = 0;
                         clearUserPath();
                     }

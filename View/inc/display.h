@@ -12,6 +12,8 @@
 #define GO_BACK "<"
 #define FORWARD ">"
 #define EXIT "x"
+#define CREATE "c"
+#define DELETE "d"
 
 /*
     Define

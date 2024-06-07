@@ -12,11 +12,12 @@ class MediaManager {
 private:
     Library songLib;
     vector<Playlist> playlists;
-    vector<string> listDeleted; 
+    vector<string> listDeleted;
     MediaList* currentMediaList = nullptr;
     bool playListActive = false;
     int currentLibSongIndex = 0;
     int currentPlistSongIndex = 0;
+    int activePlistIndex = 0;
 public:
     /*
         Initialize (just name) for playlists whose names are names of .txt files in "./data/playlists" directory
@@ -26,12 +27,14 @@ public:
     bool isPlaylistActive();
 
     int getCurrentSongIndex();
-    
+
     void setCurrentSongIndex(int data);
 
     int getNumberofSong();
-    
+
     void setActivePList(int PlaylistNum);
+
+    int getActivePListIndex();
 
     Playlist* getActivePlaylist();
 
@@ -41,8 +44,8 @@ public:
 
     vector<string> getPlaylistNames();
 
-    Song& getCurrentSong(); 
-    
+    Song& getCurrentSong();
+
     vector<Song> getPageOfSong(int pageNum);
 
     vector<Song>& sortCurrentList(int option);
@@ -54,7 +57,7 @@ public:
     int renamePlaylist(int PlaylistNum, const string& newName);
 
     void createPlaylist(Playlist& playlist);
-    
+
     /*
         Remeber to store name to listDeleted to update data when close program
     */

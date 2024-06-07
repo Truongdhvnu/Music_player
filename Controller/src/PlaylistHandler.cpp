@@ -18,6 +18,7 @@ PlaylistHandler* PlaylistHandler::getInstance() {
 }
 
 void PlaylistHandler::onStart(void* passData) {
+    (void)passData;
     vector<string> plists = this->model.media_manager.getPlaylistNames();
     this->view.display(plists);
 }
@@ -30,6 +31,6 @@ void PlaylistHandler::handle(string command) {
             change_handler(SongListHandler::getInstance());
         }
     } catch (const exception& e) {
-        cout << "Pl Handler: No actions or Invalid command\n";
+        cout << "Pl Handler: No actions or Invalid command" << endl;
     }
 }

@@ -6,6 +6,7 @@
 #include "HomeHandler.h"
 #include "SongListHandler.h"
 #include "GetdirHandler.h"
+#include "ChoosePlaylistHandler.h"
 
 HomeHandler* HomeHandler::instancePtr = nullptr;
 
@@ -34,10 +35,10 @@ void HomeHandler::handle(string command) {
             (*mylib).getSongFromCurrentDirs();
             change_handler(SongListHandler::getInstance());
         } else if (command == "4") {
-            // change_handler();
+            change_handler(ChoosePlaylistHandler::getInstance());
         }
         else {
-            cout << "No actions or Invalid command\n";
+            cout << "No actions or Invalid command" << endl;
         }
     } catch (runtime_error& e) {
         cout << e.what() << endl;
@@ -45,6 +46,7 @@ void HomeHandler::handle(string command) {
 }
 
 void HomeHandler::onStart(void* passData) {
+    (void)passData;
     this->view.display();
     // this->view.display_bottom();
 }

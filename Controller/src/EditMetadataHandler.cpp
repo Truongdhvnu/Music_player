@@ -45,12 +45,12 @@ void EditMetadataHandler::handle(string command) {
                 this->model.media_manager.getCurrentSong().setArtist(input);
                 break;
             case 3:
-                cout << "Input new A";
+                cout << "Input new Album: ";
                 std::getline(std::cin, input);
                 this->model.media_manager.getCurrentSong().setAlbum(input);
                 break;
             case 4:
-                cout << "Input new: ";
+                cout << "Input new Year: ";
                 std::getline(std::cin, input);
                 this->model.media_manager.getCurrentSong().setYear(stoi(input));
                 break;
@@ -64,6 +64,7 @@ void EditMetadataHandler::handle(string command) {
 }
 
 void EditMetadataHandler::onStart(void* passData) {
+    (void)passData;
     try {
         Song currentSong = this->model.media_manager.getCurrentSong();
         this->view.display(currentSong);

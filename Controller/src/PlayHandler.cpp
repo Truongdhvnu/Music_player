@@ -13,7 +13,6 @@
     ! Change currentSongIndex to media_maner.getCurrentSongIndex()
 
 */
-int PlayHandler::currentSongIndex = 0;
 bool PlayHandler::onDisplay = false;
 
 PlayHandler::PlayHandler() : model(Model::getInstance()) {
@@ -29,13 +28,14 @@ PlayHandler* PlayHandler::getInstance() {
 void PlayHandler::onStart(void* passData) {
     try {
         if (passData != nullptr) {
-            PlayHandler::currentSongIndex = *((int*)passData) - 1;
+            this->model.media_manager.setCurrentSongIndex(*((int*)passData) - 1);
         }
-        Song currentSong = (*this->model.media_manager.getCurrentSongList())[PlayHandler::currentSongIndex];
+        Song currentSong = (*this->model.media_manager.getCurrentSongList())[this->model.media_manager.getCurrentSongIndex()];
         this->view.display(currentSong);
         this->musicPlayer.setPlaylist(this->model.media_manager.getCurrentSongList());
-        this->musicPlayer.setCurrentIndex(PlayHandler::currentSongIndex);
+        this->musicPlayer.setCurrentIndex(this->model.media_manager.getCurrentSongIndex());
         this->musicPlayer.unhideProgressBar();
+        onDisplay = true;
         // Gọi hàm phát nhạc cho currentSong
         onDisplay=true;
     } catch (out_of_range& e) {
@@ -45,19 +45,17 @@ void PlayHandler::onStart(void* passData) {
 
 void PlayHandler::leavePage() {
     musicPlayer.hiddenProgressBar();
-    onDisplay=false;
+    onDisplay = false;
 }
 
 void PlayHandler::updateView() {
-    PlayHandler::currentSongIndex++;
-    // Song currentSong = (*this->model.media_manager.getCurrentSongList())[musicPlayer.getCurrentIndex()];
-    // view.display(currentSong);
-    if(onDisplay==true){
-    this->change_handler(PlayHandler::getInstance());   //change handler goi onStart nen ko can them update view
-    }
-    else{
+    this->model.media_manager.setCurrentSongIndex(musicPlayer.getCurrentIndex());
+    if(onDisplay) {
+        this->change_handler(PlayHandler::getInstance());
+    } else {
         musicPlayer.hiddenProgressBar();
     }
+
 }
 
 
@@ -71,11 +69,11 @@ void PlayHandler::handle(string command) {
                 break;
             case PAUSE:
                 musicPlayer.pause();
-                view.display((*this->model.media_manager.getCurrentSongList())[musicPlayer.getCurrentIndex()]);
+                cout << "\033[F" << "\033[101C" << "\b \b" << flush;
                 break;
             case RESUME:
                 musicPlayer.resume();
-                view.display((*this->model.media_manager.getCurrentSongList())[musicPlayer.getCurrentIndex()]);
+                cout << "\033[F" << "\033[101C" << "\b \b" << flush;
                 break;
             case EDIT_META_DATA:
                 change_handler(EditMetadataHandler::getInstance());
@@ -83,26 +81,29 @@ void PlayHandler::handle(string command) {
             case NEXT:
                 PlayHandler::currentSongIndex++;
                 musicPlayer.next();
+                this->model.media_manager.setCurrentSongIndex(musicPlayer.getCurrentIndex());
                 view.display((*this->model.media_manager.getCurrentSongList())[musicPlayer.getCurrentIndex()]);
                 break;
             case PREVIOUS:
                 PlayHandler::currentSongIndex--;
                 musicPlayer.previous();
+                this->model.media_manager.setCurrentSongIndex(musicPlayer.getCurrentIndex());
                 view.display((*this->model.media_manager.getCurrentSongList())[musicPlayer.getCurrentIndex()]);
                 break;
             case VOLUME_UP:
                 musicPlayer.volumeUp();
-                view.display((*this->model.media_manager.getCurrentSongList())[musicPlayer.getCurrentIndex()]);
+                cout << "\033[F" << "\033[101C" << "\b \b" << flush;
                 break;
             case VOLUME_DOWN:
                 musicPlayer.volumeDown();
-                view.display((*this->model.media_manager.getCurrentSongList())[musicPlayer.getCurrentIndex()]);
+                cout << "\033[F" << "\033[101C" << "\b \b" << flush;
                 break;
             default:
-                cout << "Invalid";
+                // view.display((*this->model.media_manager.getCurrentSongList())[musicPlayer.getCurrentIndex()]);    
+                cout << "\033[F" << "\033[K" << "Invalid" << flush;
                 break;
         }
     } catch (exception& e) {
-        cout << "Invalid Input";
+        cout << "\033[F" << "\033[K" <<"Invalid Input" << flush;
     }
 };

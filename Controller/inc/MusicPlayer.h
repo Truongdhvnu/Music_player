@@ -45,7 +45,6 @@ public:
 
     void hiddenProgressBar();
     void unhideProgressBar();
-    // void setProgressThread() { stopProgress = false;}
 
 private:
     void musicThreadFunc();
