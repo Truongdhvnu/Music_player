@@ -53,7 +53,6 @@ void EditPlaylistHandler::handle(string command) {
                     temp = this->model.media_manager.getActiveLibrary();
                     temp->getSongFromPath(input);
                     change_handler(ChooseSongsHandler::getInstance(), (void*)pl);
-                    this->onStart();
                     break;
                 case 3:
                     cout << "Input song index: " << flush;

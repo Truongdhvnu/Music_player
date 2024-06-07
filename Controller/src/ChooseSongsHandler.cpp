@@ -35,8 +35,10 @@ void ChooseSongsHandler::onStart(void* passData) {
 
 void ChooseSongsHandler::handle(string command) {
     try {
-        cout << "Choose index to add to playlist. Press \"d\" to done adding" << endl;
+        /* Clear cin buffer */
+        std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
         if (!songListhandle(command, ChooseSongsHandler::currentPage)) {
+            cout << "Choose index to add to playlist. Press \"d\" to done adding" << endl;
             if(command == "d") {
                 this->model.media_manager.setActivePList(this->model.media_manager.getActivePListIndex());
                 this->change_handler(EditPlaylistHandler::getInstance());
