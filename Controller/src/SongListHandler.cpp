@@ -13,7 +13,7 @@ int SongListHandler::currentPage = 0;
 int SongListHandler::currentSongIndex = 0;
 
 SongListHandler::SongListHandler() : model(Model::getInstance()) {
-    callback = Controller::changeHandler;
+    changeHandelCallback = Controller::changeHandler;
 };
 
 SongListHandler* SongListHandler::getInstance() {
@@ -40,7 +40,7 @@ void SongListHandler::handle(string command) {
                 int selectedSong = stoi(command);
                 if (selectedSong >= 1 && selectedSong <= this->model.media_manager.getNumberofSong()) {
                     SongListHandler::currentSongIndex = selectedSong;
-                    this->change_handler(PlayHandler::getInstance(), (void*)&SongListHandler::currentSongIndex);
+                    this->changeHandler(PlayHandler::getInstance(), (void*)&SongListHandler::currentSongIndex);
                 }
             } catch (const exception& e) {
                 cout << "SongList Handler: No actions or Invalid command" << endl;

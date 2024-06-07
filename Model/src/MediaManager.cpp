@@ -150,8 +150,10 @@ void MediaManager::createPlaylist(string name) {
 */
 int MediaManager::deletePlaylist(int pos) {
     if (pos >= 0 && (long unsigned int)pos < this->playlists.size()) {
-        this->listDeleted.push_back(this->playlists[pos].getName());
         this->playlists.erase(this->playlists.begin() + pos);
+        if (!this->playlists[pos].newCreated) {
+            this->listDeleted.push_back(this->playlists[pos].getName());
+        }
         return 0;
     } else {
         throw runtime_error("delete Plist: Playlist index out of range\n");

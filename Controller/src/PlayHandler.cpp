@@ -16,7 +16,7 @@
 bool PlayHandler::onDisplay = false;
 
 PlayHandler::PlayHandler() : model(Model::getInstance()) {
-    callback = Controller::changeHandler;
+    changeHandelCallback = Controller::changeHandler;
     musicPlayer.setSongEndCallback(std::bind(&PlayHandler::updateView, this)); // Đặt callback cho musicPlayer
 };
 
@@ -50,7 +50,7 @@ void PlayHandler::leavePage() {
 void PlayHandler::updateView() {
     this->model.media_manager.setCurrentSongIndex(musicPlayer.getCurrentIndex());
     if(onDisplay) {
-        this->change_handler(PlayHandler::getInstance());
+        this->changeHandler(PlayHandler::getInstance());
     } else {
         musicPlayer.hiddenProgressBar();
     }
@@ -75,7 +75,7 @@ void PlayHandler::handle(string command) {
                 cout << "\033[F" << "\033[101C" << "\b \b" << flush;
                 break;
             case EDIT_META_DATA:
-                change_handler(EditMetadataHandler::getInstance());
+                changeHandler(EditMetadataHandler::getInstance());
                 break;
             case NEXT:
                 musicPlayer.next();

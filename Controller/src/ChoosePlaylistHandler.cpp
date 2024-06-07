@@ -9,7 +9,7 @@
 #include "EditPlaylistHandler.h"
 
 ChoosePlaylistHandler::ChoosePlaylistHandler() : model(Model::getInstance()) {
-    callback = Controller::changeHandler;
+    changeHandelCallback = Controller::changeHandler;
 };
 
 ChoosePlaylistHandler* ChoosePlaylistHandler::getInstance() {
@@ -45,7 +45,7 @@ void ChoosePlaylistHandler::handle(string command) {
             int plist_num = stoi(command);
             if (plist_num > 0) {
                 this->model.media_manager.setActivePList(plist_num - 1);
-                change_handler(EditPlaylistHandler::getInstance());
+                changeHandler(EditPlaylistHandler::getInstance());
             }
         }
     } catch (const exception& e) {

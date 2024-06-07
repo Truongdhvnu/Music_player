@@ -11,7 +11,7 @@
 HomeHandler* HomeHandler::instancePtr = nullptr;
 
 HomeHandler::HomeHandler() : model(Model::getInstance()){
-    callback = Controller::changeHandler;
+    changeHandelCallback = Controller::changeHandler;
 }
 
 HomeHandler* HomeHandler::getInstance() {
@@ -26,16 +26,16 @@ HomeHandler* HomeHandler::getInstance() {
 void HomeHandler::handle(string command) {
     try {
         if (command == "1") {
-            change_handler(GetdirHandler::getInstance());
+            changeHandler(GetdirHandler::getInstance());
         } else if (command == "2") {
-            change_handler(PlaylistHandler::getInstance());
+            changeHandler(PlaylistHandler::getInstance());
         } else if (command == "3") {
             this->model.media_manager.setActiveLibrary();
             Library* mylib = this->model.media_manager.getActiveLibrary();
             (*mylib).getSongFromCurrentDirs();
-            change_handler(SongListHandler::getInstance());
+            changeHandler(SongListHandler::getInstance());
         } else if (command == "4") {
-            change_handler(ChoosePlaylistHandler::getInstance());
+            changeHandler(ChoosePlaylistHandler::getInstance());
         }
         else {
             cout << "No actions or Invalid command" << endl;

@@ -10,7 +10,7 @@
 // GetdirHandler* GetdirHandler::instancePtr = nullptr;
 
 GetdirHandler::GetdirHandler() : model(Model::getInstance()){
-    callback = Controller::changeHandler;
+    changeHandelCallback = Controller::changeHandler;
 }
 
 GetdirHandler* GetdirHandler::getInstance() {
@@ -38,10 +38,10 @@ void GetdirHandler::handle(string command) {
                 this->model.media_manager.setActiveLibrary();
                 Library* lib=this->model.media_manager.getActiveLibrary();
                 (*lib).getSongFromPath(directory);
-                change_handler(SongListHandler::getInstance());
+                changeHandler(SongListHandler::getInstance());
             }
             else{
-                change_handler(GetdirHandler::getInstance());
+                changeHandler(GetdirHandler::getInstance());
                 cout << "Waiting for USB inserted..." << endl;
                 cout << "If USB inserted, press 1 again" << endl;
                 cout << "If USB not detected, remove and insert again" << endl;
@@ -55,13 +55,13 @@ void GetdirHandler::handle(string command) {
             this->model.media_manager.setActiveLibrary();
             Library* lib=this->model.media_manager.getActiveLibrary();
             (*lib).getSongFromPath(directory);
-            change_handler(SongListHandler::getInstance());
+            changeHandler(SongListHandler::getInstance());
         } else if (command == "3") {
             usbmonitor.stopMonitoring();
             this->model.media_manager.setActiveLibrary();
             Library* lib=this->model.media_manager.getActiveLibrary();
             (*lib).getSongFromPath(view.path);
-            change_handler(SongListHandler::getInstance());
+            changeHandler(SongListHandler::getInstance());
         }
         else {
             cout << "No actions or Invalid command" << endl;

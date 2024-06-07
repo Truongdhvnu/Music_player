@@ -5,15 +5,14 @@
 
 using namespace std;
 
-class Handler;
-
 class Handler {
 public:
-    function<void(Handler*, void*)> callback;
+    function<void(Handler*, void*)> changeHandelCallback;
+    function<void(void*)> popCallback;
     virtual void handle(string command) = 0;
     virtual void onStart(void* passData = nullptr) = 0;
-    virtual void leavePage(){}
-    void change_handler(Handler* handler, void* passData = nullptr);
-    // void remove_handler();
-    virtual int handler_exit();
+    virtual void leavePage();
+    void changeHandler(Handler* handler, void* passData = nullptr);
+    void selfPop(void* passData = nullptr);
+    virtual int exit();
 };

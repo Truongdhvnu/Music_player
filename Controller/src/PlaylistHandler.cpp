@@ -9,7 +9,7 @@
 #include "SongListHandler.h"
 
 PlaylistHandler::PlaylistHandler() : model(Model::getInstance()) {
-    callback = Controller::changeHandler;
+    changeHandelCallback = Controller::changeHandler;
 };
 
 PlaylistHandler* PlaylistHandler::getInstance() {
@@ -28,7 +28,7 @@ void PlaylistHandler::handle(string command) {
         int plist_num = stoi(command);
         if (plist_num > 0) {
             this->model.media_manager.setActivePList(plist_num - 1);
-            change_handler(SongListHandler::getInstance());
+            changeHandler(SongListHandler::getInstance());
         }
     } catch (const exception& e) {
         cout << "Pl Handler: No actions or Invalid command" << endl;

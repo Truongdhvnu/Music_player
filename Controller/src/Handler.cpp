@@ -5,10 +5,17 @@
 
 using namespace std;
 
-void Handler::change_handler(Handler* handler, void* passData) {
-    Handler::callback(handler, passData);
+void Handler::leavePage() { 
 }
 
-int Handler::handler_exit() {
+void Handler::changeHandler(Handler *handler, void *passData) {
+    Handler::changeHandelCallback(handler, passData);
+}
+
+void Handler::selfPop(void *passData) {
+    Handler::popCallback(passData);
+}
+
+int Handler::exit() {
     return 0;
 }

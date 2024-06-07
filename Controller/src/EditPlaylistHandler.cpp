@@ -11,7 +11,8 @@
 #include "ChooseSongsHandler.h"
 
 EditPlaylistHandler::EditPlaylistHandler() : model(Model::getInstance()) {
-    callback = Controller::changeHandler;
+    changeHandelCallback = Controller::changeHandler;
+    popCallback = Controller::PopHandler;
 };
 
 EditPlaylistHandler* EditPlaylistHandler::getInstance() {
@@ -52,7 +53,7 @@ void EditPlaylistHandler::handle(string command) {
                     this->model.media_manager.setActiveLibrary();
                     temp = this->model.media_manager.getActiveLibrary();
                     temp->getSongFromPath(input);
-                    change_handler(ChooseSongsHandler::getInstance(), (void*)pl);
+                    changeHandler(ChooseSongsHandler::getInstance(), (void*)pl);
                     break;
                 case 3:
                     cout << "Input song index: " << flush;

@@ -15,7 +15,7 @@
 EditMetadataHandler* EditMetadataHandler::instancePtr = nullptr;
 
 EditMetadataHandler::EditMetadataHandler() : model(Model::getInstance()){
-    callback = Controller::changeHandler;
+    changeHandelCallback = Controller::changeHandler;
 }
 
 EditMetadataHandler* EditMetadataHandler::getInstance() {

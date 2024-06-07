@@ -14,7 +14,8 @@
 int ChooseSongsHandler::currentPage = 0;
 Playlist* ChooseSongsHandler::plist = nullptr;
 ChooseSongsHandler::ChooseSongsHandler() : model(Model::getInstance()) {
-    callback = Controller::changeHandler;
+    changeHandelCallback = Controller::changeHandler;
+    popCallback = Controller::PopHandler;
 };
 
 ChooseSongsHandler* ChooseSongsHandler::getInstance() {
@@ -24,6 +25,7 @@ ChooseSongsHandler* ChooseSongsHandler::getInstance() {
 
 void ChooseSongsHandler::onStart(void* passData) {
     try {
+        // this->model.media_manager.setActiveLibrary();
         ChooseSongsHandler::plist = (Playlist*)passData;
         vector<Song> songs = this->model.media_manager.getPageOfSong(0);
         ChooseSongsHandler::currentPage = 0;
@@ -38,12 +40,12 @@ void ChooseSongsHandler::handle(string command) {
         /* Clear cin buffer */
         std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
         if (!songListhandle(command, ChooseSongsHandler::currentPage)) {
-            cout << "Choose index to add to playlist. Press \"d\" to done adding" << endl;
-            if(command == "d") {
-                this->model.media_manager.setActivePList(this->model.media_manager.getActivePListIndex());
-                this->change_handler(EditPlaylistHandler::getInstance());
-            }
-            else {
+            // cout << "Choose index to add to playlist. Press \"d\" to done adding" << endl;
+            // if(command == GO_BACK) {
+            //     this->model.media_manager.setActivePList(this->model.media_manager.getActivePListIndex());
+            //     this->selfPop();
+            // }
+            // else {
                 try {
                     int pos = stoi(command) - 1;
                     Song& song = (*this->model.media_manager.getCurrentSongList())[pos];
@@ -52,7 +54,7 @@ void ChooseSongsHandler::handle(string command) {
                 } catch (const exception& e) {
                 cout << "Choose songs Handler: No actions or Invalid command" << endl;
                 }
-            }
+            // }
         } else {
             this->view.display_bottom();
         }
@@ -62,3 +64,8 @@ void ChooseSongsHandler::handle(string command) {
         cout << e.what() << endl;
     }
 };
+
+void ChooseSongsHandler::leavePage() {
+    this->model.media_manager.setActivePList(this->model.media_manager.getActivePListIndex());
+    this->selfPop();
+}

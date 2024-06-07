@@ -18,13 +18,17 @@ Controller::Controller() {
     Controller::recentView[view_index]->onStart();
 }
 
-void Controller::PopHandler() {
-    int temp = view_index;
-    while ((long unsigned int)temp < recentView.size() - 1)
-    {
-        recentView.pop_back();
-    }
-    
+void Controller::PopHandler(void* paras) {
+    // int temp = view_index;
+    // while ((long unsigned int)temp < recentView.size() - 1)
+    // {
+    //     recentView.pop_back();
+    // }
+    // recentView[view_index]->leavePage();
+    recentView.pop_back();
+
+    // view_index--;
+    recentView[view_index]->onStart(paras);
 }
 
 void Controller::changeHandler(Handler* handler, void* paras) {
@@ -67,11 +71,11 @@ void Controller::run() {
             if (recentView.size() - 1  > (long unsigned int)view_index) {
                 recentView[view_index]->leavePage();
                 view_index++;
-                recentView[view_index]->onStart();
+                recentView[view_index]->onStart();   //need data for onstart
             }
         } else if (command == EXIT) {
             for(Handler* e : recentView) {
-                e->handler_exit();              // có th nào nhạc đang phát nhưng không tắt đi được không? do chang_handler đã xóa mất the handler khỏi danh sách
+                e->exit();              // có th nào nhạc đang phát nhưng không tắt đi được không? do chang_handler đã xóa mất the handler khỏi danh sách
             }
             this->exit();
             std::exit(0);
