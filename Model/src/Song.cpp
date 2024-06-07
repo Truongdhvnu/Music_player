@@ -1,8 +1,3 @@
-#include <iostream>
-#include <string>
-#include <filesystem>
-#include <taglib/fileref.h>
-#include <taglib/tag.h>
 #include "Song.h"
 
 //#include <MediaInfo/MediaInfo.h> // Thêm thư viện MediaInfo
@@ -17,113 +12,124 @@ Song::Song(string path, bool getMetadata) : path(path) {
     }
 }
 
-void Song::getAllMetadata() {
-    if (!fs::exists(this->path)) {
-        throw runtime_error("Song's path does not exist: " + this->path);
-    } else {
-        TagLib::FileRef ref(this->path.c_str());
-        if (!ref.isNull() && ref.tag()) {
-            TagLib::Tag *tag = ref.tag();
-            string title = string(tag->title().toCString(true));
-            if (title == "") {
-                fs::path p(this->path);
-                this->title = p.stem().string();
-            } else {
-                this->title = title;
-            }
-            this->artist = string(tag->artist().toCString(true));
-            this->album = string(tag->album().toCString(true));
-            this->year = to_string(tag->year());
-            this->duration = to_string(ref.audioProperties()->lengthInSeconds());
-        }
-    }
-}
-
-// void Song::convertMP4toMP3() {
-//     fs::path mp3Path = fs::path(this->path).replace_extension(".mp3");
-
-//     // Check if corresponding MP3 file exists
-//     if (!fs::exists(mp3Path)) {
-//         // If MP3 file doesn't exist, convert MP4 to MP3
-//         string convertCommand = "ffmpeg -i \"" + this->path + "\" \"" + mp3Path.string() + "\"";
-//         int result = system(convertCommand.c_str());
-//         if (result == 0) {
-//             cout << "File converted successfully: " << mp3Path << endl;
-//         } else {
-//             cerr << "Failed to convert file: " << this->path << endl;
-//             return;
-//         }
-//     }
-// }
-
-// void Song::getAllMetadata() {
-//     // Check and convert MP4 to MP3 if needed
-//     this->convertMP4toMP3();
-
-//     // Get metadata from MP3 file
-//     fs::path mp3Path = fs::path(this->path).replace_extension(".mp3");
-//     if (fs::exists(mp3Path)) {
-//         TagLib::MPEG::File file(mp3Path.c_str());
-//         if (!file.isValid()) {
-//             cerr << "Invalid MP3 file: " << mp3Path << endl;
-//             return;
-//         }
-
-//         TagLib::Tag *tag = file.tag();
-//         this->title = tag->title().toCString(true);
-//         this->artist = tag->artist().toCString(true);
-//         this->album = tag->album().toCString(true);
-//         this->year = to_string(tag->year());
-//         this->duration = to_string(file.audioProperties()->lengthInSeconds());
-//     } else {
-//         cerr << "MP3 file not found: " << mp3Path << endl;
-//     }
-// }
 
 // void Song::getAllMetadata() {
 //     if (!fs::exists(this->path)) {
 //         throw runtime_error("Song's path does not exist: " + this->path);
 //     } else {
-//         fs::path filePath(this->path);
-//         string extension = filePath.extension().string();
-        
-//         if (extension == ".mp3") {
-//             TagLib::FileRef ref(this->path.c_str());
-//             if (!ref.isNull() && ref.tag()) {
-//                 TagLib::Tag *tag = ref.tag();
-//                 string title = string(tag->title().toCString(true));
-//                 if (title == "") {
-//                     this->title = filePath.stem().string();
-//                 } else {
-//                     this->title = title;
-//                 }
-//                 this->artist = string(tag->artist().toCString(true));
-//                 this->album = string(tag->album().toCString(true));
-//                 this->year = to_string(tag->year());
-//                 this->duration = to_string(ref.audioProperties()->lengthInSeconds());
+//         TagLib::FileRef ref(this->path.c_str());
+//         if (!ref.isNull() && ref.tag()) {
+//             TagLib::Tag *tag = ref.tag();
+//             string title = string(tag->title().toCString(true));
+//             if (title == "") {
+//                 fs::path p(this->path);
+//                 this->title = p.stem().string();
+//             } else {
+//                 this->title = title;
 //             }
-//         } else if (extension == ".mp4") {
-//             MediaInfoLib::MediaInfo MI;
-//             MI.Open(this->path);
-
-//             this->title = MI.Get(MediaInfoLib::Stream_General, 0, __T("Title")).c_str();
-//             if (this->title.empty()) {
-//                 this->title = filePath.stem().string();
-//             }
-//             this->artist = MI.Get(MediaInfoLib::Stream_General, 0, __T("Performer")).c_str();
-//             this->album = MI.Get(MediaInfoLib::Stream_General, 0, __T("Album")).c_str();
-//             this->year = MI.Get(MediaInfoLib::Stream_General, 0, __T("Recorded_Date")).c_str();
-//             this->duration = MI.Get(MediaInfoLib::Stream_General, 0, __T("Duration")).c_str();
-
-//             // Convert duration from milliseconds to seconds
-//             if (!this->duration.empty()) {
-//                 double durationInMs = std::stod(this->duration);
-//                 this->duration = to_string(static_cast<int>(durationInMs / 1000));
-//             }
-//         } else {
-//             throw runtime_error("Unsupported file format: " + extension);
+//             this->artist = string(tag->artist().toCString(true));
+//             this->album = string(tag->album().toCString(true));
+//             this->year = to_string(tag->year());
+//             this->duration = to_string(ref.audioProperties()->lengthInSeconds());
 //         }
 //     }
+// }
+
+void Song::getAllMetadata() {
+    if (!fs::exists(this->path)) {
+        throw std::runtime_error("Song's path does not exist: " + this->path);
+    } else {
+        // Check file extension to determine if it's mp3 or mp4
+        std::string extension = fs::path(this->path).extension().string();
+        std::transform(extension.begin(), extension.end(), extension.begin(), ::tolower);
+
+        std::string audioPath;
+        bool isMp4 = false;
+        if (extension == ".mp4") {
+            // Create a temporary audio file path
+            audioPath = "temp_audio.mp3";
+
+            // Command to extract audio using ffmpeg
+            std::string command = "ffmpeg -i \"" + this->path + "\" -q:a 0 -map a \"" + audioPath + "\"";
+            // Execute the command
+            int result = std::system(command.c_str());
+            if (result != 0) {
+                throw std::runtime_error("Failed to extract audio from video file.");
+            }
+            isMp4 = true;
+        } else if (extension == ".mp3") {
+            audioPath = this->path;
+        } else {
+            throw std::runtime_error("Unsupported file format: " + extension);
+        }
+
+        // Read metadata from the audio file
+        TagLib::FileRef ref(audioPath.c_str());
+        if (!ref.isNull() && ref.tag()) {
+            TagLib::Tag *tag = ref.tag();
+            std::string title = tag->title().toCString(true);
+            if (title.empty()) {
+                fs::path p(this->path);
+                this->title = p.stem().string();
+            } else {
+                this->title = title;
+            }
+            this->artist = tag->artist().toCString(true);
+            this->album = tag->album().toCString(true);
+            this->year = std::to_string(tag->year());
+            this->duration = std::to_string(ref.audioProperties()->lengthInSeconds());
+        } else {
+            throw std::runtime_error("Failed to read metadata from audio file.");
+        }
+
+        // Append "MP4" to the title if the file is an MP4 and does not already contain "MP4"
+        if (isMp4) {
+            if (this->title.find("MP4") == std::string::npos) {
+                this->title += " MP4";
+            }
+        }
+
+        // Clean up temporary audio file if it was created
+        if (isMp4) {
+            fs::remove(audioPath);
+        }
+    }
+}
+
+//loi khi phat het mp4 ko next sang bai sau ma core dump luon
+// void Song::getAllMetadata() {
+//     if (!fs::exists(this->path)) {
+//         throw runtime_error("Song's path does not exist: " + this->path);
+//     }
+
+//     fs::path filePath(this->path);
+
+//     // Nếu là tệp .mp4, chuyển đổi sang .mp3
+//     if (filePath.extension() == ".mp4") {
+//         fs::path mp3Path = filePath.replace_extension(".mp3");
+//         if (!fs::exists(mp3Path)) {
+//             convertMP4toMP3(this->path, mp3Path.string());
+//         }
+//         // Cập nhật lại đường dẫn của file sau khi chuyển đổi
+//         this->path = mp3Path.string();
+//     }
+
+//     // Bỏ qua nếu không phải là tệp .mp3
+//     if (filePath.extension() != ".mp3") {
+//         return;
+//     }
+
+//     TagLib::FileRef ref(this->path.c_str());
+//     if (ref.isNull() || !ref.tag()) {
+//         throw runtime_error("Failed to read metadata from: " + this->path);
+//     }
+
+//     TagLib::Tag *tag = ref.tag();
+//     this->title = tag->title().isEmpty() ? filePath.stem().string() : tag->title().toCString(true);
+//     this->artist = tag->artist().isEmpty() ? "Unknown" : tag->artist().toCString(true);
+//     this->album = tag->album().isEmpty() ? "Unknown" : tag->album().toCString(true);
+//     this->year = tag->year() == 0 ? "Unknown" : to_string(tag->year());
+//     this->duration = to_string(ref.audioProperties()->lengthInSeconds());
 // }
 
 void Song::setTitle(const string& newdata) {

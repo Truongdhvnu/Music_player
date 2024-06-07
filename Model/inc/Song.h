@@ -3,6 +3,9 @@
 #include <string>
 #include <iomanip>
 #include <sstream>
+#include <filesystem>
+#include <taglib/fileref.h>
+#include <taglib/tag.h>
 
 using namespace std;
 
@@ -15,7 +18,6 @@ private:
     string year;
     string duration;
 
-    //void convertMP4toMP3();
 public:
     /*
         Just initialize path of the song, but metadata
