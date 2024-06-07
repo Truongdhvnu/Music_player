@@ -17,7 +17,7 @@ bool PlayHandler::onDisplay = false;
 
 PlayHandler::PlayHandler() : model(Model::getInstance()) {
     callback = Controller::changeHandler;
-    musicPlayer.setSongEndCallback(std::bind(&PlayHandler::updateView, this)); // Đặt callback cho musicPlayer  
+    musicPlayer.setSongEndCallback(std::bind(&PlayHandler::updateView, this)); // Đặt callback cho musicPlayer
 };
 
 PlayHandler* PlayHandler::getInstance() {
@@ -37,7 +37,6 @@ void PlayHandler::onStart(void* passData) {
         this->musicPlayer.unhideProgressBar();
         onDisplay = true;
         // Gọi hàm phát nhạc cho currentSong
-        onDisplay=true;
     } catch (out_of_range& e) {
         // do Nothing
     }
@@ -61,7 +60,7 @@ void PlayHandler::updateView() {
 
 void PlayHandler::handle(string command) {
     try {
-        int option = stoi(command) - 1; 
+        int option = stoi(command) - 1;
         switch(option) {
             case PLAY:
                 view.display((*this->model.media_manager.getCurrentSongList())[musicPlayer.getCurrentIndex()]);
@@ -72,6 +71,7 @@ void PlayHandler::handle(string command) {
                 cout << "\033[F" << "\033[101C" << "\b \b" << flush;
                 break;
             case RESUME:
+                view.display((*this->model.media_manager.getCurrentSongList())[musicPlayer.getCurrentIndex()]);
                 musicPlayer.resume();
                 cout << "\033[F" << "\033[101C" << "\b \b" << flush;
                 break;
@@ -79,22 +79,22 @@ void PlayHandler::handle(string command) {
                 change_handler(EditMetadataHandler::getInstance());
                 break;
             case NEXT:
-                PlayHandler::currentSongIndex++;
                 musicPlayer.next();
                 this->model.media_manager.setCurrentSongIndex(musicPlayer.getCurrentIndex());
                 view.display((*this->model.media_manager.getCurrentSongList())[musicPlayer.getCurrentIndex()]);
                 break;
             case PREVIOUS:
-                PlayHandler::currentSongIndex--;
                 musicPlayer.previous();
                 this->model.media_manager.setCurrentSongIndex(musicPlayer.getCurrentIndex());
                 view.display((*this->model.media_manager.getCurrentSongList())[musicPlayer.getCurrentIndex()]);
                 break;
             case VOLUME_UP:
+                view.display((*this->model.media_manager.getCurrentSongList())[musicPlayer.getCurrentIndex()]);
                 musicPlayer.volumeUp();
                 cout << "\033[F" << "\033[101C" << "\b \b" << flush;
                 break;
             case VOLUME_DOWN:
+                view.display((*this->model.media_manager.getCurrentSongList())[musicPlayer.getCurrentIndex()]);
                 musicPlayer.volumeDown();
                 cout << "\033[F" << "\033[101C" << "\b \b" << flush;
                 break;
