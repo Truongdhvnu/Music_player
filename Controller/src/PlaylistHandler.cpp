@@ -31,6 +31,6 @@ void PlaylistHandler::handle(string command) {
             change_handler(SongListHandler::getInstance());
         }
     } catch (const exception& e) {
-        cout << "Pl Handler: No actions or Invalid command\n";
+        cout << "Pl Handler: No actions or Invalid command" << endl;
     }
 }

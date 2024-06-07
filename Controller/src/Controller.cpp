@@ -40,6 +40,7 @@ void Controller::changeHandler(Handler* handler, void* paras) {
     Handel things before exit programs
 */
 int Controller::exit() {
+    this->model.media_manager.updateDatabase();
     return 0;
 }
 

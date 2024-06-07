@@ -12,6 +12,8 @@
 #include <filesystem>
 #include <iomanip>
 #include <codecvt>
+#include <vector>
+#include "Song.h"
 
 using namespace std;
 
@@ -22,7 +24,7 @@ public:
     std::string alignRight(const std::string& str, const char& gap, int width);
     std::string alignMiddle(const std::string& str, const char& gap, int width);
     string truncate(const string& text, int width);
-
+    static void displaySongs(vector<Song> songs, int pageNum);
     virtual void display_bottom();
         // cout << "--------------------------------------------------------------------------------------\n";
         // cout << "- Home: ["<< HOME << "]\t\t Go back: [" << GO_BACK << "]\t\t Forward: [" << FORWARD << "]\t\t Exit: [" << EXIT << "]   -\n";

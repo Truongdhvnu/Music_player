@@ -1,5 +1,6 @@
 #include "View.h"
 #include <iostream>
+#include "Song.h"
 
 int View::displayWidth(const std::string& str) {
     // Chuyển đổi từ UTF-8 sang UTF-32 để tính toán độ dài hiển thị
@@ -47,7 +48,7 @@ void View::display_bottom() {
     cout << alignLeft(home,' ', 30)
          << alignLeft(goback,' ', 30)
          << alignLeft(forward,' ', 30)
-         << alignLeft(exit,' ', 9) << "-" 
+         << alignLeft(exit,' ', 9) << "-"
          << endl;
     cout << alignLeft("",'-', WIDTH) << endl;
 }
@@ -71,5 +72,39 @@ string View::truncate(const std::string& str, int width) {
     } else {
         wide_str = wide_str.substr(0, width - 4);
         return converter.to_bytes(wide_str) + "...";
+    }
+}
+
+void View::displaySongs(vector<Song> songs, int pageNum) {
+    int linesPrinted = 0;
+    system("clear");
+    cout << alignMiddle("MEDIA LIST", '=', WIDTH) << endl;
+    linesPrinted++;
+    cout << endl;
+    linesPrinted++;
+    cout << alignLeft("No", ' ', 5)
+         << alignLeft("Title", ' ', 30)
+         << alignLeft("Artist", ' ', 25)
+         << alignLeft("Album", ' ', 25)
+         << alignLeft("Duration", ' ', 10)
+         << alignLeft("Year", ' ', 5)
+         << endl;
+    linesPrinted++;
+    int count = pageNum * MAX_LINES + 1;
+    for (auto it = songs.begin(); it != songs.end(); ++it) {
+        cout << alignLeft(to_string(count), ' ', 5)
+             << alignLeft((*it).getTitle(), ' ', 30)
+             << alignLeft((*it).getArtist(), ' ', 25)
+             << alignLeft((*it).getAlbum(), ' ', 25)
+             << alignLeft((*it).getDuration(), ' ', 10)
+             << alignLeft((*it).getYear(), ' ', 5)
+             << endl;
+        linesPrinted++;
+        count++;
+    }
+
+    while (linesPrinted < LENGTH - 1) {
+        cout << endl;
+        linesPrinted++;
     }
 }

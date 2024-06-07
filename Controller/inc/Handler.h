@@ -14,5 +14,6 @@ public:
     virtual void onStart(void* passData = nullptr) = 0;
     virtual void leavePage(){}
     void change_handler(Handler* handler, void* passData = nullptr);
+    // void remove_handler();
     virtual int handler_exit();
 };

@@ -34,10 +34,24 @@ void EditPlaylistView::display(Song s) {
 
 void EditPlaylistView::display_bottom() {
     cout << alignLeft("",'-', WIDTH) << endl;
-    cout << alignLeft("1. Create", ' ', WIDTH/4) 
-         << alignLeft("2. Rename", ' ', WIDTH/4) 
-         << alignLeft("3. Add", ' ', WIDTH/4)
-         << alignLeft("4. Remove", ' ', WIDTH/4)
-         << endl;  
-    SongListView::display_bottom(); 
+    // cout << alignLeft("1. Create", ' ', WIDTH/4)
+    cout << alignLeft("1. Rename", ' ', WIDTH/4)
+         << alignLeft("2. Add", ' ', WIDTH/4)
+         << alignLeft("3. Remove", ' ', WIDTH/4)
+         << endl;
+    string next = "-Next: [";
+    next = next + NEXT_PAGE + "]";
+    string pre = "Previous: [";
+    pre = pre + PREVIOUS_PAGE + "]";
+    string sortname = "SortName: [";
+    sortname = sortname + SORT_BY_NAME + "]";
+    string sortartist = "SortArtist: [";
+    sortartist = sortartist + SORT_BY_ARTIST + "]-";
+    cout << alignLeft("",'-', WIDTH) << endl;
+    cout << alignLeft(next,' ', 28)
+         << alignLeft(pre,' ', 28)
+         << alignLeft(sortname,' ', 28)
+         << alignRight(sortartist,' ', 0)
+         << endl;
+    View::display_bottom();
 }

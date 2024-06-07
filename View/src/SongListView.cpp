@@ -14,9 +14,9 @@ void SongListView::display_bottom() {
     cout << alignLeft(next,' ', 28)
          << alignLeft(pre,' ', 28)
          << alignLeft(sortname,' ', 28)
-         << alignRight(sortartist,' ', 0) 
+         << alignRight(sortartist,' ', 0)
          << endl;
-    View::display_bottom();       
+    View::display_bottom();
 }
 
 void SongListView::displaySongs(vector<Song> songs, int pageNum) {
