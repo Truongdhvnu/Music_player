@@ -135,7 +135,8 @@ int MediaManager::renamePlaylist(int PlaylistNum, const string& newName) {
     }
 };
 
-void MediaManager::createPlaylist(Playlist& playlist) {
+void MediaManager::createPlaylist(string name) {
+    Playlist playlist(name);
     if (this->isExistPlayList(playlist.getName()) < 0) {
         playlist.newCreated = true;
         this->playlists.push_back(playlist);
