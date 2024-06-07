@@ -44,4 +44,6 @@ public:
     string getYear() const;
 
     string getDuration() const;
+
+    void convertMP4toMP3(const string& mp4Path, const string& mp3Path);
 };
