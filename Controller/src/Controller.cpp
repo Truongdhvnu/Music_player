@@ -18,6 +18,15 @@ Controller::Controller() {
     Controller::recentView[view_index]->onStart();
 }
 
+void Controller::PopHandler() {
+    int temp = view_index;
+    while ((long unsigned int)temp < recentView.size() - 1)
+    {
+        recentView.pop_back();
+    }
+    
+}
+
 void Controller::changeHandler(Handler* handler, void* paras) {
     while (recentView.size() > MAX_HISTORY_PAGE - 1)
     {

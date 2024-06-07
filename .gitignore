@@ -1,3 +1,4 @@
 .vscode/
 Build/*.o
 Build/main
+music/*.mp3
