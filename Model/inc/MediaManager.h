@@ -56,7 +56,7 @@ public:
 
     int renamePlaylist(int PlaylistNum, const string& newName);
 
-    void createPlaylist(Playlist& playlist);
+    void createPlaylist(string name);
 
     /*
         Remeber to store name to listDeleted to update data when close program

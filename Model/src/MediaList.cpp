@@ -31,7 +31,7 @@ Song& MediaList::getSong(int index) {
 };
 
 vector<Song>& MediaList::getSongList() {
-    return this->songList;        
+    return this->songList;
 }
 
 int MediaList::getNumberOfSong() {
@@ -56,12 +56,12 @@ vector<Song>& MediaList::sort(int option) {
 }
 
 vector<Song> MediaList::getPageOfSong(int pageNum) {
-    if (pageNum < 0 || pageNum * MAX_LINES >= this->getNumberOfSong() ) {
+    if ((pageNum < 0 || pageNum * MAX_LINES >= this->getNumberOfSong()) && (pageNum != 0)) {
         throw out_of_range("No data " + to_string(pageNum) + "\n");
     }
 
     int numberOfSong = this->getNumberOfSong() - MAX_LINES*(pageNum);
-    numberOfSong = numberOfSong < MAX_LINES ? numberOfSong : MAX_LINES; 
+    numberOfSong = numberOfSong < MAX_LINES ? numberOfSong : MAX_LINES;
     vector<Song> result;
     // cout << "Number of song " << this->getNumberOfSong() << "  " << numberOfSong << endl;
     for(int i = 0; i < numberOfSong; i++) {

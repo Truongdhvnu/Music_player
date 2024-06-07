@@ -24,10 +24,29 @@ void ChoosePlaylistHandler::onStart(void* passData) {
 
 void ChoosePlaylistHandler::handle(string command) {
     try {
-        int plist_num = stoi(command);
-        if (plist_num > 0) {
-            this->model.media_manager.setActivePList(plist_num - 1);
-            change_handler(EditPlaylistHandler::getInstance());
+        /* Clear cin buffer */
+        std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+        if (command == "c") {
+            cout << "Enter name of new playlist: " << flush;
+            getline(cin, command);
+            this->model.media_manager.createPlaylist(command);
+            this->onStart();
+        }
+        else if (command == "d") {
+            cout << "Choose index playlist to delete: " << flush;
+            cin >> command;
+            int plist_num = stoi(command);
+            if (plist_num > 0) {
+                this->model.media_manager.deletePlaylist(plist_num - 1);
+            }
+            this->onStart();
+        }
+        else {
+            int plist_num = stoi(command);
+            if (plist_num > 0) {
+                this->model.media_manager.setActivePList(plist_num - 1);
+                change_handler(EditPlaylistHandler::getInstance());
+            }
         }
     } catch (const exception& e) {
         cout << "Pl Handler: No actions or Invalid command"  << endl;
