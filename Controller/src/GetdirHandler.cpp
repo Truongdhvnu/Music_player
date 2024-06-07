@@ -7,6 +7,7 @@
 #include "SongListHandler.h"
 
 // GetdirHandler* GetdirHandler::instancePtr = nullptr;
+// GetdirHandler* GetdirHandler::instancePtr = nullptr;
 
 GetdirHandler::GetdirHandler() : model(Model::getInstance()){
     callback = Controller::changeHandler;
@@ -22,6 +23,7 @@ GetdirHandler* GetdirHandler::getInstance() {
     static GetdirHandler in;
     return &in;
 }
+
 void GetdirHandler::setGetdirViewPath(string path) {
     view.path = path;
 }
@@ -70,6 +72,7 @@ void GetdirHandler::handle(string command) {
 }
 
 void GetdirHandler::onStart(void* passData) {
+    (void)passData;
     this->view.display();
     usbmonitor.stopMonitoring();
     usbmonitor.startMonitoring();

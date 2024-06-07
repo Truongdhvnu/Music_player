@@ -18,6 +18,8 @@ vpath %.cpp $(SRCDIR)
 $(OBJDIR)/%.o: %.cpp
 	$(CC) $(CFLAGS) -c $< $(LDFLAGS) -o $@
 
+# build: clean obj_build
+
 build: obj_build
 
 obj_build: $(OBJS)

@@ -1,17 +1,16 @@
 #include "EditPlaylistView.h"
 #include <iostream>
 
-void EditPlaylistView::displaySongs(vector<Song> songs, int pageNum) {
+void EditPlaylistView::displaySongs(vector<Song> songs,int pageNum) {
     View::displaySongs(songs, pageNum);
-    this->display_bottom();
+    this->display_bottom();      
 }
 
 void EditPlaylistView::display_bottom() {
     cout << alignLeft("",'-', WIDTH) << endl;
-    // cout << alignLeft("1. Create", ' ', WIDTH/4)
-    cout << alignLeft("1. Rename", ' ', WIDTH/4)
-         << alignLeft("2. Add", ' ', WIDTH/4)
-         << alignLeft("3. Remove", ' ', WIDTH/4)
+    cout << alignLeft("-1. Rename", ' ', WIDTH/4)
+         << alignMiddle("2. Add", ' ', WIDTH/2)
+         << alignRight("3. Remove-", ' ', WIDTH/4)
          << endl;
     string next = "-Next: [";
     next = next + NEXT_PAGE + "]";

@@ -53,6 +53,19 @@ void View::display_bottom() {
     cout << alignLeft("",'-', WIDTH) << endl;
 }
 
+string View::truncate(const std::string& str, int width) {
+    std::wstring_convert<std::codecvt_utf8<wchar_t>> converter;
+    std::wstring wide_str = converter.from_bytes(str);
+
+    if (wide_str.length() <= (long unsigned int)(width - 1)) {
+        return converter.to_bytes(wide_str); 
+    
+    } else {
+        wide_str = wide_str.substr(0, width - 4);
+        return converter.to_bytes(wide_str) + "...";
+    }
+}
+
 void View::displaySongs(vector<Song> songs, int pageNum) {
     int linesPrinted = 0;
     system("clear");
@@ -70,12 +83,12 @@ void View::displaySongs(vector<Song> songs, int pageNum) {
     linesPrinted++;
     int count = pageNum * MAX_LINES + 1;
     for (auto it = songs.begin(); it != songs.end(); ++it) {
-        cout << alignLeft(to_string(count), ' ', 5)
-             << alignLeft((*it).getTitle(), ' ', 30)
-             << alignLeft((*it).getArtist(), ' ', 25)
-             << alignLeft((*it).getAlbum(), ' ', 25)
-             << alignLeft((*it).getDuration(), ' ', 10)
-             << alignLeft((*it).getYear(), ' ', 5)
+        cout << alignLeft(to_string(count), ' ', NO_COL)
+             << alignLeft(truncate((*it).getTitle(), TITLE_COL), ' ', TITLE_COL) 
+             << alignLeft(truncate((*it).getArtist(), ARTIST_COL), ' ', ARTIST_COL) 
+             << alignLeft(truncate((*it).getAlbum(), ALBUM_COL), ' ', ALBUM_COL)
+             << alignLeft(truncate((*it).getDuration(), DURATION_COL), ' ', DURATION_COL)
+             << alignLeft(truncate((*it).getYear(), YEAR_COL), ' ', YEAR_COL)
              << endl;
         linesPrinted++;
         count++;
@@ -85,4 +98,5 @@ void View::displaySongs(vector<Song> songs, int pageNum) {
         cout << endl;
         linesPrinted++;
     }
+    // cout << "Page " << pageNum + 1 << " of " << (songs.size() / 25) + 1 << endl;
 }

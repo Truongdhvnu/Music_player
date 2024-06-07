@@ -14,7 +14,8 @@ void GetdirView::display() {
     cout << "2. Choose another path" << endl;
     linesPrinted++;
     cout << "3. Current path: " << path << endl;
-
+    linesPrinted++;
+    
     while (linesPrinted < LENGTH - 1) {
         cout << endl;
         linesPrinted++;

@@ -1,12 +1,12 @@
 #pragma once
 #include "Handler.h"
-#include "PlaylistView.h"
+#include "CreatePlaylistView.h"
 #include "Model.h"
 #include "string"
 
 class ChoosePlaylistHandler : public Handler {
 private:
-    PlaylistView view;
+    CreatePlaylistView view;
     Model& model;
     ChoosePlaylistHandler();
 public:

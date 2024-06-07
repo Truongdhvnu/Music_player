@@ -1,4 +1,3 @@
-#pragma once
 #include "Song.h"
 #include <vector>
 #include "configs.h"
@@ -24,7 +23,7 @@ bool MediaList::sortByArtist(const Song &a, const Song &b) {
 }
 
 Song& MediaList::getSong(int index) {
-    if ((songList.size() > index) && (index >= 0)) {
+    if ((songList.size() > (long unsigned int)index) && (index >= 0)) {
         return songList[index];
     } else {
         throw out_of_range("getSong: song index is out of range\n");

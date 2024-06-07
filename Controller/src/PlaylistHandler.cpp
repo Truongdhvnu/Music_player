@@ -18,6 +18,7 @@ PlaylistHandler* PlaylistHandler::getInstance() {
 }
 
 void PlaylistHandler::onStart(void* passData) {
+    (void)passData;
     vector<string> plists = this->model.media_manager.getPlaylistNames();
     this->view.display(plists);
 }

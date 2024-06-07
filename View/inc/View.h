@@ -15,8 +15,6 @@
 #include <vector>
 #include "Song.h"
 
-#define WIDTH 100
-#define LENGTH 10
 using namespace std;
 
 class View {
@@ -25,6 +23,7 @@ public:
     static std::string alignLeft(const std::string& str, const char& gap, int width);
     static std::string alignRight(const std::string& str, const char& gap, int width);
     static std::string alignMiddle(const std::string& str, const char& gap, int width);
+    static std::string truncate(const string& text, int width);
     static void displaySongs(vector<Song> songs, int pageNum);
     virtual void display_bottom();
         // cout << "--------------------------------------------------------------------------------------\n";

@@ -50,7 +50,7 @@ int MediaManager::getNumberofSong() {
 }
 
 void MediaManager::setActivePList(int PlaylistNum) {
-    if (PlaylistNum < 0 || PlaylistNum >= this->playlists.size()) {
+    if (PlaylistNum < 0 || (long unsigned int)PlaylistNum >= this->playlists.size()) {
         throw out_of_range("Playlist no." + to_string(PlaylistNum) + "does not exits");
     } else {
         this->currentMediaList = &playlists[PlaylistNum].initialize();
@@ -128,7 +128,7 @@ int MediaManager::renamePlaylist(int PlaylistNum, const string& newName) {
         throw runtime_error("rename Plist: Plist with name " + newName + "has already exíted\n");
     }
 
-    if (PlaylistNum < 0 || PlaylistNum >= this->playlists.size()) {
+    if (PlaylistNum < 0 || (long unsigned int)PlaylistNum >= this->playlists.size()) {
         throw out_of_range("Playlist rename: Index of playlist out of bound " + to_string(PlaylistNum) + "\n");
     } else {
         return this->playlists[PlaylistNum].rename(newName);
@@ -148,7 +148,7 @@ void MediaManager::createPlaylist(Playlist& playlist) {
     Remeber to store name to listDeleted to update data when close program
 */
 int MediaManager::deletePlaylist(int pos) {
-    if (pos >= 0 && pos < this->playlists.size()) {
+    if (pos >= 0 && (long unsigned int)pos < this->playlists.size()) {
         this->listDeleted.push_back(this->playlists[pos].getName());
         this->playlists.erase(this->playlists.begin() + pos);
         return 0;

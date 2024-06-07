@@ -13,4 +13,5 @@ public:
     static PlaylistHandler* getInstance();
     void onStart(void* passData = nullptr);
     void handle(string command);
+    void leavePage(){} 
 };

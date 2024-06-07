@@ -15,4 +15,5 @@ public:
     static SongListHandler* getInstance();
     void onStart(void* passData = nullptr);
     void handle(string command);
+    void leavePage(){}  
 };

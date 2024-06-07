@@ -21,5 +21,5 @@ void SongListView::display_bottom() {
 
 void SongListView::displaySongs(vector<Song> songs, int pageNum) {
     View::displaySongs(songs, pageNum);
-    this->display_bottom();
+    this->display_bottom(); 
 }
