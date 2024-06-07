@@ -19,11 +19,11 @@ using namespace std;
 
 class View {
 public:
-    int displayWidth(const std::string& str);
-    std::string alignLeft(const std::string& str, const char& gap, int width);
-    std::string alignRight(const std::string& str, const char& gap, int width);
-    std::string alignMiddle(const std::string& str, const char& gap, int width);
-    string truncate(const string& text, int width);
+    static int displayWidth(const std::string& str);
+    static std::string alignLeft(const std::string& str, const char& gap, int width);
+    static std::string alignRight(const std::string& str, const char& gap, int width);
+    static std::string alignMiddle(const std::string& str, const char& gap, int width);
+    static std::string truncate(const string& text, int width);
     static void displaySongs(vector<Song> songs, int pageNum);
     virtual void display_bottom();
         // cout << "--------------------------------------------------------------------------------------\n";
