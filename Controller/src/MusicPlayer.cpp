@@ -218,6 +218,8 @@ int MusicPlayer::getFileDuration(const std::string& filePath) {
 }
 
 void MusicPlayer::displayProgress() {
+    const int progressLine = 31; // Dòng muốn đặt con trỏ
+    const int progressColumn = 1; // Cột muốn đặt con trỏ
     while (!stopProgress) {
         std::string currentTime = getCurrentTime();
         std::string totalTime = getDuration();
@@ -231,29 +233,17 @@ void MusicPlayer::displayProgress() {
         int pos = static_cast<int>((static_cast<double>(elapsedSeconds) / totalDuration) * progressLength);
         std::string progressBar = std::string(pos, '#') + std::string(progressLength - pos, '.');
         {
-            //std::lock_guard<std::mutex> lock(mtx);
-            //std::cout << "\r" << currentTime << " [" << progressBar << "] " << totalTime<< std::flush;
-               
-            // Save current cursor position
-            std::cout << "\033[s";
-            // Move cursor to a specific line (for example, line 25)
-            std::cout << "\033[25;1H";
-            // Print the progress bar at the specific position
-            std::cout << currentTime << " [" << progressBar << "] " << totalTime << std::flush;
-            // Restore cursor position
-            std::cout << "\033[u";
-
-            // std::lock_guard<std::mutex> lock(mtx);
-            // std::streampos oldPos = std::cout.tellp(); // Lưu vị trí hiện tại của con trỏ
-            // std::cout << currentTime << " [" << progressBar << "] " << totalTime << std::endl; // In ra thông tin mới
-            // std::cout.seekp(oldPos - (currentTime.length() + progressLength + 6 + totalTime.length() + 2)); // Di chuyển con trỏ lên 2 dòng
-            // std::cout << currentTime << " [" << progressBar << "] " << totalTime << std::endl << std::endl; // In ra thông tin mới
-            // std::cout.seekp(oldPos); // Trả con trỏ về vị trí cũ
+            std::lock_guard<std::mutex> lock(mtx);
+            //std::cout << "\r" << currentTime << " [" << progressBar << "] " << totalTime<< std::flush; 
+            // Di chuyển con trỏ đến dòng 31, cột 1
+            std::cout << "\033[" << progressLine << ";" << progressColumn << "H";
+            // Xóa toàn bộ dòng
+            std::cout << "\033[2K";
+            // In lại thanh tiến trình
+            std::cout << currentTime << " [" << progressBar << "] " << totalTime << std::flush; 
         }
-        std::this_thread::sleep_for(std::chrono::milliseconds(1000));
+        std::this_thread::sleep_for(std::chrono::milliseconds(500));
     }
-    stopProgress = true;
-    // std::cout << std::endl;
     stopProgress = true; // Đảm bảo rằng biến này được đặt lại khi thread kết thúc
-    std::cout << std::endl;
+    //std::cout << std::endl;
 }
