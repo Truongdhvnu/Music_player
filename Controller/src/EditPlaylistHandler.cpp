@@ -24,7 +24,7 @@ void EditPlaylistHandler::onStart(void* passData) {
         vector<Song> songs = this->model.media_manager.getPageOfSong(0);
         this->view.displaySongs(songs, 0);
     } catch (out_of_range& e) {
-        // cout << e.what() << endl;
+        cout << e.what() << endl;
     }
 }
 
@@ -53,7 +53,6 @@ void EditPlaylistHandler::handle(string command) {
                     temp = this->model.media_manager.getActiveLibrary();
                     temp->getSongFromPath(input);
                     change_handler(ChooseSongsHandler::getInstance(), (void*)pl);
-                    this->onStart();
                     break;
                 case 3:
                     cout << "Input song index: " << flush;
