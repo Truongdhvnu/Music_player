@@ -10,7 +10,7 @@ using namespace std;
 
 class EditPlaylistView : public View {
 public:
-    void display_bottom();
+    void displayBottom();
     void displaySongs(vector<Song> songs, int pageNumn, int size);
     // void display(Song s);
 };

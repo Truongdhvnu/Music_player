@@ -13,13 +13,13 @@ ChoosePlaylistHandler::ChoosePlaylistHandler() : model(Model::getInstance()) {
 };
 
 ChoosePlaylistHandler* ChoosePlaylistHandler::getInstance() {
-    static ChoosePlaylistHandler pl = ChoosePlaylistHandler();
+    static ChoosePlaylistHandler pl;
     return &pl;
 }
 
 void ChoosePlaylistHandler::onStart(void* passData) {
     (void)passData;
-    vector<string> plists = this->model.media_manager.getPlaylistNames();
+    vector<string> plists = this->model.mediaManager.getPlaylistNames();
     this->view.display(plists);
 }
 
@@ -30,7 +30,7 @@ void ChoosePlaylistHandler::handle(string command) {
         if (command == "c") {
             cout << "Enter name of new playlist: " << flush;
             getline(cin, command);
-            this->model.media_manager.createPlaylist(command);
+            this->model.mediaManager.createPlaylist(command);
             this->onStart();
         }
         else if (command == "d") {
@@ -38,14 +38,14 @@ void ChoosePlaylistHandler::handle(string command) {
             cin >> command;
             int plist_num = stoi(command);
             if (plist_num > 0) {
-                this->model.media_manager.deletePlaylist(plist_num - 1);
+                this->model.mediaManager.deletePlaylist(plist_num - 1);
             }
             this->onStart();
         }
         else {
             int plist_num = stoi(command);
             if (plist_num > 0) {
-                this->model.media_manager.setActivePList(plist_num - 1);
+                this->model.mediaManager.setActivePList(plist_num - 1);
                 changeHandler(EditPlaylistHandler::getInstance());
             }
         }

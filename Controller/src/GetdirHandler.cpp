@@ -14,12 +14,6 @@ GetdirHandler::GetdirHandler() : model(Model::getInstance()){
 }
 
 GetdirHandler* GetdirHandler::getInstance() {
-    // if (instancePtr == nullptr) {
-    //     GetdirHandler* instancePtr = new GetdirHandler();
-    //     return instancePtr;
-    // } else {
-    //     return instancePtr;
-    // }
     static GetdirHandler in;
     return &in;
 }
@@ -41,9 +35,8 @@ void GetdirHandler::handle(string command) {
                 setUsbPath(directory);
                 view.display();
                 usbmonitor.stopMonitoring();
-                this->model.media_manager.setActiveLibrary();
-                Library* lib=this->model.media_manager.getActiveLibrary();
-                (*lib).getSongFromPath(directory);
+                this->model.mediaManager.setActiveLibrary();
+                this->model.mediaManager.getLibrary().getSongFromPath(directory);
                 changeHandler(SongListHandler::getInstance());
             }
             else{
@@ -59,22 +52,28 @@ void GetdirHandler::handle(string command) {
             cout <<"Input Directory: " << flush;
             cin >> directory;
             setPath(directory);
-            this->model.media_manager.setActiveLibrary();
-            Library* lib=this->model.media_manager.getActiveLibrary();
-            (*lib).getSongFromPath(directory);
+            this->model.mediaManager.setActiveLibrary();
+            this->model.mediaManager.getLibrary().getSongFromPath(directory);
+            if (!this->model.mediaManager.getLibrary().isAlreadyInCurDirs(directory)) {
+                cout << "Do you wanna add this folder to recent dirs? [y/n]: ";
+                string input;
+                cin >> input;
+                if (input == "y" || input == "Y") {
+                    this->model.mediaManager.getLibrary().addPathToCurrentDirs(directory);
+                }
+            }
             changeHandler(SongListHandler::getInstance());
         } else if (command == "3") {
             usbmonitor.stopMonitoring();
-            this->model.media_manager.setActiveLibrary();
-            Library* lib=this->model.media_manager.getActiveLibrary();
-            (*lib).getSongFromPath(view.path);
+            this->model.mediaManager.setActiveLibrary();
+            this->model.mediaManager.getLibrary().getSongFromPath(view.path);
             changeHandler(SongListHandler::getInstance());
         }
         else {
             cout << "No actions or Invalid command" << endl;
         }
     } catch (runtime_error& e) {
-        cout << e.what() << endl;
+        cout << "Getdir: " << e.what() << endl;
     }
 }
 

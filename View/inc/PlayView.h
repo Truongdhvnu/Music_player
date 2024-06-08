@@ -9,5 +9,5 @@ using namespace std;
 class PlayView : public View {
 public:
     void display(Song s);
-    void display_bottom();
+    void displayBottom();
 };

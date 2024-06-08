@@ -25,19 +25,19 @@ bool MediaManager::isPlaylistActive() {
     return playListActive;
 }
 
-int MediaManager::getCurrentSongIndex() {
+int MediaManager::getCurSongIndex() {
     if (playListActive) {
-        return currentPlistSongIndex;
+        return curPlistSongIndex;
     } else {
-        return currentLibSongIndex;
+        return curLibSongIndex;
     }
 }
 
-void MediaManager::setCurrentSongIndex(int data) {
+void MediaManager::setCurSongIndex(int data) {
     if (playListActive) {
-        currentPlistSongIndex = data;
+        curPlistSongIndex = data;
     } else {
-        currentLibSongIndex = data;
+        curLibSongIndex = data;
     }
 }
 
@@ -53,6 +53,7 @@ void MediaManager::setActivePList(int PlaylistNum) {
     if (PlaylistNum < 0 || (long unsigned int)PlaylistNum >= this->playlists.size()) {
         throw out_of_range("Playlist no." + to_string(PlaylistNum) + "does not exits");
     } else {
+        this->curPlistSongIndex = -1;
         this->currentMediaList = &playlists[PlaylistNum].initialize();
         playListActive = true;
         this->activePlistIndex = PlaylistNum;
@@ -60,19 +61,11 @@ void MediaManager::setActivePList(int PlaylistNum) {
 }
 
 int MediaManager::getActivePListIndex() {
-    // if (playListActive) {
-        return this->activePlistIndex;
-    // } else {
-    //     return -1;
-    // }
+    return this->activePlistIndex;
 }
 
-Playlist* MediaManager::getActivePlaylist() {
-    if (playListActive == true) {
-        return (Playlist*)this->currentMediaList;
-    } else {
-        return nullptr;
-    }
+Playlist& MediaManager::getActivePlaylist() {
+    return this->playlists[activePlistIndex];
 }
 
 void MediaManager::setActiveLibrary() {
@@ -80,12 +73,8 @@ void MediaManager::setActiveLibrary() {
     playListActive = false;
 }
 
-Library* MediaManager::getActiveLibrary() {
-    if (playListActive == false) {
-        return (Library*)this->currentMediaList;
-    } else {
-        return nullptr;
-    }
+Library& MediaManager::getLibrary() {
+    return this->songLib;
 }
 
 vector<string> MediaManager::getPlaylistNames() {
@@ -95,19 +84,42 @@ vector<string> MediaManager::getPlaylistNames() {
     }
     return result;
 }
-Song& MediaManager::getCurrentSong() {
-    return (*this->currentMediaList).getSong(this->getCurrentSongIndex());
+
+Song& MediaManager::getCurSong() {
+    return (*this->currentMediaList).getSong(this->getCurSongIndex());
+}
+
+int MediaManager::getCurPageOfSongIndex() {
+    if(playListActive) {
+        return curPlistPageOfSong;
+    } else {
+        return curLibPageOfSong;
+    }
+}
+
+vector<Song> MediaManager::getCurPageOfSong() {
+    if(playListActive) {
+        return this->currentMediaList->getPageOfSong(curPlistPageOfSong);
+    } else {
+        return this->currentMediaList->getPageOfSong(curLibPageOfSong);
+    }
 };
 
 vector<Song> MediaManager::getPageOfSong(int pageNum) {
-    return this->currentMediaList->getPageOfSong(pageNum);
+    vector<Song> result = this->currentMediaList->getPageOfSong(pageNum);
+    if(playListActive) {
+        curPlistPageOfSong = pageNum;
+    } else {
+        curLibPageOfSong = pageNum;
+    }
+    return result;
 };
 
-vector<Song>& MediaManager::sortCurrentList(int option) {
+vector<Song>& MediaManager::sortCurList(int option) {
     return this->currentMediaList->sort(option);
 }
 
-vector<Song>* MediaManager::getCurrentSongList() {
+vector<Song>* MediaManager::getCurSongList() {
     return &this->currentMediaList->getSongList();
 }
 
@@ -150,10 +162,10 @@ void MediaManager::createPlaylist(string name) {
 */
 int MediaManager::deletePlaylist(int pos) {
     if (pos >= 0 && (long unsigned int)pos < this->playlists.size()) {
-        this->playlists.erase(this->playlists.begin() + pos);
         if (!this->playlists[pos].newCreated) {
             this->listDeleted.push_back(this->playlists[pos].getName());
         }
+        this->playlists.erase(this->playlists.begin() + pos);
         return 0;
     } else {
         throw runtime_error("delete Plist: Playlist index out of range\n");
@@ -211,23 +223,23 @@ void MediaManager::updateDatabase() {
 //     cout << endl;
 //     m.updateDatabase();
 
-//     vector<Song> songs = m.sortCurrentList(SORT_AZ);
+//     vector<Song> songs = m.sortCurList(SORT_AZ);
 //     cout <<"Sort by name AZ " << songs.size() << "\n";
 //     for (Song s: songs) {
 //         cout << s.getTitle() << "\n";
 //     }
 //     cout << endl;
 
-//     m.sortCurrentList(SORT_ZA);
-//     songs = m.getCurrentSongList();
+//     m.sortCurList(SORT_ZA);
+//     songs = m.getCurSongList();
 //     cout <<"Sort by name ZA " << songs.size() << "\n";
 //     for (Song s: songs) {
 //         cout << s.getTitle() << "\n";
 //     }
 //     cout << endl;
 
-//     m.sortCurrentList(SORT_ARTIST);
-//     songs = m.getCurrentSongList();
+//     m.sortCurList(SORT_ARTIST);
+//     songs = m.getCurSongList();
 //     cout <<"Sort by name ARTIST " << songs.size() << "\n";
 //     for (Song s: songs) {
 //         cout << s.getTitle() << "\n";
@@ -237,7 +249,7 @@ void MediaManager::updateDatabase() {
 //     m.setActiveLibrary();
 //     Library* now = m.getActiveLibrary();
 //     (*now).getSongFromPath("music");
-//     m.sortCurrentList(SORT_ZA);
+//     m.sortCurList(SORT_ZA);
 //     songs = m.getPageOfSong(0);
 //     for(Song s: songs) {
 //         cout << s.getTitle() << endl;

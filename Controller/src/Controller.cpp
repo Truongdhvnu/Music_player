@@ -19,15 +19,7 @@ Controller::Controller() {
 }
 
 void Controller::PopHandler(void* paras) {
-    // int temp = view_index;
-    // while ((long unsigned int)temp < recentView.size() - 1)
-    // {
-    //     recentView.pop_back();
-    // }
-    // recentView[view_index]->leavePage();
     recentView.pop_back();
-
-    // view_index--;
     recentView[view_index]->onStart(paras);
 }
 
@@ -49,11 +41,8 @@ void Controller::changeHandler(Handler* handler, void* paras) {
     recentView[view_index]->onStart(paras);
 }
 
-/*
-    Handel things before exit programs
-*/
 int Controller::exit() {
-    this->model.media_manager.updateDatabase();
+    this->model.mediaManager.updateDatabase();
     return 0;
 }
 
@@ -87,9 +76,3 @@ void Controller::run() {
         }
     }
 }
-
-// int main() {
-//     Controller c;
-//     c.run();
-//     return 0;
-// }

@@ -8,11 +8,6 @@
 #include "display.h"
 #include "EditMetadataHandler.h"
 
-/*
-
-    ! Change currentSongIndex to media_maner.getCurrentSongIndex()
-
-*/
 bool PlayHandler::onDisplay = false;
 
 PlayHandler::PlayHandler() : model(Model::getInstance()) {
@@ -21,24 +16,25 @@ PlayHandler::PlayHandler() : model(Model::getInstance()) {
 };
 
 PlayHandler* PlayHandler::getInstance() {
-    static PlayHandler pl = PlayHandler();
+    static PlayHandler pl;
     return &pl;
 }
 
 void PlayHandler::onStart(void* passData) {
-    try {
-        if (passData != nullptr) {
-            this->model.media_manager.setCurrentSongIndex(*((int*)passData) - 1);
-        }
-        Song currentSong = (*this->model.media_manager.getCurrentSongList())[this->model.media_manager.getCurrentSongIndex()];
-        this->view.display(currentSong);
-        this->musicPlayer.setPlaylist(this->model.media_manager.getCurrentSongList());
-        this->musicPlayer.setCurrentIndex(this->model.media_manager.getCurrentSongIndex());
-        this->musicPlayer.unhideProgressBar();
-        onDisplay = true;
-        // Gọi hàm phát nhạc cho currentSong
-    } catch (out_of_range& e) {
-        // do Nothing
+    int preIndex = this->model.mediaManager.getCurSongIndex();
+    if (passData != nullptr) {
+        this->model.mediaManager.setCurSongIndex(*((int*)passData) - 1);
+    }
+
+    Song currentSong = this->model.mediaManager.getCurSong();
+    this->view.display(currentSong);
+    this->musicPlayer.setPlaylist(this->model.mediaManager.getCurSongList());
+    this->musicPlayer.setCurrentIndex(this->model.mediaManager.getCurSongIndex());
+    this->musicPlayer.unhideProgressBar();
+    onDisplay = true;
+
+    if((passData != nullptr && *((int*)passData) != preIndex + 1)) {
+        musicPlayer.play(this->model.mediaManager.getCurSong());
     }
 }
 
@@ -48,23 +44,21 @@ void PlayHandler::leavePage() {
 }
 
 void PlayHandler::updateView() {
-    this->model.media_manager.setCurrentSongIndex(musicPlayer.getCurrentIndex());
+    this->model.mediaManager.setCurSongIndex(musicPlayer.getCurrentIndex());
     if(onDisplay) {
         this->changeHandler(PlayHandler::getInstance());
     } else {
         musicPlayer.hiddenProgressBar();
     }
-
 }
-
 
 void PlayHandler::handle(string command) {
     try {
         int option = stoi(command) - 1;
         switch(option) {
-            case PLAY:
-                view.display((*this->model.media_manager.getCurrentSongList())[musicPlayer.getCurrentIndex()]);
-                musicPlayer.play((*this->model.media_manager.getCurrentSongList())[musicPlayer.getCurrentIndex()]);
+            case REPLAY:
+                view.display(this->model.mediaManager.getCurSong());
+                musicPlayer.play(this->model.mediaManager.getCurSong());
                 break;
             case PAUSE:
                 musicPlayer.pause();
@@ -79,13 +73,13 @@ void PlayHandler::handle(string command) {
                 break;
             case NEXT:
                 musicPlayer.next();
-                this->model.media_manager.setCurrentSongIndex(musicPlayer.getCurrentIndex());
-                view.display((*this->model.media_manager.getCurrentSongList())[musicPlayer.getCurrentIndex()]);
+                this->model.mediaManager.setCurSongIndex(musicPlayer.getCurrentIndex());
+                view.display(this->model.mediaManager.getCurSong());
                 break;
             case PREVIOUS:
                 musicPlayer.previous();
-                this->model.media_manager.setCurrentSongIndex(musicPlayer.getCurrentIndex());
-                view.display((*this->model.media_manager.getCurrentSongList())[musicPlayer.getCurrentIndex()]);
+                this->model.mediaManager.setCurSongIndex(musicPlayer.getCurrentIndex());
+                view.display(this->model.mediaManager.getCurSong());
                 break;
             case VOLUME_UP:
                 musicPlayer.volumeUp();

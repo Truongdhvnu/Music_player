@@ -10,7 +10,7 @@ void GetdirView::display() {
     cout << "2. Choose another path" << endl;
     cout << "3. Current path: " << path << endl;
     View::alignLength();
-    View::display_bottom();
+    View::displayBottom();
 }
 
 void GetdirView::displaypath(string directory){

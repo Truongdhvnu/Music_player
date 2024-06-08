@@ -11,5 +11,5 @@ void PlaylistView::display(vector<string> plists) {
         cout << i + 1 << ". " << plists[i] << endl;
     }
     View::alignLength();
-    View::display_bottom();
+    View::displayBottom();
 }

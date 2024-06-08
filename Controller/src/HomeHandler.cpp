@@ -30,9 +30,8 @@ void HomeHandler::handle(string command) {
         } else if (command == "2") {
             changeHandler(PlaylistHandler::getInstance());
         } else if (command == "3") {
-            this->model.media_manager.setActiveLibrary();
-            Library* mylib = this->model.media_manager.getActiveLibrary();
-            (*mylib).getSongFromCurrentDirs();
+            this->model.mediaManager.setActiveLibrary();
+            this->model.mediaManager.getLibrary().getSongFromCurrentDirs();
             changeHandler(SongListHandler::getInstance());
         } else if (command == "4") {
             changeHandler(ChoosePlaylistHandler::getInstance());
@@ -41,21 +40,11 @@ void HomeHandler::handle(string command) {
             cout << "No actions or Invalid command" << endl;
         }
     } catch (runtime_error& e) {
-        cout << e.what() << endl;
+        cout << "Homehandler: " << e.what() << endl;
     }
 }
 
 void HomeHandler::onStart(void* passData) {
     (void)passData;
     this->view.display();
-    // this->view.display_bottom();
 }
-
-
-// int main() {
-//     HomeHandler* h = HomeHandler::getInstance();
-//     h->onStart();
-//     string s;
-//     cin >> s;
-//     h->handle(s);
-// }

@@ -10,7 +10,6 @@
 using namespace std;
 namespace fs = std::filesystem;
 
-
 Playlist::Playlist(string name) : name(name) {};
 
 /*
@@ -19,7 +18,7 @@ Playlist::Playlist(string name) : name(name) {};
     Then this->fetchSong = true
 */
 Playlist& Playlist::initialize() {
-    if(!fetchSong) {
+    if(!newCreated && !fetchSong) {
         fs::path plist_datafile_path;
         plist_datafile_path.append(PLAYLIST_FILES_DIR).append(this->name + ".txt");
 
@@ -48,6 +47,17 @@ string Playlist::getName() {
     return this->name;
 }
 
+bool Playlist::isAlreadyInPlist(string path)  {
+    fs::path absolutePath = fs::absolute(fs::path(path).lexically_normal());
+    for (int i = 0; i < (int)songList.size(); i++) {
+        fs::path songAbsPath = fs::absolute(fs::path(songList[i].getPath()).lexically_normal());
+        if (fs::equivalent(absolutePath, songAbsPath)) {
+            return true;
+        }
+    }
+    return false;
+}
+
 /*
     add a Song to playlist
     some case of input:
@@ -56,11 +66,8 @@ string Playlist::getName() {
 */
 Playlist& Playlist::addSong(string absolute_path) {
     bool isExist = false;
-    for(auto it = songList.begin() ; it != songList.end(); ++it) {
-        if((*it).getPath() == absolute_path) {
-            isExist = true;
-            break;
-        }
+    if(this->isAlreadyInPlist(absolute_path)) {
+        throw runtime_error("The song has been already in the playlist");
     }
     if (!isExist) {
         songList.push_back(Song(absolute_path, true));

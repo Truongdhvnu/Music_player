@@ -13,7 +13,6 @@ private:
     PlayHandler();
     static int currentPage;
     static bool onDisplay;
-
 public:
     static PlayHandler* getInstance();
     void onStart(void* passData = nullptr);

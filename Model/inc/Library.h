@@ -11,13 +11,17 @@ private:
     vector<string> dirPaths;
     bool needToChange = false;
     void getMediaFileFromDir(const string& dir);
-
+    bool songfetched = false;
 public:
     Library();
+
+    bool isSongFetched();
 
     void getSongFromCurrentDirs();
 
     void getSongFromPath(string path);
 
     void addPathToCurrentDirs(string path);
+
+    bool isAlreadyInCurDirs(string path);
 };
