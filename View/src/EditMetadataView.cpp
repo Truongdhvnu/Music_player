@@ -11,7 +11,7 @@ void EditMetadataView::display(Song s) {
          << alignLeft("ALBUM", ' ', ALBUM_COL)
          << alignLeft("DURATION", ' ', DURATION_COL)
          << alignLeft("YEAR",' ', YEAR_COL)
-         << endl;
+         << endl << endl;
     cout << alignLeft("", ' ', NO_COL)
          << alignLeft(truncate(s.getTitle(),TITLE_COL), ' ', TITLE_COL) 
          << alignLeft(truncate(s.getArtist(), ARTIST_COL), ' ', ARTIST_COL) 

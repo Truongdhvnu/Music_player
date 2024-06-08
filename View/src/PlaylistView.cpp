@@ -6,7 +6,7 @@ void PlaylistView::display(vector<string> plists) {
     cout << View::alignMiddle("SELECT PLAYLIST", '=', WIDTH) << endl;
     cout << endl;
     int num = plists.size();
-    cout << "You have " << num << " playlists. Please select one" << endl;
+    cout << "You have " << num << " playlists. Please select one:" << endl;
     for(int i = 0; i < num; i++) {
         cout << i + 1 << ". " << plists[i] << endl;
     }

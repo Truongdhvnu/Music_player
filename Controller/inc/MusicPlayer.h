@@ -57,7 +57,7 @@ private:
     std::thread musicThread;
     std::atomic<bool> playing;
     std::atomic<bool> paused;
-    std::atomic<int> volume;
+    std::atomic<int> volume = 50;
 
     std::vector<Song>* playlist;
     int currentIndex;
