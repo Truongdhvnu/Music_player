@@ -1,8 +1,9 @@
 #include "EditPlaylistView.h"
 #include <iostream>
 
-void EditPlaylistView::displaySongs(vector<Song> songs,int pageNum) {
-    View::displaySongs(songs, pageNum);
+void EditPlaylistView::displaySongs(vector<Song> songs,int pageNum, int size) {
+    View::displaySongs(songs, pageNum, size);
+    View::alignLength();
     this->display_bottom();      
 }
 

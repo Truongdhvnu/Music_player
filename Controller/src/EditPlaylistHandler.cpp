@@ -20,9 +20,10 @@ EditPlaylistHandler* EditPlaylistHandler::getInstance() {
 }
 
 void EditPlaylistHandler::onStart(void* passData) {
+    (void)passData;
     try {
         vector<Song> songs = this->model.media_manager.getPageOfSong(0);
-        this->view.displaySongs(songs, 0);
+        this->view.displaySongs(songs, 0, this->model.media_manager.getNumberofSong());
     } catch (out_of_range& e) {
         // cout << e.what() << endl;
     }

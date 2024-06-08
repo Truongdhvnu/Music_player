@@ -11,6 +11,7 @@ private:
     SongListHandler();
     static int currentPage;
     static int currentSongIndex;
+    static int fullPage;
 public:
     static SongListHandler* getInstance();
     void onStart(void* passData = nullptr);

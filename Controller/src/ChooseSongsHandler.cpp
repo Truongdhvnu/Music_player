@@ -27,7 +27,7 @@ void ChooseSongsHandler::onStart(void* passData) {
         ChooseSongsHandler::plist = (Playlist*)passData;
         vector<Song> songs = this->model.media_manager.getPageOfSong(0);
         ChooseSongsHandler::currentPage = 0;
-        this->view.displaySongs(songs, 0);
+        this->view.displaySongs(songs, 0, this->model.media_manager.getNumberofSong());
     } catch (out_of_range& e) {
         // cout << e.what() << endl;
     }

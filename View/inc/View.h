@@ -23,8 +23,11 @@ public:
     static std::string alignLeft(const std::string& str, const char& gap, int width);
     static std::string alignRight(const std::string& str, const char& gap, int width);
     static std::string alignMiddle(const std::string& str, const char& gap, int width);
+    static void alignLength();
     static std::string truncate(const string& text, int width);
-    static void displaySongs(vector<Song> songs, int pageNum);
+    static void displaySongs(vector<Song> songs, int pageNum, int size);
+    // int songCount;
+    // static void setSongCount();
     virtual void display_bottom();
         // cout << "--------------------------------------------------------------------------------------\n";
         // cout << "- Home: ["<< HOME << "]\t\t Go back: [" << GO_BACK << "]\t\t Forward: [" << FORWARD << "]\t\t Exit: [" << EXIT << "]   -\n";
