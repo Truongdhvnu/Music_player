@@ -24,8 +24,12 @@ GetdirHandler* GetdirHandler::getInstance() {
     return &in;
 }
 
-void GetdirHandler::setGetdirViewPath(string path) {
+void GetdirHandler::setPath(string path) {
     view.path = path;
+}
+
+void GetdirHandler::setUsbPath(string path) {
+    view.usbPath = path;
 }
 
 void GetdirHandler::handle(string command) {
@@ -34,6 +38,8 @@ void GetdirHandler::handle(string command) {
             if(usbmonitor.USBGetStatus()==1)    //da co USB
             {
                 directory=usbmonitor.getUserPathValue();
+                setUsbPath(directory);
+                view.display();
                 usbmonitor.stopMonitoring();
                 this->model.media_manager.setActiveLibrary();
                 Library* lib=this->model.media_manager.getActiveLibrary();
@@ -41,7 +47,8 @@ void GetdirHandler::handle(string command) {
                 change_handler(SongListHandler::getInstance());
             }
             else{
-                change_handler(GetdirHandler::getInstance());
+                // change_handler(GetdirHandler::getInstance());
+                view.display();
                 cout << "Waiting for USB inserted..." << endl;
                 cout << "If USB inserted, press 1 again" << endl;
                 cout << "If USB not detected, remove and insert again" << endl;
@@ -51,7 +58,7 @@ void GetdirHandler::handle(string command) {
             usbmonitor.stopMonitoring();
             cout <<"Input Directory: " << flush;
             cin >> directory;
-            setGetdirViewPath(directory);
+            setPath(directory);
             this->model.media_manager.setActiveLibrary();
             Library* lib=this->model.media_manager.getActiveLibrary();
             (*lib).getSongFromPath(directory);

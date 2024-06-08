@@ -4,12 +4,12 @@ using namespace std;
 void GetdirView::display() {
     system("clear");
     int linesPrinted = 0;
-    cout << View::alignMiddle("SELECT DIRECRTORY", '=', WIDTH) << endl;
+    cout << View::alignMiddle("SELECT DIRECTORY", '=', WIDTH) << endl;
     cout << endl;
     linesPrinted++;
     cout << "Welcome. Select your option" << endl;
     linesPrinted++;
-    cout << "1. Select USB direction path" << endl;
+    cout << "1. USB path: " << usbPath << endl;
     linesPrinted++;
     cout << "2. Choose another path" << endl;
     linesPrinted++;

@@ -4,7 +4,7 @@
 void PlaylistView::display(vector<string> plists) {
     int linesPrinted = 0;
     system("clear");
-    cout << View::alignMiddle("SELECT PATH", '=', WIDTH) << endl;
+    cout << View::alignMiddle("SELECT PLAYLIST", '=', WIDTH) << endl;
     linesPrinted++;
     cout << endl;
     linesPrinted++;

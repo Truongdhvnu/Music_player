@@ -58,8 +58,11 @@ void EditMetadataHandler::handle(string command) {
                 break;
         }
         this->onStart();
-    } catch (runtime_error& e) {
-        cout << e.what() << endl;
+    // } catch (runtime_error& e) {
+    //     cout << e.what() << endl;
+    // }
+    } catch (exception& e) {
+        cout << "Invalid Input" << endl;
     }
 }
 

@@ -174,15 +174,10 @@ int MusicPlayer::getCurrentIndex(){
 
 std::string MusicPlayer::getCurrentTime() {
     int minute;
-    int second;
+    int second = getElapsedTime();
     if (playing) {
-        if (paused) {
-            minute = std::chrono::duration_cast<std::chrono::milliseconds>(pauseTime - startTime).count() / 60000;
-            second = std::chrono::duration_cast<std::chrono::milliseconds>(pauseTime - startTime).count() /1000 % 60;
-        } else {
-            minute = std::chrono::duration_cast<std::chrono::milliseconds>(std::chrono::steady_clock::now() - startTime).count() / 60000;
-            second = std::chrono::duration_cast<std::chrono::milliseconds>(std::chrono::steady_clock::now() - startTime).count() /1000 % 60;
-        }
+        minute = second/60;
+        second = second%60;
         std::string currentTime = (minute < 10 ? "0" : "") + std::to_string(minute) + ":" +
                                   (second < 10 ? "0" : "") + std::to_string(second);
         return currentTime;
@@ -206,6 +201,16 @@ int MusicPlayer::getFileDuration(const std::string& filePath) {
     return 0;
 }
 
+int MusicPlayer::getElapsedTime() {
+    if (playing) {
+        if (paused) {
+            return std::chrono::duration_cast<std::chrono::seconds>(pauseTime - startTime).count();
+        } else {
+            return std::chrono::duration_cast<std::chrono::seconds>(std::chrono::steady_clock::now() - startTime).count();
+        }
+    } else return 0;    
+}
+
 // void MusicPlayer::shuffle() {
 //     // Khởi tạo công cụ sinh số ngẫu nhiên
 //     std::random_device rd;
@@ -221,10 +226,7 @@ void MusicPlayer::displayProgress() {
         std::string totalTime = getDuration();
 
         int totalDuration = musicDuration;
-        int elapsedSeconds = std::chrono::duration_cast<std::chrono::seconds>(std::chrono::steady_clock::now() - startTime).count();
-        if (paused) {
-            elapsedSeconds = std::chrono::duration_cast<std::chrono::seconds>(pauseTime - startTime).count();
-        }
+        int elapsedSeconds = getElapsedTime();
         int progressLength = 86;
         int pos = static_cast<int>((static_cast<double>(elapsedSeconds) / totalDuration) * progressLength);
         std::string progressBar = std::string(pos, '#') + std::string(progressLength - pos, '.');
