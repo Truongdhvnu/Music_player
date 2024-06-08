@@ -95,8 +95,7 @@ void PlayHandler::handle(string command) {
                 musicPlayer.volumeDown();
                 cout << "\033[F" << "\033[101C" << "\b \b" << flush;
                 break;
-            default:
-                // view.display((*this->model.media_manager.getCurrentSongList())[musicPlayer.getCurrentIndex()]);    
+            default:    
                 cout << "\033[F" << "\033[K" << "Invalid" << flush;
                 break;
         }

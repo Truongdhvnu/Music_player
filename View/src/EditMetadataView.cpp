@@ -2,12 +2,9 @@
 #include <iostream>
 
 void EditMetadataView::display(Song s) {
-    int linesPrinted = 0;
     system("clear");
     cout << alignMiddle("CHANGE METADATA", '=', WIDTH) << endl;
-    linesPrinted++;
     cout << endl;
-    linesPrinted++;
     cout << alignLeft("", ' ', NO_COL)
          << alignLeft("TITLE", ' ', TITLE_COL) 
          << alignLeft("ARTIST", ' ', ARTIST_COL) 
@@ -15,7 +12,6 @@ void EditMetadataView::display(Song s) {
          << alignLeft("DURATION", ' ', DURATION_COL)
          << alignLeft("YEAR",' ', YEAR_COL)
          << endl;
-    linesPrinted++;
     cout << alignLeft("", ' ', NO_COL)
          << alignLeft(truncate(s.getTitle(),TITLE_COL), ' ', TITLE_COL) 
          << alignLeft(truncate(s.getArtist(), ARTIST_COL), ' ', ARTIST_COL) 
@@ -23,12 +19,8 @@ void EditMetadataView::display(Song s) {
          << alignLeft(truncate(s.getDuration(), DURATION_COL), ' ', DURATION_COL)
          << alignLeft(truncate(s.getYear(), YEAR_COL), ' ', YEAR_COL)
          << endl;
-    linesPrinted++;
 
-    while (linesPrinted < LENGTH - 1) {
-        cout << endl;
-        linesPrinted++;
-    }
+    View::alignLength();
     this->display_bottom();     
 }
 

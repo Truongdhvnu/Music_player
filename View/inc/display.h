@@ -3,7 +3,7 @@
 
 #define MAX_LINES 25
 #define WIDTH 100
-#define LENGTH 25
+#define LENGTH 30
 
 /*
     Define navigator letters

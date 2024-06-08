@@ -2,3 +2,4 @@ music/Lost In The Echo - Linkin Park.mp3
 music/Teenage Dream.mp3
 music/Rolling in the Deep - Adele.mp3
 music/Lost In The Echo - Linkin Park.mp3
+/home/cuongnk168/test_media/audio/Hoa-Trinh-Nu-Viet-Tu.mp3

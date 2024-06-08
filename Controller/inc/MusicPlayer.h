@@ -51,6 +51,7 @@ private:
     void musicThreadFunc();
     void playCurrentSong();
     int getFileDuration(const std::string& filePath);
+    int getElapsedTime();
 
     std::string currentFile;
     Mix_Music* music;
@@ -63,6 +64,7 @@ private:
     int currentIndex;
 
     int musicDuration;
+    int elapsedTime;
     std::chrono::time_point<std::chrono::steady_clock> startTime;
     std::chrono::time_point<std::chrono::steady_clock> pauseTime;
 

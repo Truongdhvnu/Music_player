@@ -53,6 +53,10 @@ void View::display_bottom() {
     cout << alignLeft("",'-', WIDTH) << endl;
 }
 
+void View::alignLength() {
+    std::cout << "\033["<< LENGTH <<";0H";
+}
+
 string View::truncate(const std::string& str, int width) {
     std::wstring_convert<std::codecvt_utf8<wchar_t>> converter;
     std::wstring wide_str = converter.from_bytes(str);
@@ -66,13 +70,10 @@ string View::truncate(const std::string& str, int width) {
     }
 }
 
-void View::displaySongs(vector<Song> songs, int pageNum) {
-    int linesPrinted = 0;
+void View::displaySongs(vector<Song> songs, int pageNum, int size) {
     system("clear");
     cout << alignMiddle("MEDIA LIST", '=', WIDTH) << endl;
-    linesPrinted++;
     cout << endl;
-    linesPrinted++;
     cout << alignLeft("No", ' ', 5)
          << alignLeft("Title", ' ', 30)
          << alignLeft("Artist", ' ', 25)
@@ -80,7 +81,6 @@ void View::displaySongs(vector<Song> songs, int pageNum) {
          << alignLeft("Duration", ' ', 10)
          << alignLeft("Year", ' ', 5)
          << endl;
-    linesPrinted++;
     int count = pageNum * MAX_LINES + 1;
     for (auto it = songs.begin(); it != songs.end(); ++it) {
         cout << alignLeft(to_string(count), ' ', NO_COL)
@@ -90,13 +90,8 @@ void View::displaySongs(vector<Song> songs, int pageNum) {
              << alignLeft(truncate((*it).getDuration(), DURATION_COL), ' ', DURATION_COL)
              << alignLeft(truncate((*it).getYear(), YEAR_COL), ' ', YEAR_COL)
              << endl;
-        linesPrinted++;
         count++;
     }
-
-    while (linesPrinted < LENGTH - 1) {
-        cout << endl;
-        linesPrinted++;
-    }
-    // cout << "Page " << pageNum + 1 << " of " << (songs.size() / 25) + 1 << endl;
+        std::cout << "\033["<< LENGTH - 1 <<";0H";
+    cout << "Page " << pageNum + 1 << " of " << (size / MAX_LINES) + 1 << endl;
 }

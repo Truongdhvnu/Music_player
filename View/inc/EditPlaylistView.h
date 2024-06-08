@@ -11,6 +11,6 @@ using namespace std;
 class EditPlaylistView : public View {
 public:
     void display_bottom();
-    void displaySongs(vector<Song> songs, int pageNum);
+    void displaySongs(vector<Song> songs, int pageNumn, int size);
     // void display(Song s);
 };

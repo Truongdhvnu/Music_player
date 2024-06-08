@@ -18,6 +18,7 @@ public:
     static GetdirHandler* getInstance();
     void handle(string command);
     void onStart(void* passData = nullptr);
-    void setGetdirViewPath(string path);
+    void setPath(string path);
+    void setUsbPath(string path);
     void leavePage(){}
 };

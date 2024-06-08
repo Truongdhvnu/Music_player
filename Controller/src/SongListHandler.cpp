@@ -27,7 +27,7 @@ void SongListHandler::onStart(void* passData) {
         // if (passData != nullptr) nếu không để = 0, có thể lỗi khi đổi giữa lib và plist
         vector<Song> songs = this->model.media_manager.getPageOfSong(0);
         SongListHandler::currentPage = 0;
-        this->view.displaySongs(songs, 0);
+        this->view.displaySongs(songs, 0, this->model.media_manager.getNumberofSong());
     } catch (out_of_range& e) {
         // cout << e.what() << endl;
     }

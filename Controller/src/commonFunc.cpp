@@ -9,15 +9,15 @@ int songListhandle(string command, int& currentPage) {
     if (command == PREVIOUS_PAGE) {
         vector<Song> songs = model.media_manager.getPageOfSong(currentPage - 1);
         currentPage--;
-        View::displaySongs(songs, currentPage);
+        View::displaySongs(songs, currentPage, model.media_manager.getNumberofSong());
     } else if (command == NEXT_PAGE) {
         vector<Song> songs = model.media_manager.getPageOfSong(currentPage + 1);
         currentPage++;
-        View::displaySongs(songs, currentPage);
+        View::displaySongs(songs, currentPage, model.media_manager.getNumberofSong());
     } else if (command == SORT_BY_ARTIST) {
         model.media_manager.sortCurrentList(SORT_ARTIST);
         vector<Song> songs = model.media_manager.getPageOfSong(currentPage);
-        View::displaySongs(songs, currentPage);
+        View::displaySongs(songs, currentPage, model.media_manager.getNumberofSong());
     } else if (command == SORT_BY_NAME) {
         static bool az = true;
         if (az) {
@@ -28,7 +28,7 @@ int songListhandle(string command, int& currentPage) {
             az = true;
         }
         vector<Song> songs = model.media_manager.getPageOfSong(currentPage);
-        View::displaySongs(songs, currentPage);
+        View::displaySongs(songs, currentPage, model.media_manager.getNumberofSong());
     } else {
         return 0;
     }
