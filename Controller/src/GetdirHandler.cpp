@@ -5,6 +5,7 @@
 #include "Controller.h"
 #include "GetdirHandler.h"
 #include "SongListHandler.h"
+#include "ChooseUsbHandler.h"
 
 // GetdirHandler* GetdirHandler::instancePtr = nullptr;
 // GetdirHandler* GetdirHandler::instancePtr = nullptr;
@@ -31,20 +32,20 @@ void GetdirHandler::handle(string command) {
         if (command == "1") {
             if(usbmonitor.USBGetStatus()==1)    //da co USB
             {
-                directory=usbmonitor.getUserPathValue();
-                setUsbPath(directory);
-                view.display();
                 usbmonitor.stopMonitoring();
-                this->model.mediaManager.setActiveLibrary();
-                this->model.mediaManager.getLibrary().getSongFromPath(directory);
-                changeHandler(SongListHandler::getInstance());
+                // directory=usbmonitor.getUserPathValue();
+                changeHandler(ChooseUsbHandler::getInstance());
+                // this->model.mediaManager.setActiveLibrary();
+                // this->model.mediaManager.getLibrary().getSongFromPath(directory);
+                // changeHandler(SongListHandler::getInstance());
             }
-            else{
-                // change_handler(GetdirHandler::getInstance());
-                view.display();
+            else
+            {
+                //change_handler(GetdirHandler::getInstance());
                 cout << "Waiting for USB inserted..." << endl;
                 cout << "If USB inserted, press 1 again" << endl;
                 cout << "If USB not detected, remove and insert again" << endl;
+                changeHandler(ChooseUsbHandler::getInstance());
             }
 
         } else if (command == "2") {

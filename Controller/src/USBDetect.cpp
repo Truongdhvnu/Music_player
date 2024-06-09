@@ -1,5 +1,6 @@
 #include "USBDetect.h"
-
+#include <filesystem>
+namespace fs = std::filesystem;
 //Constructor
 USBMonitor::USBMonitor() : status(0), udev(nullptr), mon(nullptr), running(false) {
     udev = udev_new();
@@ -103,4 +104,21 @@ void USBMonitor::clearUserPath() {
 //Get USB User Path
 std::string USBMonitor::getUserPathValue() const {
     return UserPath;
+}
+
+std::vector<std::string> USBMonitor::getSubdirectories(const std::string& parentPath) {
+    std::vector<std::string> subdirectories;
+
+    try {
+        for (const auto& entry : fs::directory_iterator(parentPath)) {
+            if (entry.is_directory()) {
+                subdirectories.push_back(entry.path().string());
+            }
+        }
+    } catch (const fs::filesystem_error& e) {
+        std::cerr << "Filesystem error: " << e.what() << std::endl;
+    } catch (const std::exception& e) {
+        std::cerr << "General error: " << e.what() << std::endl;
+    }
+    return subdirectories;
 }
