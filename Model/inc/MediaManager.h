@@ -8,6 +8,9 @@
 
 using namespace std;
 
+/// @brief This class aim to manage a MediaList a time,
+/// Provide method to process with current active MediaList (a Library/Playlist)
+/// Provide method to create, change data of playlist too.
 class MediaManager {
 private:
     Library songLib;
@@ -20,11 +23,11 @@ private:
     int curLibPageOfSong = 0;
     int curPlistPageOfSong = 0;
     int activePlistIndex = 0;
-public:
-    /*
-        Initialize (just name) for playlists whose names are names of .txt files in "./data/playlists" directory
-    */
     MediaManager();
+public:
+    /// @brief This aim to create only one instance for mediaManager. Because this class may modify app data.
+    /// @return A unique instance of MediaManger 
+    static MediaManager& getInstance();
 
     bool isPlaylistActive();
 

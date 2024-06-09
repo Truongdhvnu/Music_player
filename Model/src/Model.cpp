@@ -1,6 +1,6 @@
 #include "Model.h"
 
-Model::Model() {}
+Model::Model() : mediaManager(MediaManager::getInstance()) {}
 
 Model& Model::getInstance() {
     static Model m = Model();

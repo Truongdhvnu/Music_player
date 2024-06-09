@@ -21,6 +21,11 @@ MediaManager::MediaManager() {
     }
 }
 
+MediaManager &MediaManager::getInstance() {
+    static MediaManager manager;
+    return manager;
+}
+
 bool MediaManager::isPlaylistActive() {
     return playListActive;
 }

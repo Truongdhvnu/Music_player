@@ -7,6 +7,9 @@
 
 using namespace std;
 
+/// @brief Playlist is a MediaList that get song from a.txt file in app data.
+/// Playlists are user-deined.
+/// Have the ability to add/remove song, change name
 class Playlist : public MediaList {
 private:
     string name;

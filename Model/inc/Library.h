@@ -6,12 +6,13 @@
 
 using namespace std;
 
+/// @brief Libraly is a MediaList that get song form a directory or multiple diretories
 class Library : public MediaList{
 private:    
     vector<string> dirPaths;
     bool needToChange = false;
-    void getMediaFileFromDir(const string& dir);
     bool songfetched = false;
+    void getMediaFileFromDir(const string& dir);
 public:
     Library();
 
