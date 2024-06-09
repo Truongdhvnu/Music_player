@@ -5,7 +5,7 @@
 #include "Controller.h"
 #include "GetdirHandler.h"
 #include "SongListHandler.h"
-// #include "ChooseUsbHandler.h"
+#include "ChooseUsbHandler.h"
 
 // GetdirHandler* GetdirHandler::instancePtr = nullptr;
 // GetdirHandler* GetdirHandler::instancePtr = nullptr;
@@ -35,12 +35,12 @@ void GetdirHandler::handle(string command) {
             if(usbmonitor.USBGetStatus()==1)    //da co USB
             {
                 usbmonitor.stopMonitoring();
-                directory=usbmonitor.getUserPathValue();
-                this->model.media_manager.setActiveLibrary();
-                Library* lib=this->model.media_manager.getActiveLibrary();
-                (*lib).getSongFromPath(directory);
-                change_handler(SongListHandler::getInstance());
-                // change_handler(ChooseUsbHandler::getInstance());
+                // directory=usbmonitor.getUserPathValue();
+                // this->model.media_manager.setActiveLibrary();
+                // Library* lib=this->model.media_manager.getActiveLibrary();
+                // (*lib).getSongFromPath(directory);
+                // change_handler(SongListHandler::getInstance());
+                change_handler(ChooseUsbHandler::getInstance());
             }
             else
             {
