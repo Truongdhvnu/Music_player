@@ -3,7 +3,7 @@
 
 void HomeView::display() {
     system("clear");
-    cout << View::alignMiddle("MEDIA BROWSER", '=', WIDTH) << endl;
+    cout << View::alignMiddle(" MEDIA BROWSER ", '=', WIDTH) << endl;
     cout << endl;
     cout << "Welcome. Select your option:" << endl << endl;
     cout << "1. Select direction" << endl;
@@ -12,6 +12,6 @@ void HomeView::display() {
     cout << "4. Edit playlists" << endl;
 
     View::alignLength();
-    View::display_bottom();
+    View::displayBottom();
 }
  

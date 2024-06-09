@@ -231,7 +231,7 @@ void MusicPlayer::displayProgress() {
             std::cout << "\r" << currentTime << " [" << progressBar << "] " << totalTime 
                       << "     Volume: " << volume << "%" << std::flush;
         }
-        std::this_thread::sleep_for(std::chrono::milliseconds(500));
+        std::this_thread::sleep_for(std::chrono::milliseconds(1000));
     }
     stopProgress = true;
     // std::cout << std::endl;

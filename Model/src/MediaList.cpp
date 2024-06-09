@@ -6,6 +6,8 @@
 #include "MediaList.h"
 #include <algorithm>
 
+namespace fs = std::filesystem;
+
 bool MediaList::sortByNameAZ(const Song &a, const Song &b) {
     return a.getTitle()[0] < b.getTitle()[0];
 }
@@ -31,7 +33,7 @@ Song& MediaList::getSong(int index) {
 };
 
 vector<Song>& MediaList::getSongList() {
-    return this->songList;        
+    return this->songList;
 }
 
 int MediaList::getNumberOfSong() {
@@ -56,12 +58,12 @@ vector<Song>& MediaList::sort(int option) {
 }
 
 vector<Song> MediaList::getPageOfSong(int pageNum) {
-    if (pageNum < 0 || pageNum * MAX_LINES >= this->getNumberOfSong() ) {
-        throw out_of_range("No data " + to_string(pageNum) + "\n");
+    if ((pageNum < 0 || pageNum * MAX_LINES >= this->getNumberOfSong()) && (pageNum != 0)) {
+        throw out_of_range("No data " + to_string(pageNum));
     }
 
     int numberOfSong = this->getNumberOfSong() - MAX_LINES*(pageNum);
-    numberOfSong = numberOfSong < MAX_LINES ? numberOfSong : MAX_LINES; 
+    numberOfSong = numberOfSong < MAX_LINES ? numberOfSong : MAX_LINES;
     vector<Song> result;
     // cout << "Number of song " << this->getNumberOfSong() << "  " << numberOfSong << endl;
     for(int i = 0; i < numberOfSong; i++) {

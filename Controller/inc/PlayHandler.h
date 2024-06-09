@@ -13,11 +13,15 @@ private:
     PlayHandler();
     static int currentPage;
     static bool onDisplay;
-
 public:
+    typedef struct PlayingInfor {
+        int curPos;
+        vector<Song> songs;
+    } PlayingInfor;
     static PlayHandler* getInstance();
     void onStart(void* passData = nullptr);
     void handle(string command);
     void leavePage();
-    void updateView(); // Thêm phương thức updateView
+    void updateView();
+    PlayingInfor getPlayingInfor();
 };

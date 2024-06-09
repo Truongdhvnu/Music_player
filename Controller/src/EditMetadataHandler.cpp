@@ -15,7 +15,7 @@
 EditMetadataHandler* EditMetadataHandler::instancePtr = nullptr;
 
 EditMetadataHandler::EditMetadataHandler() : model(Model::getInstance()){
-    callback = Controller::changeHandler;
+    changeHandelCallback = Controller::changeHandler;
 }
 
 EditMetadataHandler* EditMetadataHandler::getInstance() {
@@ -37,41 +37,34 @@ void EditMetadataHandler::handle(string command) {
             case 1:
                 cout << "Input new Title: " << endl;
                 std::getline(std::cin, input);
-                this->model.media_manager.getCurrentSong().setTitle(input);
+                this->model.mediaManager.getCurSong().setTitle(input);
                 break;
             case 2:
                 cout << "Input new Artist: ";
                 std::getline(std::cin, input);
-                this->model.media_manager.getCurrentSong().setArtist(input);
+                this->model.mediaManager.getCurSong().setArtist(input);
                 break;
             case 3:
                 cout << "Input new Album: ";
                 std::getline(std::cin, input);
-                this->model.media_manager.getCurrentSong().setAlbum(input);
+                this->model.mediaManager.getCurSong().setAlbum(input);
                 break;
             case 4:
                 cout << "Input new Year: ";
                 std::getline(std::cin, input);
-                this->model.media_manager.getCurrentSong().setYear(stoi(input));
+                this->model.mediaManager.getCurSong().setYear(stoi(input));
                 break;
             default:
                 break;
         }
         this->onStart();
-    // } catch (runtime_error& e) {
-    //     cout << e.what() << endl;
-    // }
-    } catch (exception& e) {
-        cout << "Invalid Input" << endl;
+    } catch (runtime_error& e) {
+        cout << "Editmetadata: "<< e.what() << endl;
     }
 }
 
 void EditMetadataHandler::onStart(void* passData) {
     (void)passData;
-    try {
-        Song currentSong = this->model.media_manager.getCurrentSong();
-        this->view.display(currentSong);
-    } catch (out_of_range& e) {
-        // do Nothing
-    }
+    Song currentSong = this->model.mediaManager.getCurSong();
+    this->view.display(currentSong);
 }

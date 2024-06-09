@@ -15,8 +15,10 @@ private:
     vector<string> listDeleted;
     MediaList* currentMediaList = nullptr;
     bool playListActive = false;
-    int currentLibSongIndex = 0;
-    int currentPlistSongIndex = 0;
+    int curLibSongIndex = -1;
+    int curPlistSongIndex = -1;
+    int curLibPageOfSong = 0;
+    int curPlistPageOfSong = 0;
     int activePlistIndex = 0;
 public:
     /*
@@ -26,9 +28,9 @@ public:
 
     bool isPlaylistActive();
 
-    int getCurrentSongIndex();
+    int getCurSongIndex();
 
-    void setCurrentSongIndex(int data);
+    void setCurSongIndex(int data);
 
     int getNumberofSong();
 
@@ -36,27 +38,33 @@ public:
 
     int getActivePListIndex();
 
-    Playlist* getActivePlaylist();
+    Playlist& getActivePlaylist();
 
     void setActiveLibrary();
 
-    Library* getActiveLibrary();
+    Library& getLibrary();
 
     vector<string> getPlaylistNames();
 
-    Song& getCurrentSong();
+    Song& getSong(int index);
+    
+    Song& getCurSong();
+
+    int getCurPageOfSongIndex();
+
+    vector<Song> getCurPageOfSong();
 
     vector<Song> getPageOfSong(int pageNum);
 
-    vector<Song>& sortCurrentList(int option);
+    vector<Song>& sortCurList(int option);
 
-    vector<Song>* getCurrentSongList();
+    vector<Song>* getCurSongList();
 
     int isExistPlayList(string name);
 
     int renamePlaylist(int PlaylistNum, const string& newName);
 
-    void createPlaylist(Playlist& playlist);
+    void createPlaylist(string name);
 
     /*
         Remeber to store name to listDeleted to update data when close program

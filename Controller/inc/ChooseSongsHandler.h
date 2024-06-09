@@ -10,9 +10,9 @@ private:
     Model& model;
     ChooseSongsHandler();
     static int currentPage;
-    static Playlist* plist;
 public:
     static ChooseSongsHandler* getInstance();
     void onStart(void* passData = nullptr);
     void handle(string command);
+    void leavePage(); 
 };

@@ -8,6 +8,6 @@ using namespace std;
 
 class PlayView : public View {
 public:
-    void display(Song s);
-    void display_bottom();
+    void display(Song s, vector<Song> songs, int curPos);
+    void displayBottom();
 };

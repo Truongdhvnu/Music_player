@@ -5,6 +5,7 @@
 #include "Handler.h"
 #include "PlaylistHandler.h"
 #include "MusicPlayer.h"
+#include <USBDetect.h>
 #include "HomeHandler.h"
 #include "Model.h"
 #include "display.h"
@@ -16,6 +17,11 @@ int Controller::view_index = 0;
 Controller::Controller() {
     Controller::recentView.push_back(HomeHandler::getInstance());
     Controller::recentView[view_index]->onStart();
+}
+
+void Controller::PopHandler(void* paras) {
+    recentView.pop_back();
+    recentView[view_index]->onStart(paras);
 }
 
 void Controller::changeHandler(Handler* handler, void* paras) {
@@ -36,11 +42,8 @@ void Controller::changeHandler(Handler* handler, void* paras) {
     recentView[view_index]->onStart(paras);
 }
 
-/*
-    Handel things before exit programs
-*/
 int Controller::exit() {
-    this->model.media_manager.updateDatabase();
+    this->model.mediaManager.updateDatabase();
     return 0;
 }
 
@@ -58,11 +61,11 @@ void Controller::run() {
             if (recentView.size() - 1  > (long unsigned int)view_index) {
                 recentView[view_index]->leavePage();
                 view_index++;
-                recentView[view_index]->onStart();
+                recentView[view_index]->onStart();   //need data for onstart
             }
         } else if (command == EXIT) {
             for(Handler* e : recentView) {
-                e->handler_exit();              // có th nào nhạc đang phát nhưng không tắt đi được không? do chang_handler đã xóa mất the handler khỏi danh sách
+                e->exit();              // có th nào nhạc đang phát nhưng không tắt đi được không? do chang_handler đã xóa mất the handler khỏi danh sách
             }
             this->exit();
             std::exit(0);
@@ -74,9 +77,3 @@ void Controller::run() {
         }
     }
 }
-
-// int main() {
-//     Controller c;
-//     c.run();
-//     return 0;
-// }

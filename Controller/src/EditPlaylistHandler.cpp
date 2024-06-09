@@ -11,69 +11,72 @@
 #include "ChooseSongsHandler.h"
 
 EditPlaylistHandler::EditPlaylistHandler() : model(Model::getInstance()) {
-    callback = Controller::changeHandler;
+    changeHandelCallback = Controller::changeHandler;
+    popCallback = Controller::PopHandler;
 };
 
 EditPlaylistHandler* EditPlaylistHandler::getInstance() {
-    static EditPlaylistHandler pl = EditPlaylistHandler();
+    static EditPlaylistHandler pl;
     return &pl;
 }
 
 void EditPlaylistHandler::onStart(void* passData) {
     (void)passData;
     try {
-        vector<Song> songs = this->model.media_manager.getPageOfSong(0);
-        this->view.displaySongs(songs, 0, this->model.media_manager.getNumberofSong());
+        vector<Song> songs = this->model.mediaManager.getPageOfSong(0);
+        this->view.displaySongs(songs, 0, this->model.mediaManager.getNumberofSong());
     } catch (out_of_range& e) {
-        // cout << e.what() << endl;
+        cout << e.what() << endl;
     }
 }
 
 void EditPlaylistHandler::handle(string command) {
     static int currentPage = 0;
     try {
-        if (!songListhandle(command, currentPage)) {
-            try {
-                int option = stoi(command);
-                std::string input;
-                /* Clear cin buffer */
-                std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
-                Playlist* pl = this->model.media_manager.getActivePlaylist();
-                Library* temp;
-                switch (option)
-                {
-                case 1:
-                    cout << "Input new Name: " << flush;
-                    std::getline(std::cin, input);
-                    pl->rename(input);
-                    break;
-                case 2:
-                    cout << "Input path to your folder: " << flush;
-                    std::getline(std::cin, input);
-                    this->model.media_manager.setActiveLibrary();
-                    temp = this->model.media_manager.getActiveLibrary();
-                    temp->getSongFromPath(input);
-                    change_handler(ChooseSongsHandler::getInstance(), (void*)pl);
-                    this->onStart();
-                    break;
-                case 3:
-                    cout << "Input song index: " << flush;
-                    std::getline(std::cin, input);
-                    pl->deleteSong(stoi(input) - 1);
-                    this->onStart();
-                    break;
-                default:
-                    break;
-                }
-            } catch (const exception& e) {
-                cout << "SongList Handler: No actions or Invalid command" << endl;
-            }
+        if (songListhandle(command, currentPage)) {
+            this->view.displayBottom();
         } else {
-            this->view.display_bottom();
+            int option = stoi(command);
+            std::string input;
+            /* Clear cin buffer */
+            std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+            Playlist& pl = this->model.mediaManager.getActivePlaylist();
+            switch (option)
+            {
+            case 1:
+                cout << "Input new Name: " << flush;
+                std::getline(std::cin, input);
+                pl.rename(input);
+                break;
+            case 2:
+                if (!this->model.mediaManager.getLibrary().isSongFetched()) {
+                    this->model.mediaManager.getLibrary().getSongFromCurrentDirs();
+                }
+                this->model.mediaManager.setActiveLibrary();
+                changeHandler(ChooseSongsHandler::getInstance(), (void*)&pl);
+                break;
+            case 3:
+                cout << "Input path to your folder: " << flush;
+                std::getline(std::cin, input);
+                this->model.mediaManager.setActiveLibrary();
+                this->model.mediaManager.getLibrary().getSongFromPath(input);
+                changeHandler(ChooseSongsHandler::getInstance(), (void*)&pl);
+                break;
+            case 4:
+                cout << "Input song index: " << flush;
+                std::getline(std::cin, input);
+                pl.deleteSong(stoi(input) - 1);
+                this->onStart();
+                break;
+            default:
+                break;
+            }
         }
     } catch (out_of_range &e) {
-        cout << e.what() << endl;
+        cout << "Edit Plist:" << e.what() << endl;
     } catch (runtime_error& e) {
-        cout << e.what() << endl;
+        cout << "Edit Plist:" << e.what() << endl;
+    } catch (const exception& e) {
+        cout << "Edit Plist: No actions or Invalid command" << endl;
     }
 };

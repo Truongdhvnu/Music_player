@@ -1,7 +1,7 @@
 #include "CreatePlaylistView.h"
 #include <iostream>
 
-void CreatePlaylistView::display_bottom() {
+void CreatePlaylistView::displayBottom() {
     string create = "Create: [";
     create = create + CREATE + "]";
     string del = "Delete: [";
@@ -10,12 +10,12 @@ void CreatePlaylistView::display_bottom() {
     cout << alignMiddle(create,' ', WIDTH/2)
          << alignMiddle(del,' ', WIDTH/2)
          << endl;
-    View::display_bottom();
+    View::displayBottom();
 }
 
 void CreatePlaylistView::display(vector<string> plists) {
     system("clear");
-    cout << View::alignMiddle("EDIT PLAYLISTS", '=', WIDTH) << endl;
+    cout << View::alignMiddle(" EDIT PLAYLISTS ", '=', WIDTH) << endl;
     cout << endl;
     int num = plists.size();
     cout << "You have " << num << " playlists. Please select one" << endl;
@@ -23,5 +23,5 @@ void CreatePlaylistView::display(vector<string> plists) {
         cout << i + 1 << ". " << plists[i] << endl;
     }
     View::alignLength();
-    CreatePlaylistView::display_bottom();
+    CreatePlaylistView::displayBottom();
 }

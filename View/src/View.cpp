@@ -1,6 +1,8 @@
 #include "View.h"
 #include <iostream>
 #include "Song.h"
+#include <math.h>
+#include "display.h"
 
 int View::displayWidth(const std::string& str) {
     // change UTF-8 to UTF-32 for set str_length
@@ -35,7 +37,7 @@ std::string View::alignMiddle(const std::string& str, const char& gap, int width
     return oss.str();
 }
 
-void View::display_bottom() {
+void View::displayBottom() {
     string home = "-Home: [";
     home = home + HOME + "]";
     string goback = "Go back: [";
@@ -53,6 +55,39 @@ void View::display_bottom() {
     cout << alignLeft("",'-', WIDTH) << endl;
 }
 
+void View::display(Song s) {
+     system("clear");
+     cout << alignMiddle(" MEDIA PLAYING ", '=', WIDTH) << endl;
+     cout << endl;
+     int length = 2*ALIGN_COL + 1;
+     cout << "\n\n"
+        << alignLeft("", ' ', LEFT_MARGIN)
+        << "Metadata: \n"
+        << alignLeft("", ' ', LEFT_MARGIN)
+        << string(length , '-') << "\n" 
+        << alignLeft("", ' ', LEFT_MARGIN)
+        << alignLeft("| TITLE", ' ', ALIGN_COL) << alignLeft(truncate("| " + s.getTitle(),TITLE_COL), ' ', ALIGN_COL) << "|\n"
+        << alignLeft("", ' ', LEFT_MARGIN)
+        << string(length, '-') << "\n"
+        << alignLeft("", ' ', LEFT_MARGIN)
+        << alignLeft("| ARTIST", ' ', ALIGN_COL) << alignLeft(truncate("| " + s.getArtist(), ARTIST_COL), ' ', ALIGN_COL) << "|\n"
+        << alignLeft("", ' ', LEFT_MARGIN)
+        << string(length, '-') << "\n"
+        << alignLeft("", ' ', LEFT_MARGIN)
+        << alignLeft("| ALBUM", ' ', ALIGN_COL) << alignLeft(truncate("| " + s.getAlbum(), ALBUM_COL), ' ', ALIGN_COL) << "|\n"
+        << alignLeft("", ' ', LEFT_MARGIN)
+        << string(length, '-') << "\n"
+        << alignLeft("", ' ', LEFT_MARGIN) 
+        << alignLeft("| DURATION", ' ', ALIGN_COL) << alignLeft(truncate("| " + s.getDuration(), DURATION_COL), ' ', ALIGN_COL) << "|\n"
+        << alignLeft("", ' ', LEFT_MARGIN)
+        << string(length, '-') << "\n"
+        << alignLeft("", ' ', LEFT_MARGIN)
+        << alignLeft("| YEAR",' ', ALIGN_COL) << alignLeft(truncate("| " + s.getYear(), YEAR_COL + 3), ' ', ALIGN_COL) << "|\n"
+        << alignLeft("", ' ', LEFT_MARGIN)
+        << string(length, '-') << "\n"
+        << endl;  
+}
+
 void View::alignLength() {
     std::cout << "\033["<< LENGTH <<";0H";
 }
@@ -67,6 +102,21 @@ string View::truncate(const std::string& str, int width) {
     } else {
         wide_str = wide_str.substr(0, width - 4);
         return converter.to_bytes(wide_str) + "...";
+    }
+}
+
+void View::displayPlayingInfor(vector<Song> songs, int curPos) {
+    cout << alignLeft("", ' ', LEFT_MARGIN*1.5)
+        << "Playing list\n\n";
+    for(int i = 0; i < (int)songs.size(); i++) {
+        if (i != curPos) {
+            cout << alignLeft("", ' ', LEFT_MARGIN*1.5 + INDICATOR_COL)
+                <<  songs[i].getTitle() << "\n";
+        } else {
+            cout << alignLeft("", ' ', LEFT_MARGIN*1.5)
+                << alignLeft(">>>", ' ', INDICATOR_COL)
+                <<  songs[i].getTitle() << "\n";
+        }
     }
 }
 
@@ -92,6 +142,7 @@ void View::displaySongs(vector<Song> songs, int pageNum, int size) {
              << endl;
         count++;
     }
-        std::cout << "\033["<< LENGTH - 1 <<";0H";
-    cout << "Page " << pageNum + 1 << " of " << (size / MAX_LINES) + 1 << endl;
+    std::cout << "\033["<< LENGTH - 1 <<";0H";
+    cout << "Page " << pageNum + 1 << " of " << ceil(size * 1.0 / MAX_LINES) << endl;
 }
+

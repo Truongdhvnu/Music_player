@@ -25,6 +25,8 @@ public:
 
     string getName();
 
+    bool isAlreadyInPlist(string path);
+
     /*
         add a Song to playlist
         some case of input: 

@@ -1,4 +1,3 @@
-// #pragma once
 #include <filesystem>
 #include <string>
 #include <vector>
@@ -38,6 +37,10 @@ Library::Library() {
     }
 }
 
+bool Library::isSongFetched(){
+    return this->songfetched;
+}
+
 void Library::getSongFromCurrentDirs() {
     songList.clear();
     string message = "";
@@ -49,6 +52,7 @@ void Library::getSongFromCurrentDirs() {
             this->needToChange = true;
         }
     }
+    this->songfetched = true;
     // if (message != "") {
     //     throw runtime_error(message);
     // }
@@ -57,24 +61,29 @@ void Library::getSongFromCurrentDirs() {
 void Library::getSongFromPath(string path) {
     songList.clear();
     this->getMediaFileFromDir(path);
+    this->songfetched = true;
+}
+
+bool Library::isAlreadyInCurDirs(string path) {
+    fs::path absolutePath = fs::absolute(fs::path(path).lexically_normal());
+    for (int i = 0; i < (int)dirPaths.size(); i++) {
+        fs::path songAbsPath = fs::absolute(fs::path(dirPaths[i]).lexically_normal());
+        if (fs::equivalent(absolutePath, songAbsPath)) {
+            return true;
+        }
+    }
+    return false;
 }
 
 void Library::addPathToCurrentDirs(string path) {
-    bool isExist = false;
-    for (string s: this->dirPaths) {
-        if (path == s) {
-            isExist = true;
-            break;
-        }
-    }
-    if (!isExist) {
+    if (!this->isAlreadyInCurDirs(path)) {
         ofstream myfile(RECENT_PLAYING_DIRS_FILEDATA, std::ios_base::app);
         if (myfile.is_open()) {
             myfile << path + "\n";
             myfile.close();
             this->dirPaths.push_back(path);
         } else {
-            cout << "Error while trying to write to app data file: " << RECENT_PLAYING_DIRS_FILEDATA;
+            throw runtime_error("Error while trying to write to app data file");
         }
     }
 }

@@ -14,6 +14,7 @@
 #include <taglib/tag.h>
 #include "Song.h"
 #include <mutex>
+#include <functional>
 
 class MusicPlayer {
 public:
@@ -31,7 +32,7 @@ public:
     void volumeDown();
     bool isPlaying() const;
     void shuffle();
-    
+
     void setPlaylist(std::vector<Song>* playlist);
     void addToPlaylist(const Song& song);
     void clearPlaylist();
@@ -76,4 +77,3 @@ private:
 };
 
 #endif // MUSICPLAYER_H
-

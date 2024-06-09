@@ -1,7 +1,7 @@
 #ifndef DISPLAY_H
 #define DISPLAY_H
 
-#define MAX_LINES 25
+#define MAX_LINES 3
 #define WIDTH 100
 #define LENGTH MAX_LINES+7
 
@@ -25,7 +25,7 @@
 #define SORT_BY_ARTIST "a"
 
 enum PLAYOPTION {
-    PLAY,
+    REPLAY,
     PAUSE,
     RESUME,
     EDIT_META_DATA,
@@ -44,5 +44,11 @@ Define column size
 #define ALBUM_COL WIDTH/4
 #define DURATION_COL WIDTH/10
 #define YEAR_COL WIDTH/20
+#define INDICATOR_COL 5
+
+#define ALIGN_COL 30
+#define LEFT_MARGIN 20
+
+#define SONG_NUM_SHOW 7
 
 #endif

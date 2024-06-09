@@ -13,44 +13,37 @@ int SongListHandler::currentPage = 0;
 int SongListHandler::currentSongIndex = 0;
 
 SongListHandler::SongListHandler() : model(Model::getInstance()) {
-    callback = Controller::changeHandler;
+    changeHandelCallback = Controller::changeHandler;
 };
 
 SongListHandler* SongListHandler::getInstance() {
-    static SongListHandler pl = SongListHandler();
+    static SongListHandler pl;
     return &pl;
 }
 
 void SongListHandler::onStart(void* passData) {
     (void)passData;
-    try {
-        // if (passData != nullptr) nếu không để = 0, có thể lỗi khi đổi giữa lib và plist
-        vector<Song> songs = this->model.media_manager.getPageOfSong(0);
-        SongListHandler::currentPage = 0;
-        this->view.displaySongs(songs, 0, this->model.media_manager.getNumberofSong());
-    } catch (out_of_range& e) {
-        // cout << e.what() << endl;
-    }
+    vector<Song> songs = this->model.mediaManager.getCurPageOfSong();
+    this->view.displaySongs(songs, 
+        this->model.mediaManager.getCurPageOfSongIndex(), 
+        this->model.mediaManager.getNumberofSong());
+    SongListHandler::currentPage = this->model.mediaManager.getCurPageOfSongIndex();
 }
 
 void SongListHandler::handle(string command) {
     try {
-        if (!songListhandle(command, SongListHandler::currentPage)) {
-            try {
-                int selectedSong = stoi(command);
-                if (selectedSong >= 1 && selectedSong <= this->model.media_manager.getNumberofSong()) {
-                    SongListHandler::currentSongIndex = selectedSong;
-                    this->change_handler(PlayHandler::getInstance(), (void*)&SongListHandler::currentSongIndex);
-                }
-            } catch (const exception& e) {
-                cout << "SongList Handler: No actions or Invalid command" << endl;
-            }
+        if (songListhandle(command, SongListHandler::currentPage)) {
+            this->view.displayBottom();
         } else {
-            this->view.display_bottom();
+            int selectedSong = stoi(command);
+            if (selectedSong >= 1 && selectedSong <= this->model.mediaManager.getNumberofSong()) {
+                SongListHandler::currentSongIndex = selectedSong;
+                this->changeHandler(PlayHandler::getInstance(), (void*)&SongListHandler::currentSongIndex);
+            }
         }
     } catch (out_of_range &e) {
-        cout << e.what() << endl;
-    } catch (runtime_error& e) {
-        cout << e.what() << endl;
+        cout << "SongList:" << e.what() << endl;
+    } catch (exception& e) {
+        cout << "SongList: No actions or Invalid command" << endl;
     }
 };

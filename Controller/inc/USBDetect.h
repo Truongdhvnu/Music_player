@@ -8,6 +8,7 @@
 #include <unistd.h>
 #include <string.h>
 #include <chrono>
+#include <vector>
 
 class USBMonitor {
 public:
@@ -20,6 +21,7 @@ public:
     void clearUserPath();
     std::string getUserPathValue() const;
     void DetectUSBEvents();
+    std::vector<std::string> getSubdirectories(const std::string& parentPath);
 
 private:
     

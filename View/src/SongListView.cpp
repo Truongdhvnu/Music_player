@@ -1,7 +1,7 @@
 #include "SongListView.h"
 #include <iostream>
 
-void SongListView::display_bottom() {
+void SongListView::displayBottom() {
     string next = "-Next: [";
     next = next + NEXT_PAGE + "]";
     string pre = "Previous: [";
@@ -16,12 +16,12 @@ void SongListView::display_bottom() {
          << alignRight(sortname,' ', WIDTH/4)
          << alignRight(sortartist,' ', WIDTH/4)
          << endl;
-    View::display_bottom();
+    View::displayBottom();
 }
 
 void SongListView::displaySongs(vector<Song> songs, int pageNum, int size) {
     View::displaySongs(songs, pageNum, size);
     View::alignLength();
-    this->display_bottom(); 
+    this->displayBottom(); 
 }
 

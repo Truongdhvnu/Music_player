@@ -8,5 +8,5 @@ using namespace std;
 class CreatePlaylistView : public View {
 public:
     void display(vector<string> plists);
-    void display_bottom();
+    void displayBottom();
 };

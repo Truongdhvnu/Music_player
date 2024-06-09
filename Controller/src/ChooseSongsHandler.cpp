@@ -12,51 +12,51 @@
 #include "EditPlaylistHandler.h"
 
 int ChooseSongsHandler::currentPage = 0;
-Playlist* ChooseSongsHandler::plist = nullptr;
 ChooseSongsHandler::ChooseSongsHandler() : model(Model::getInstance()) {
-    callback = Controller::changeHandler;
+    changeHandelCallback = Controller::changeHandler;
+    popCallback = Controller::PopHandler;
 };
 
 ChooseSongsHandler* ChooseSongsHandler::getInstance() {
-    static ChooseSongsHandler pl = ChooseSongsHandler();
+    static ChooseSongsHandler pl;
     return &pl;
 }
 
 void ChooseSongsHandler::onStart(void* passData) {
-    try {
-        ChooseSongsHandler::plist = (Playlist*)passData;
-        vector<Song> songs = this->model.media_manager.getPageOfSong(0);
-        ChooseSongsHandler::currentPage = 0;
-        this->view.displaySongs(songs, 0, this->model.media_manager.getNumberofSong());
-    } catch (out_of_range& e) {
-        // cout << e.what() << endl;
-    }
+    (void)passData;
+    // this->model.mediaManager.setActiveLibrary();
+    vector<Song> songs = this->model.mediaManager.getPageOfSong(0);
+    ChooseSongsHandler::currentPage = 0;
+    this->view.displaySongs(songs, 0, this->model.mediaManager.getNumberofSong());
 }
 
 void ChooseSongsHandler::handle(string command) {
     try {
-        cout << "Choose index to add to playlist. Press \"d\" to done adding" << endl;
-        if (!songListhandle(command, ChooseSongsHandler::currentPage)) {
-            if(command == "d") {
-                this->model.media_manager.setActivePList(this->model.media_manager.getActivePListIndex());
-                this->change_handler(EditPlaylistHandler::getInstance());
-            }
-            else {
-                try {
-                    int pos = stoi(command) - 1;
-                    Song& song = (*this->model.media_manager.getCurrentSongList())[pos];
-                    plist->addSong(song.getPath());
-                    cout << "Song added: " << song.getTitle() << endl;
-                } catch (const exception& e) {
-                cout << "Choose songs Handler: No actions or Invalid command" << endl;
-                }
-            }
+        /* Clear cin buffer */
+        std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+        if (songListhandle(command, ChooseSongsHandler::currentPage)) {
+            this->view.displayBottom();
         } else {
-            this->view.display_bottom();
+            // cout << "Choose index to add to playlist. Press \"d\" to done adding" << endl;
+            // if(command == GO_BACK) {
+            //     this->model.mediaManager.setActivePList(this->model.mediaManager.getActivePListIndex());
+            //     this->selfPop();
+            // }
+            // else {
+                int pos = stoi(command) - 1;
+                Song& song = (*this->model.mediaManager.getCurSongList())[pos];
+                this->model.mediaManager.getActivePlaylist().addSong(song.getPath());
+                cout << "Song added: " << song.getTitle() << endl;
+            // }
         }
     } catch (out_of_range &e) {
-        cout << e.what() << endl;
+        cout << "Choose song error: " << e.what() << endl;
     } catch (runtime_error& e) {
-        cout << e.what() << endl;
+        cout << "Choose song error: " << e.what() << endl;
     }
 };
+
+void ChooseSongsHandler::leavePage() {
+    this->model.mediaManager.setActivePList(this->model.mediaManager.getActivePListIndex());
+    this->selfPop();
+}
