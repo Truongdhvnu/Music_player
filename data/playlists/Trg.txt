@@ -1,5 +1,0 @@
-/home/dhtruong/Documents/Mock_C/Music_player/music/Rolling in the Deep - Adele.mp3
-/home/dhtruong/Documents/Mock_C/Music_player/music/I Knew You Were Trouble - Taylor Swift.mp3
-/home/dhtruong/Documents/Debug/music/Rolling in the Deep - Adele.mp3
-/home/dhtruong/Documents/Debug/music/I Knew You Were Trouble - Taylor Swift.mp3
-/home/dhtruong/Documents/Debug/music/Teenage Dream.mp3

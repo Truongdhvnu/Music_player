@@ -9,10 +9,10 @@ void EditPlaylistView::displaySongs(vector<Song> songs,int pageNum, int size) {
 
 void EditPlaylistView::displayBottom() {
     cout << alignLeft("",'-', WIDTH) << endl;
-    cout << alignLeft("-1. Rename", ' ', 28)
-         << alignLeft("2. Add From Cur", ' ', 28)
-         << alignLeft("3. Add From New", ' ', 28)
-         << alignLeft("4. Remove-", ' ', 15)
+    cout << alignLeft("-1. Rename", ' ', WIDTH/4)
+         << alignLeft("2. Add From Cur", ' ', WIDTH/4)
+         << alignRight("3. Add From New", ' ', WIDTH/4)
+         << alignRight("4. Remove-", ' ', WIDTH/4)
          << endl;
     string next = "-Next: [";
     next = next + NEXT_PAGE + "]";

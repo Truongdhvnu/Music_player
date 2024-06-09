@@ -2,16 +2,12 @@
 
 //Display multi USB chose
 void ChooseUsbView::display(vector<string> usbpath) {
-    int linesPrinted = 0;
     system("clear");
-    cout << alignMiddle("CHOSE USB", '=', WIDTH) << endl;
-    linesPrinted++;
+    cout << alignMiddle(" CHOOSE USB ", '=', WIDTH) << endl;
     cout << endl;
-    linesPrinted++;
     cout << alignLeft("No", ' ', NO_COL)
          << alignLeft("USB Folder", ' ', TITLE_COL)
          << endl;
-    linesPrinted++;
     int index = 1;  // Biến đếm số thứ tự
     for (const string& path : usbpath) {
         // Tìm vị trí của ký tự '/' cuối cùng trong đường dẫn
@@ -25,21 +21,13 @@ void ChooseUsbView::display(vector<string> usbpath) {
             // Nếu không tìm thấy '/', thì toàn bộ chuỗi là tên folder
             folderName = path;
         }
-
         // In tên folder
         cout << alignLeft(to_string(index), ' ', NO_COL)
              << alignLeft(truncate(folderName,TITLE_COL), ' ', TITLE_COL) 
              << endl;
-        linesPrinted++;
         index++;
     }
-    while (linesPrinted < LENGTH - 1) {
-        cout << endl;
-        linesPrinted++;
-    }
-    this->displayBottom();     
+    View::alignLength();
+    View::displayBottom();     
 }
 
-void ChooseUsbView::displayBottom() {
-    View::displayBottom();       
-}

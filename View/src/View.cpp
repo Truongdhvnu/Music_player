@@ -66,23 +66,23 @@ void View::display(Song s) {
         << alignLeft("", ' ', LEFT_MARGIN)
         << string(length , '-') << "\n" 
         << alignLeft("", ' ', LEFT_MARGIN)
-        << alignLeft("| TITLE", ' ', ALIGN_COL) << alignLeft(truncate("| " + s.getTitle(),TITLE_COL), ' ', ALIGN_COL) << "|\n"
+        << alignLeft("| TITLE", ' ', ALIGN_COL) << alignLeft(truncate("| " + s.getTitle(),ALIGN_COL), ' ', ALIGN_COL) << "|\n"
         << alignLeft("", ' ', LEFT_MARGIN)
         << string(length, '-') << "\n"
         << alignLeft("", ' ', LEFT_MARGIN)
-        << alignLeft("| ARTIST", ' ', ALIGN_COL) << alignLeft(truncate("| " + s.getArtist(), ARTIST_COL), ' ', ALIGN_COL) << "|\n"
+        << alignLeft("| ARTIST", ' ', ALIGN_COL) << alignLeft(truncate("| " + s.getArtist(), ALIGN_COL), ' ', ALIGN_COL) << "|\n"
         << alignLeft("", ' ', LEFT_MARGIN)
         << string(length, '-') << "\n"
         << alignLeft("", ' ', LEFT_MARGIN)
-        << alignLeft("| ALBUM", ' ', ALIGN_COL) << alignLeft(truncate("| " + s.getAlbum(), ALBUM_COL), ' ', ALIGN_COL) << "|\n"
+        << alignLeft("| ALBUM", ' ', ALIGN_COL) << alignLeft(truncate("| " + s.getAlbum(), ALIGN_COL), ' ', ALIGN_COL) << "|\n"
         << alignLeft("", ' ', LEFT_MARGIN)
         << string(length, '-') << "\n"
         << alignLeft("", ' ', LEFT_MARGIN) 
-        << alignLeft("| DURATION", ' ', ALIGN_COL) << alignLeft(truncate("| " + s.getDuration(), DURATION_COL), ' ', ALIGN_COL) << "|\n"
+        << alignLeft("| DURATION", ' ', ALIGN_COL) << alignLeft(truncate("| " + s.getDuration(), ALIGN_COL), ' ', ALIGN_COL) << "|\n"
         << alignLeft("", ' ', LEFT_MARGIN)
         << string(length, '-') << "\n"
         << alignLeft("", ' ', LEFT_MARGIN)
-        << alignLeft("| YEAR",' ', ALIGN_COL) << alignLeft(truncate("| " + s.getYear(), YEAR_COL + 3), ' ', ALIGN_COL) << "|\n"
+        << alignLeft("| YEAR",' ', ALIGN_COL) << alignLeft(truncate("| " + s.getYear(), ALIGN_COL), ' ', ALIGN_COL) << "|\n"
         << alignLeft("", ' ', LEFT_MARGIN)
         << string(length, '-') << "\n"
         << endl;  
@@ -107,22 +107,22 @@ string View::truncate(const std::string& str, int width) {
 
 void View::displayPlayingInfor(vector<Song> songs, int curPos) {
     cout << alignLeft("", ' ', LEFT_MARGIN*1.5)
-        << "Playing list\n\n";
+         << "Playing list\n\n";
     for(int i = 0; i < (int)songs.size(); i++) {
         if (i != curPos) {
             cout << alignLeft("", ' ', LEFT_MARGIN*1.5 + INDICATOR_COL)
-                <<  songs[i].getTitle() << "\n";
+                 <<  songs[i].getTitle() << "\n";
         } else {
             cout << alignLeft("", ' ', LEFT_MARGIN*1.5)
-                << alignLeft(">>>", ' ', INDICATOR_COL)
-                <<  songs[i].getTitle() << "\n";
+                 << alignLeft(">>>", ' ', INDICATOR_COL)
+                 <<  songs[i].getTitle() << "\n";
         }
     }
 }
 
 void View::displaySongs(vector<Song> songs, int pageNum, int size) {
     system("clear");
-    cout << alignMiddle("MEDIA LIST", '=', WIDTH) << endl;
+    cout << alignMiddle(" MEDIA LIST ", '=', WIDTH) << endl;
     cout << endl;
     cout << alignLeft("N0", ' ', NO_COL)
          << alignLeft("TITLE", ' ', TITLE_COL)

@@ -1,7 +1,7 @@
 #ifndef DISPLAY_H
 #define DISPLAY_H
 
-#define MAX_LINES 3
+#define MAX_LINES 25
 #define WIDTH 100
 #define LENGTH MAX_LINES+7
 
@@ -44,11 +44,11 @@ Define column size
 #define ALBUM_COL WIDTH/4
 #define DURATION_COL WIDTH/10
 #define YEAR_COL WIDTH/20
-#define INDICATOR_COL 5
+#define INDICATOR_COL WIDTH/20
 
-#define ALIGN_COL 30
-#define LEFT_MARGIN 20
+#define ALIGN_COL WIDTH*3/10
+#define LEFT_MARGIN WIDTH*1/5
 
 #define SONG_NUM_SHOW 7
-
+    
 #endif
