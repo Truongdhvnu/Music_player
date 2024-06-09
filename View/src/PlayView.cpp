@@ -4,8 +4,11 @@
 
 using namespace std;
 
-void PlayView::display(Song s) {
+void PlayView::display(Song s, vector<Song> songs, int curPos) {
      View::display(s);
+     cout << "\n";
+     View::displayPlayingInfor(songs, curPos);
+     View::alignLength(); 
      this->displayBottom();     
 }
 

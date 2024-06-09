@@ -85,6 +85,10 @@ vector<string> MediaManager::getPlaylistNames() {
     return result;
 }
 
+Song &MediaManager::getSong(int index) {
+    return this->currentMediaList->getSong(index);
+}
+
 Song& MediaManager::getCurSong() {
     return (*this->currentMediaList).getSong(this->getCurSongIndex());
 }

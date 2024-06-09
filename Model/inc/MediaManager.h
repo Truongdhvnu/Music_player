@@ -46,6 +46,8 @@ public:
 
     vector<string> getPlaylistNames();
 
+    Song& getSong(int index);
+    
     Song& getCurSong();
 
     int getCurPageOfSongIndex();

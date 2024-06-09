@@ -27,7 +27,8 @@ void PlayHandler::onStart(void* passData) {
     }
 
     Song currentSong = this->model.mediaManager.getCurSong();
-    this->view.display(currentSong);
+    PlayHandler::PlayingInfor infor = this->getPlayingInfor();
+    this->view.display(currentSong, infor.songs, infor.curPos);
     this->musicPlayer.setPlaylist(this->model.mediaManager.getCurSongList());
     this->musicPlayer.setCurrentIndex(this->model.mediaManager.getCurSongIndex());
     this->musicPlayer.unhideProgressBar();
@@ -52,12 +53,35 @@ void PlayHandler::updateView() {
     }
 }
 
+PlayHandler::PlayingInfor PlayHandler::getPlayingInfor() {
+    PlayingInfor result;
+    if (this->model.mediaManager.getNumberofSong() < SONG_NUM_SHOW) {
+        result.curPos = this->model.mediaManager.getCurSongIndex();
+        result.songs = *this->model.mediaManager.getCurSongList();
+    } else {
+        for (int i = -SONG_NUM_SHOW/2; i <= SONG_NUM_SHOW/2; i++) {
+            int pos = this->model.mediaManager.getCurSongIndex();
+            pos += i;
+            if (pos > this->model.mediaManager.getNumberofSong() - 1) {
+                pos -= this->model.mediaManager.getNumberofSong() - 1;
+            } else if (pos < 0) {
+                pos += this->model.mediaManager.getNumberofSong();
+            }
+            result.songs.push_back(this->model.mediaManager.getSong(pos));
+        }
+        result.curPos = SONG_NUM_SHOW/2;
+    }
+    return result;
+}
+
 void PlayHandler::handle(string command) {
     try {
         int option = stoi(command) - 1;
+        PlayHandler::PlayingInfor infor;
         switch(option) {
             case REPLAY:
-                view.display(this->model.mediaManager.getCurSong());
+                infor = this->getPlayingInfor();
+                view.display(this->model.mediaManager.getCurSong(), infor.songs, infor.curPos);
                 musicPlayer.play(this->model.mediaManager.getCurSong());
                 break;
             case PAUSE:
@@ -74,12 +98,14 @@ void PlayHandler::handle(string command) {
             case NEXT:
                 musicPlayer.next();
                 this->model.mediaManager.setCurSongIndex(musicPlayer.getCurrentIndex());
-                view.display(this->model.mediaManager.getCurSong());
+                infor = this->getPlayingInfor();
+                view.display(this->model.mediaManager.getCurSong(), infor.songs, infor.curPos);
                 break;
             case PREVIOUS:
                 musicPlayer.previous();
                 this->model.mediaManager.setCurSongIndex(musicPlayer.getCurrentIndex());
-                view.display(this->model.mediaManager.getCurSong());
+                infor = this->getPlayingInfor();
+                view.display(this->model.mediaManager.getCurSong(), infor.songs, infor.curPos);
                 break;
             case VOLUME_UP:
                 musicPlayer.volumeUp();

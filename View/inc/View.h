@@ -25,6 +25,7 @@ public:
     static std::string alignMiddle(const std::string& str, const char& gap, int width);
     static void alignLength();
     static std::string truncate(const string& text, int width);
+    static void displayPlayingInfor(vector<Song> songs, int curPos);
     static void displaySongs(vector<Song> songs, int pageNum, int size);
     virtual void displayBottom();
     virtual void display(Song s);

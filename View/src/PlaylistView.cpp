@@ -3,7 +3,7 @@
 
 void PlaylistView::display(vector<string> plists) {
     system("clear");
-    cout << View::alignMiddle("SELECT PLAYLIST", '=', WIDTH) << endl;
+    cout << View::alignMiddle(" SELECT PLAYLIST ", '=', WIDTH) << endl;
     cout << endl;
     int num = plists.size();
     cout << "You have " << num << " playlists. Please select one" << endl;

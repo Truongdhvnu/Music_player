@@ -62,6 +62,8 @@ void View::display(Song s) {
      int length = 2*ALIGN_COL + 1;
      cout << "\n\n"
         << alignLeft("", ' ', LEFT_MARGIN)
+        << "Metadata: \n"
+        << alignLeft("", ' ', LEFT_MARGIN)
         << string(length , '-') << "\n" 
         << alignLeft("", ' ', LEFT_MARGIN)
         << alignLeft("| TITLE", ' ', ALIGN_COL) << alignLeft(truncate("| " + s.getTitle(),TITLE_COL), ' ', ALIGN_COL) << "|\n"
@@ -83,8 +85,7 @@ void View::display(Song s) {
         << alignLeft("| YEAR",' ', ALIGN_COL) << alignLeft(truncate("| " + s.getYear(), YEAR_COL + 3), ' ', ALIGN_COL) << "|\n"
         << alignLeft("", ' ', LEFT_MARGIN)
         << string(length, '-') << "\n"
-        << endl;
-    View::alignLength();   
+        << endl;  
 }
 
 void View::alignLength() {
@@ -101,6 +102,21 @@ string View::truncate(const std::string& str, int width) {
     } else {
         wide_str = wide_str.substr(0, width - 4);
         return converter.to_bytes(wide_str) + "...";
+    }
+}
+
+void View::displayPlayingInfor(vector<Song> songs, int curPos) {
+    cout << alignLeft("", ' ', LEFT_MARGIN*1.5)
+        << "Playing list\n\n";
+    for(int i = 0; i < (int)songs.size(); i++) {
+        if (i != curPos) {
+            cout << alignLeft("", ' ', LEFT_MARGIN*1.5 + INDICATOR_COL)
+                <<  songs[i].getTitle() << "\n";
+        } else {
+            cout << alignLeft("", ' ', LEFT_MARGIN*1.5)
+                << alignLeft(">>>", ' ', INDICATOR_COL)
+                <<  songs[i].getTitle() << "\n";
+        }
     }
 }
 
@@ -129,3 +145,4 @@ void View::displaySongs(vector<Song> songs, int pageNum, int size) {
     std::cout << "\033["<< LENGTH - 1 <<";0H";
     cout << "Page " << pageNum + 1 << " of " << ceil(size * 1.0 / MAX_LINES) << endl;
 }
+

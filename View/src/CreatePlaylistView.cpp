@@ -15,7 +15,7 @@ void CreatePlaylistView::displayBottom() {
 
 void CreatePlaylistView::display(vector<string> plists) {
     system("clear");
-    cout << View::alignMiddle("EDIT PLAYLISTS", '=', WIDTH) << endl;
+    cout << View::alignMiddle(" EDIT PLAYLISTS ", '=', WIDTH) << endl;
     cout << endl;
     int num = plists.size();
     cout << "You have " << num << " playlists. Please select one" << endl;

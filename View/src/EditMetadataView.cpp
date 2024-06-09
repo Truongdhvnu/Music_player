@@ -3,6 +3,7 @@
 
 void EditMetadataView::display(Song s) {
     View::display(s);
+    View::alignLength(); 
     this->displayBottom();     
 }
 

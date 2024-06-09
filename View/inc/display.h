@@ -43,8 +43,11 @@ Define column size
 #define ALBUM_COL 25
 #define DURATION_COL 10
 #define YEAR_COL 5
+#define INDICATOR_COL 5
 
 #define ALIGN_COL 30
 #define LEFT_MARGIN 20
+
+#define SONG_NUM_SHOW 7
 
 #endif
