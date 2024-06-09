@@ -1,6 +1,6 @@
 #include "ChooseUsbView.h"
 
-
+//Display multi USB chose
 void ChooseUsbView::display(vector<string> usbpath) {
     int linesPrinted = 0;
     system("clear");
