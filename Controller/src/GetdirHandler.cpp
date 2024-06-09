@@ -44,10 +44,11 @@ void GetdirHandler::handle(string command) {
             }
             else
             {
-                change_handler(GetdirHandler::getInstance());
+                //change_handler(GetdirHandler::getInstance());
                 cout << "Waiting for USB inserted..." << endl;
                 cout << "If USB inserted, press 1 again" << endl;
                 cout << "If USB not detected, remove and insert again" << endl;
+                change_handler(ChooseUsbHandler::getInstance());
             }
 
         } else if (command == "2") {
