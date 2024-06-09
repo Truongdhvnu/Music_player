@@ -5,7 +5,6 @@
 #include "display.h"
 
 int View::displayWidth(const std::string& str) {
-    // change UTF-8 to UTF-32 for set str_length
     std::wstring_convert<std::codecvt_utf8_utf16<char16_t>, char16_t> convert;
     auto utf16 = convert.from_bytes(str);
     return utf16.length();
