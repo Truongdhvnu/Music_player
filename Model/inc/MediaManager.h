@@ -29,7 +29,20 @@ public:
     /// @return A unique instance of MediaManger 
     static MediaManager& getInstance();
 
+    /// @brief Check if playing a playlist
+    /// @return true if a playlist is playing
     bool isPlaylistActive();
+
+    /// @brief Select a playlist to play songs
+    /// @param PlaylistNum index of the desired playlist
+    void setActivePList(int PlaylistNum);
+
+    /// @brief Change to play curret Library
+    void setActiveLibrary();
+
+    /// @brief get the Library of the model
+    /// @return the Libray of the model
+    Library& getLibrary();
 
     int getCurSongIndex();
 
@@ -37,15 +50,9 @@ public:
 
     int getNumberofSong();
 
-    void setActivePList(int PlaylistNum);
-
     int getActivePListIndex();
 
     Playlist& getActivePlaylist();
-
-    void setActiveLibrary();
-
-    Library& getLibrary();
 
     vector<string> getPlaylistNames();
 
@@ -75,7 +82,7 @@ public:
     int deletePlaylist(int pos);
 
     /*
-        Call this funtion before exit program
+        Call this funtion before exit program do update database
     */
     void updateDatabase();
 };

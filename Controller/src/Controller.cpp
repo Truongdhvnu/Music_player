@@ -61,11 +61,11 @@ void Controller::run() {
             if (recentView.size() - 1  > (long unsigned int)view_index) {
                 recentView[view_index]->leavePage();
                 view_index++;
-                recentView[view_index]->onStart();   //need data for onstart
+                recentView[view_index]->onStart();
             }
         } else if (command == EXIT) {
             for(Handler* e : recentView) {
-                e->exit();              // có th nào nhạc đang phát nhưng không tắt đi được không? do chang_handler đã xóa mất the handler khỏi danh sách
+                e->exit();
             }
             this->exit();
             std::exit(0);

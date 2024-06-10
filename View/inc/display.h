@@ -1,7 +1,7 @@
 #ifndef DISPLAY_H
 #define DISPLAY_H
 
-#define MAX_LINES 3
+#define MAX_LINES 25
 #define WIDTH 100
 #define LENGTH 30
 /*

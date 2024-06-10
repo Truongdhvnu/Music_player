@@ -4,7 +4,7 @@
 #include "configs.h"
 #include "display.h"
 
-/// @brief is a Vector of songs with method to get data, or process the data like sort method
+/// @brief Manage a vector of songs with method to get data, or process the data like sort method
 class MediaList {
 protected:
     vector<Song> songList;
