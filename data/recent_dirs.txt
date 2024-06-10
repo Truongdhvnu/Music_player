@@ -1,2 +1,3 @@
 music
 /home/cuongnk168/test_media
+/home/cuongnk168/test_media/video
