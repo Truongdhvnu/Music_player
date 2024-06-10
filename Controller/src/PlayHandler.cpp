@@ -63,7 +63,7 @@ PlayHandler::PlayingInfor PlayHandler::getPlayingInfor() {
             int pos = this->model.mediaManager.getCurSongIndex();
             pos += i;
             if (pos > this->model.mediaManager.getNumberofSong() - 1) {
-                pos -= this->model.mediaManager.getNumberofSong() - 1;
+                pos -= this->model.mediaManager.getNumberofSong();
             } else if (pos < 0) {
                 pos += this->model.mediaManager.getNumberofSong();
             }

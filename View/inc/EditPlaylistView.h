@@ -12,5 +12,4 @@ class EditPlaylistView : public View {
 public:
     void displayBottom();
     void displaySongs(vector<Song> songs, int pageNumn, int size);
-    // void display(Song s);
 };

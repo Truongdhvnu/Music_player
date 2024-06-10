@@ -44,13 +44,9 @@ void MusicPlayer::play(const Song& song) {
         return;
     }
     playing = true;
-
-    //hien thi thoi gian
-    // musicDuration = stoi(song.getDuration());
     musicDuration = getFileDuration(filePath);
     paused = false;
     startTime = std::chrono::steady_clock::now();
-    ////////
     musicThread = std::thread(&MusicPlayer::musicThreadFunc, this);
     musicThread.detach();
 
@@ -227,12 +223,13 @@ void MusicPlayer::displayProgress() {
 
         int totalDuration = musicDuration;
         int elapsedSeconds = getElapsedTime();
-        int progressLength = 86;
+        int progressLength = 70;
         int pos = static_cast<int>((static_cast<double>(elapsedSeconds) / totalDuration) * progressLength);
         std::string progressBar = std::string(pos, '#') + std::string(progressLength - pos, '.');
         {
             std::lock_guard<std::mutex> lock(mtx);
-            std::cout << "\r" << currentTime << " [" << progressBar << "] " << totalTime<< std::flush;
+            std::cout << "\r" << currentTime << " [" << progressBar << "] " << totalTime 
+                      << "     Volume: " << volume << "%" << std::flush;
         }
         std::this_thread::sleep_for(std::chrono::milliseconds(1000));
     }

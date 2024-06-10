@@ -11,10 +11,10 @@ void SongListView::displayBottom() {
     string sortartist = "SortArtist: [";
     sortartist = sortartist + SORT_BY_ARTIST + "]-";
     cout << alignLeft("",'-', WIDTH) << endl;
-    cout << alignLeft(next,' ', 28)
-         << alignLeft(pre,' ', 28)
-         << alignLeft(sortname,' ', 28)
-         << alignRight(sortartist,' ', 0)
+    cout << alignLeft(next,' ', WIDTH/4)
+         << alignLeft(pre,' ', WIDTH/4)
+         << alignRight(sortname,' ', WIDTH/4)
+         << alignRight(sortartist,' ', WIDTH/4)
          << endl;
     View::displayBottom();
 }

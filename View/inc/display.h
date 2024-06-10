@@ -3,7 +3,8 @@
 
 #define MAX_LINES 25
 #define WIDTH 100
-#define LENGTH 30
+#define LENGTH MAX_LINES+7
+
 /*
     Define navigator letters
 */
@@ -37,17 +38,17 @@ enum PLAYOPTION {
 /* 
 Define column size
 */
-#define NO_COL 5
-#define TITLE_COL 30
-#define ARTIST_COL 25
-#define ALBUM_COL 25
-#define DURATION_COL 10
-#define YEAR_COL 5
-#define INDICATOR_COL 5
+#define NO_COL WIDTH/20
+#define TITLE_COL WIDTH*3/10
+#define ARTIST_COL WIDTH/4
+#define ALBUM_COL WIDTH/4
+#define DURATION_COL WIDTH/10
+#define YEAR_COL WIDTH/20
+#define INDICATOR_COL WIDTH/20
 
-#define ALIGN_COL 30
-#define LEFT_MARGIN 20
+#define ALIGN_COL WIDTH*3/10
+#define LEFT_MARGIN WIDTH*1/5
 
 #define SONG_NUM_SHOW 7
-
+    
 #endif

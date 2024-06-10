@@ -5,7 +5,6 @@
 #include "display.h"
 
 int View::displayWidth(const std::string& str) {
-    // Chuyển đổi từ UTF-8 sang UTF-32 để tính toán độ dài hiển thị
     std::wstring_convert<std::codecvt_utf8_utf16<char16_t>, char16_t> convert;
     auto utf16 = convert.from_bytes(str);
     return utf16.length();
@@ -45,12 +44,12 @@ void View::displayBottom() {
     string forward = "Forward: [";
     forward = forward + FORWARD + "]";
     string exit = "Exit: [";
-    exit = exit + EXIT + "]";
+    exit = exit + EXIT + "]-";
     cout << alignLeft("",'-', WIDTH) << endl;
-    cout << alignLeft(home,' ', 28)
-         << alignLeft(goback,' ', 28)
-         << alignLeft(forward,' ', 28)
-         << alignLeft(exit,' ', 15) << "-"
+    cout << alignLeft(home,' ', WIDTH/4)
+         << alignLeft(goback,' ', WIDTH/4)
+         << alignRight(forward,' ', WIDTH/4)
+         << alignRight(exit,' ', WIDTH/4)
          << endl;
     cout << alignLeft("",'-', WIDTH) << endl;
 }
@@ -66,23 +65,23 @@ void View::display(Song s) {
         << alignLeft("", ' ', LEFT_MARGIN)
         << string(length , '-') << "\n" 
         << alignLeft("", ' ', LEFT_MARGIN)
-        << alignLeft("| TITLE", ' ', ALIGN_COL) << alignLeft(truncate("| " + s.getTitle(),TITLE_COL), ' ', ALIGN_COL) << "|\n"
+        << alignLeft("| TITLE", ' ', ALIGN_COL) << alignLeft(truncate("| " + s.getTitle(),ALIGN_COL), ' ', ALIGN_COL) << "|\n"
         << alignLeft("", ' ', LEFT_MARGIN)
         << string(length, '-') << "\n"
         << alignLeft("", ' ', LEFT_MARGIN)
-        << alignLeft("| ARTIST", ' ', ALIGN_COL) << alignLeft(truncate("| " + s.getArtist(), ARTIST_COL), ' ', ALIGN_COL) << "|\n"
+        << alignLeft("| ARTIST", ' ', ALIGN_COL) << alignLeft(truncate("| " + s.getArtist(), ALIGN_COL), ' ', ALIGN_COL) << "|\n"
         << alignLeft("", ' ', LEFT_MARGIN)
         << string(length, '-') << "\n"
         << alignLeft("", ' ', LEFT_MARGIN)
-        << alignLeft("| ALBUM", ' ', ALIGN_COL) << alignLeft(truncate("| " + s.getAlbum(), ALBUM_COL), ' ', ALIGN_COL) << "|\n"
+        << alignLeft("| ALBUM", ' ', ALIGN_COL) << alignLeft(truncate("| " + s.getAlbum(), ALIGN_COL), ' ', ALIGN_COL) << "|\n"
         << alignLeft("", ' ', LEFT_MARGIN)
         << string(length, '-') << "\n"
         << alignLeft("", ' ', LEFT_MARGIN) 
-        << alignLeft("| DURATION", ' ', ALIGN_COL) << alignLeft(truncate("| " + s.getDuration(), DURATION_COL), ' ', ALIGN_COL) << "|\n"
+        << alignLeft("| DURATION", ' ', ALIGN_COL) << alignLeft(truncate("| " + s.getDuration(), ALIGN_COL), ' ', ALIGN_COL) << "|\n"
         << alignLeft("", ' ', LEFT_MARGIN)
         << string(length, '-') << "\n"
         << alignLeft("", ' ', LEFT_MARGIN)
-        << alignLeft("| YEAR",' ', ALIGN_COL) << alignLeft(truncate("| " + s.getYear(), YEAR_COL + 3), ' ', ALIGN_COL) << "|\n"
+        << alignLeft("| YEAR",' ', ALIGN_COL) << alignLeft(truncate("| " + s.getYear(), ALIGN_COL), ' ', ALIGN_COL) << "|\n"
         << alignLeft("", ' ', LEFT_MARGIN)
         << string(length, '-') << "\n"
         << endl;  
@@ -107,30 +106,30 @@ string View::truncate(const std::string& str, int width) {
 
 void View::displayPlayingInfor(vector<Song> songs, int curPos) {
     cout << alignLeft("", ' ', LEFT_MARGIN*1.5)
-        << "Playing list\n\n";
+         << "Playing list\n\n";
     for(int i = 0; i < (int)songs.size(); i++) {
         if (i != curPos) {
             cout << alignLeft("", ' ', LEFT_MARGIN*1.5 + INDICATOR_COL)
-                <<  songs[i].getTitle() << "\n";
+                 <<  songs[i].getTitle() << "\n";
         } else {
             cout << alignLeft("", ' ', LEFT_MARGIN*1.5)
-                << alignLeft(">>>", ' ', INDICATOR_COL)
-                <<  songs[i].getTitle() << "\n";
+                 << alignLeft(">>>", ' ', INDICATOR_COL)
+                 <<  songs[i].getTitle() << "\n";
         }
     }
 }
 
 void View::displaySongs(vector<Song> songs, int pageNum, int size) {
     system("clear");
-    cout << alignMiddle("MEDIA LIST", '=', WIDTH) << endl;
+    cout << alignMiddle(" MEDIA LIST ", '=', WIDTH) << endl;
     cout << endl;
-    cout << alignLeft("No", ' ', 5)
-         << alignLeft("Title", ' ', 30)
-         << alignLeft("Artist", ' ', 25)
-         << alignLeft("Album", ' ', 25)
-         << alignLeft("Duration", ' ', 10)
-         << alignLeft("Year", ' ', 5)
-         << endl;
+    cout << alignLeft("N0", ' ', NO_COL)
+         << alignLeft("TITLE", ' ', TITLE_COL)
+         << alignLeft("ARTIST", ' ', ARTIST_COL)
+         << alignLeft("ALBUM", ' ', ALBUM_COL)
+         << alignLeft("DURATION", ' ', DURATION_COL)
+         << alignLeft("YEAR", ' ', YEAR_COL)
+         << endl << endl;
     int count = pageNum * MAX_LINES + 1;
     for (auto it = songs.begin(); it != songs.end(); ++it) {
         cout << alignLeft(to_string(count), ' ', NO_COL)

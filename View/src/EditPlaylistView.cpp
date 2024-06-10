@@ -9,10 +9,10 @@ void EditPlaylistView::displaySongs(vector<Song> songs,int pageNum, int size) {
 
 void EditPlaylistView::displayBottom() {
     cout << alignLeft("",'-', WIDTH) << endl;
-    cout << alignLeft("-1. Rename", ' ', 28)
-         << alignLeft("2. Add From Cur", ' ', 28)
-         << alignLeft("3. Add From New", ' ', 28)
-         << alignLeft("4. Remove-", ' ', 15)
+    cout << alignLeft("-1. Rename", ' ', WIDTH/4)
+         << alignLeft("2. Add From Cur", ' ', WIDTH/4)
+         << alignRight("3. Add From New", ' ', WIDTH/4)
+         << alignRight("4. Remove-", ' ', WIDTH/4)
          << endl;
     string next = "-Next: [";
     next = next + NEXT_PAGE + "]";
@@ -23,10 +23,10 @@ void EditPlaylistView::displayBottom() {
     string sortartist = "SortArtist: [";
     sortartist = sortartist + SORT_BY_ARTIST + "]-";
     cout << alignLeft("",'-', WIDTH) << endl;
-    cout << alignLeft(next,' ', 28)
-         << alignLeft(pre,' ', 28)
-         << alignLeft(sortname,' ', 28)
-         << alignRight(sortartist,' ', 0)
+    cout << alignLeft(next,' ', WIDTH/4)
+         << alignLeft(pre,' ', WIDTH/4)
+         << alignRight(sortname,' ', WIDTH/4)
+         << alignRight(sortartist,' ', WIDTH/4)
          << endl;
     View::displayBottom();
 }
