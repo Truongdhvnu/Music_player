@@ -52,6 +52,7 @@ void MusicPlayer::play(const Song& song) {
 
     stopProgress = false; // Đặt lại biến dừng progress
     progressThread = std::thread(&MusicPlayer::displayProgress, this); // Bắt đầu thread cho displayProgress
+    // progressThread = std::thread(&MusicPlayer::displayProgress);
     progressThread.detach();
 }
 
@@ -72,6 +73,7 @@ void MusicPlayer::resume() {
         startTime += pausedDuration;  // Adjust start time to account for pause
         stopProgress = false;
         progressThread = std::thread(&MusicPlayer::displayProgress, this); 
+        // progressThread = std::thread(&MusicPlayer::displayProgress) 
         progressThread.detach();
     }
 }
@@ -145,6 +147,7 @@ void MusicPlayer::musicThreadFunc() {
         playing = false; // Ensure playing is set to false if music playing fails
     }
     while (playing && Mix_PlayingMusic()) {
+        // readPort();
         SDL_Delay(100);
     }
     if (playing) { // If playing was not stopped manually
@@ -236,3 +239,81 @@ void MusicPlayer::displayProgress() {
     stopProgress = true;
     // std::cout << std::endl;
 }
+
+// void MusicPlayer::getPort() {
+//     int serialPort = open("/dev/ttyACM0", O_RDWR);
+// }
+
+// void MusicPlayer::configPort() {
+//     int serialPort = open("/dev/ttyACM0", O_RDWR);
+//     // Kiểm tra lỗi
+//     if (serialPort < 0) {
+//         std::cerr << "Error " << errno << " opening " << "/dev/ttyACM0" << ": " << strerror(errno) << std::endl;
+//         return;
+//     }
+
+//     struct termios tty;
+//     if(tcgetattr(serialPort, &tty) != 0) {
+//         std::cerr << "Error " << errno << " from tcgetattr: " << strerror(errno) << std::endl;
+//         exit(1);
+//     }
+
+//     cfsetispeed(&tty, B115200);
+//     cfsetospeed(&tty, B115200);
+
+//     tty.c_cflag &= ~PARENB; // No parity
+//     tty.c_cflag &= ~CSTOPB; // 1 stop bit
+//     tty.c_cflag &= ~CSIZE;
+//     tty.c_cflag |= CS8; // 8 bits per byte
+//     tty.c_cflag &= ~CRTSCTS; // No hardware flow control
+//     tty.c_cflag |= CREAD | CLOCAL; // Enable receiver, ignore modem control lines
+
+//     tty.c_lflag &= ~ICANON;
+//     tty.c_lflag &= ~ECHO; // Disable echo
+//     tty.c_lflag &= ~ECHOE; // Disable erasure
+//     tty.c_lflag &= ~ECHONL; // Disable new-line echo
+//     tty.c_lflag &= ~ISIG; // Disable interpretation of INTR, QUIT and SUSP
+
+//     tty.c_iflag &= ~(IXON | IXOFF | IXANY); // Turn off s/w flow ctrl
+//     tty.c_iflag &= ~(ICRNL | INLCR); // Disable CR-to-NL mapping
+
+//     tty.c_oflag &= ~OPOST; // Prevent special interpretation of output bytes (e.g. newline chars)
+//     tty.c_oflag &= ~ONLCR; // Prevent conversion of newline to carriage return/line feed
+
+//     tty.c_cc[VTIME] = 10;    // Wait for up to 1s (10 deciseconds)
+//     tty.c_cc[VMIN] = 0;
+
+//     if (tcsetattr(serialPort, TCSANOW, &tty) != 0) {
+//         std::cerr << "Error " << errno << " from tcsetattr: " << strerror(errno) << std::endl;
+//         exit(1);
+//     }    
+// }
+
+// void MusicPlayer::closePort() {
+//     int serialPort = open("/dev/ttyACM0", O_RDWR);
+//     close(serialPort);
+// }
+
+// void MusicPlayer::readPort() {
+//     int serialPort = open("/dev/ttyACM0", O_RDWR);
+//     char read_buf[256];
+//     memset(&read_buf, '\0', sizeof(read_buf));
+//     int num_bytes = read(serialPort, &read_buf, sizeof(read_buf));
+
+//     if (num_bytes < 0) {
+//         std::cerr << "Error reading: " << strerror(errno) << std::endl;
+//         // break;
+//     }
+
+//     if(num_bytes > 0) {
+//         if(read_buf[0] == 's') pause();
+//         else if(read_buf[0] == 'r') resume();
+//         else if(read_buf[0] == 'n') next();
+//         else if(read_buf[0] == 'p') previous();
+//         else if(read_buf[0] == 'v') setVolume(read_buf[1] - 1);
+//     }
+
+//     // if (num_bytes > 0) {
+//     //     std::cout << "Read " << num_bytes << " bytes. Data: " << read_buf << std::endl;
+//     // }
+// }

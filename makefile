@@ -28,7 +28,7 @@ obj_build: $(OBJS)
 
 .PHONY: run
 run:
-	./$(OBJDIR)/$(EXECUTE_FILE)
+	sudo ./$(OBJDIR)/$(EXECUTE_FILE)
 
 .PHONY: clean
 clean:

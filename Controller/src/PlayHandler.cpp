@@ -77,6 +77,7 @@ PlayHandler::PlayingInfor PlayHandler::getPlayingInfor() {
 void PlayHandler::handle(string command) {
     try {
         int option = stoi(command) - 1;
+        // string cmd = command;
         PlayHandler::PlayingInfor infor;
         switch(option) {
             case REPLAY:
@@ -115,8 +116,13 @@ void PlayHandler::handle(string command) {
                 musicPlayer.volumeDown();
                 cout << "\033[F" << "\033[101C" << "\b \b" << flush;
                 break;
+            case SET_VOLUME:
+                musicPlayer.setVolume((unsigned int)(command[2]-1));
+                cout << "\033[F" << "\033[101C" << "\b \b" << flush;
+                break;
             default:    
                 cout << "\033[F" << "\033[K" << "Invalid" << flush;
+                // if(command[0] == 'v') musicPlayer.setVolume(command[1]);
                 break;
         }
     } catch (exception& e) {
