@@ -151,18 +151,28 @@ void Controller::readPort() {
     }
 
     if(num_bytes > 0) {
-        if(read_buf[0] == 's') {
-            std::cout << "\n";
-            Controller::recentView[view_index]->handle("2");
-        }
-        else if(read_buf[0] == 'r') {
-            std::cout << "\n";
-            Controller::recentView[view_index]->handle("3");
-        }
-        else if(read_buf[0] == 'n') Controller::recentView[view_index]->handle("5");
-        else if(read_buf[0] == 'p') Controller::recentView[view_index]->handle("6");
-        else if(read_buf[0] == '9') {
+        // if(read_buf[0] == 's') {
+        //     std::cout << "\n";
+        //     Controller::recentView[view_index]->handle("2");
+        // }
+        // else if(read_buf[0] == 'r') {
+        //     std::cout << "\n";
+        //     Controller::recentView[view_index]->handle("3");
+        // }
+        // else if(read_buf[0] == 'n') Controller::recentView[view_index]->handle("5");
+        // else if(read_buf[0] == 'p') Controller::recentView[view_index]->handle("6");
+        // else if(read_buf[0] == '9') {
+        //     // string vol = (string)read_buf[0] + (string)read_buf[1];
+        //     std::cout << "\n";
+        //     Controller::recentView[view_index]->handle(read_buf);
+        // }
+
+        if(read_buf[0] == '3' && read_buf[1] == '1') {
             // string vol = (string)read_buf[0] + (string)read_buf[1];
+            std::cout << "\n";
+            Controller::recentView[view_index]->handle(read_buf);
+        }
+        else {
             std::cout << "\n";
             Controller::recentView[view_index]->handle(read_buf);
         }

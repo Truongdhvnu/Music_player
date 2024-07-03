@@ -117,7 +117,7 @@ void PlayHandler::handle(string command) {
                 cout << "\033[F" << "\033[101C" << "\b \b" << flush;
                 break;
             case SET_VOLUME:
-                musicPlayer.setVolume((unsigned int)(command[2]-1));
+                musicPlayer.setVolume((unsigned int)(command[3]-1));
                 cout << "\033[F" << "\033[101C" << "\b \b" << flush;
                 break;
             default:    

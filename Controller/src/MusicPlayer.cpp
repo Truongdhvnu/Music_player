@@ -232,7 +232,7 @@ void MusicPlayer::displayProgress() {
         {
             std::lock_guard<std::mutex> lock(mtx);
             std::cout << "\r" << currentTime << " [" << progressBar << "] " << totalTime 
-                      << "     Volume: " << volume << "%" << std::flush;
+                      << "    Volume: " << "    \b\b\b\b" << volume << "%" << std::flush;
         }
         std::this_thread::sleep_for(std::chrono::milliseconds(1000));
     }
