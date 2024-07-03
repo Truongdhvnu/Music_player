@@ -24,7 +24,7 @@ public:
     std::vector<std::string> getSubdirectories(const std::string& parentPath);
     
     std::string getUSBPort();
-    std::string find_usb_serial_device() ;
+    static std::string find_usb_serial_device() ;
 private:
     
     int status;

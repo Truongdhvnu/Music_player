@@ -40,8 +40,8 @@ void Command::com_producer() {
     // std::cout << "Connect to port:" <<uart_port<<std::endl;
     // int serialPort = open(port_str, O_RDWR);
     while(running) {
-        USBMonitor usbMonitor;
-        std::string uart_port = usbMonitor.find_usb_serial_device();
+        // USBMonitor usbMonitor;
+        std::string uart_port = USBMonitor::find_usb_serial_device();
         const char* port_str = uart_port.c_str();
         if (port_str == nullptr || strlen(port_str) == 0) {
             // std::cerr << "Error: USB serial device path is empty or null." << std::endl;
