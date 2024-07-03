@@ -6,7 +6,7 @@ EXECUTE_FILE := main
 
 MODULES := Controller Model View
 SRCDIR = $(foreach module,$(MODULES),$(module)/src)
-INCDIR := View/src $(foreach module,$(MODULES),$(module)/inc)
+INCDIR := $(foreach module,$(MODULES),$(module)/inc)
 OBJDIR := Build
 
 LINK_DIRS = $(foreach dir, $(INCDIR), -I$(dir))
