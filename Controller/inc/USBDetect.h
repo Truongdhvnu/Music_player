@@ -22,7 +22,9 @@ public:
     std::string getUserPathValue() const;
     void DetectUSBEvents();
     std::vector<std::string> getSubdirectories(const std::string& parentPath);
-
+    
+    std::string getUSBPort();
+    std::string find_usb_serial_device() ;
 private:
     
     int status;
@@ -31,6 +33,8 @@ private:
     struct udev_monitor* mon;
     std::atomic<bool> running;
     std::thread monitorThread;
+
+    std::string USBPortAddress; // Thêm thuộc tính để lưu địa chỉ port USB
 };
 
 #endif // USBDETECT_H

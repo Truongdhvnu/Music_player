@@ -11,11 +11,13 @@
 #include <thread>
 #include <mutex>
 #include "Command.h"
+#include "USBDetect.h"
 
-#define PORT "/dev/ttyACM0"
+// #define PORT "/dev/ttyACM0"
 #define MESSAGE_LENGTH 3
 
 std::atomic<bool> running(true);
+char* PORT=NULL;
 
 void Command::add_shared_data(std::string cmd) {
     std::unique_lock<std::mutex> lock(mtx);
@@ -27,40 +29,71 @@ void Command::add_shared_data(std::string cmd) {
 void Command::com_producer() {
     int opset = 0;
     char read_buf[18] = {'\0'};
+    bool checkUart = false;
+        // USBMonitor usbMonitor;
+    // std::string uart_port = usbMonitor.find_usb_serial_device();
+
+    // const char* port_str = uart_port.c_str();
+    // if (port_str == nullptr || strlen(port_str) == 0) {
+    //     std::cerr << "Error: USB serial device path is empty or null." << std::endl;
+    // }
+    // std::cout << "Connect to port:" <<uart_port<<std::endl;
+    // int serialPort = open(port_str, O_RDWR);
     while(running) {
-        int serialPort = open(PORT, O_RDWR);
-
-        int num_bytes = read(serialPort, read_buf + opset, 18);
-        opset += num_bytes;
-
-        // std::cout << "num byte: "<< num_bytes << std::endl;
-        // std::cout << "opset: "<< opset << std::endl;
-        // std::cout << "buffer: "<< read_buf << std::endl << std::endl;
-
-        if(opset >= MESSAGE_LENGTH) {
-            char tmp[MESSAGE_LENGTH + 1];
-            for (int i = 0; i < MESSAGE_LENGTH; i++) {
-                tmp[i] = read_buf[i];
+        USBMonitor usbMonitor;
+        std::string uart_port = usbMonitor.find_usb_serial_device();
+        const char* port_str = uart_port.c_str();
+        if (port_str == nullptr || strlen(port_str) == 0) {
+            // std::cerr << "Error: USB serial device path is empty or null." << std::endl;
+            checkUart = false;
+        }
+        else {
+            PORT = const_cast<char *>(port_str);
+            if(checkUart==false) 
+            {
+                std::cerr << "USB serial: " << PORT<< std::endl;
+                configPort();
             }
-            tmp[MESSAGE_LENGTH] = '\0';
+            checkUart = true;
+        }
 
-            if(read_buf[0] == '9') add_shared_data(std::string(tmp));
-            for(int i = 3; i < opset; i++) {
-                read_buf[i-3] = read_buf[i];
+        if(checkUart)
+        { 
+            // std::cerr << "USB serial" << PORT<< std::endl;
+            int serialPort = open(PORT, O_RDWR);
+
+            int num_bytes = read(serialPort, read_buf + opset, 18);
+            opset += num_bytes;
+
+            // std::cout << "num byte: "<< num_bytes << std::endl;
+            // std::cout << "opset: "<< opset << std::endl;
+            // std::cout << "buffer: "<< read_buf << std::endl << std::endl;
+
+            if(opset >= MESSAGE_LENGTH) {
+                char tmp[MESSAGE_LENGTH + 1];
+                for (int i = 0; i < MESSAGE_LENGTH; i++) {
+                    tmp[i] = read_buf[i];
+                }
+                tmp[MESSAGE_LENGTH] = '\0';
+
+                if(read_buf[0] == '9') add_shared_data(std::string(tmp));
+                for(int i = 3; i < opset; i++) {
+                    read_buf[i-3] = read_buf[i];
+                }
+                opset -= 3;
+                // std::cout << "Read " << tmp << std::endl;
+            } else if (opset > 0) {
+                opset -= 1;
+                if(read_buf[0] == 's') {
+                    add_shared_data(std::string("2"));
+                }
+                else if(read_buf[0] == 'r') {
+                    add_shared_data(std::string("3"));
+                }
+                else if(read_buf[0] == 'n') add_shared_data(std::string("5"));
+                else if(read_buf[0] == 'p') add_shared_data(std::string("6"));
+                else opset += 1;
             }
-            opset -= 3;
-            // std::cout << "Read " << tmp << std::endl;
-        } else if (opset > 0) {
-            opset -= 1;
-            if(read_buf[0] == 's') {
-                add_shared_data(std::string("2"));
-            }
-            else if(read_buf[0] == 'r') {
-                add_shared_data(std::string("3"));
-            }
-            else if(read_buf[0] == 'n') add_shared_data(std::string("5"));
-            else if(read_buf[0] == 'p') add_shared_data(std::string("6"));
-            else opset += 1;
         }
     }
 }
@@ -75,6 +108,16 @@ void Command::cin_producer() {
 }
 
 void Command::configPort() {
+    // USBMonitor usbMonitor;
+    // std::string uart_port = usbMonitor.find_usb_serial_device();
+
+    // const char* port_str = uart_port.c_str();
+    // if (port_str == nullptr || strlen(port_str) == 0) {
+    //     std::cerr << "Error: USB serial device path is empty or null." << std::endl;
+    // }
+    // std::cout << "Connect to port:" <<uart_port<<std::endl;
+    // int serialPort = open(port_str, O_RDWR);
+
     int serialPort = open(PORT, O_RDWR);
     // Kiểm tra lỗi
     if (serialPort < 0) {
@@ -125,7 +168,7 @@ void Command::closePort() {
 }
 
 Command::Command() {
-    configPort();
+    // configPort();
     comProducerThread = std::thread(&Command::com_producer, this);
     cinProducerThread = std::thread(&Command::cin_producer, this);
 }

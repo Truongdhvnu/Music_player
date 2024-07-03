@@ -16,6 +16,7 @@ USBMonitor::USBMonitor() : status(0), udev(nullptr), mon(nullptr), running(false
             udev_monitor_enable_receiving(mon);
         }
     }
+    USBPortAddress="";
 }
 
 //Destructor
@@ -62,7 +63,8 @@ void USBMonitor::DetectUSBEvents() {
         struct timeval timeout;
         timeout.tv_sec = 1;
         timeout.tv_usec = 0;
-
+        USBPortAddress=find_usb_serial_device();
+        std::cout << "USB Inserted Port: "<< USBPortAddress << std::endl;
         int ret = select(fd + 1, &fds, nullptr, nullptr, &timeout);
         if (ret > 0 && FD_ISSET(fd, &fds)) {
             struct udev_device* dev = udev_monitor_receive_device(mon);
@@ -78,6 +80,7 @@ void USBMonitor::DetectUSBEvents() {
                         std::cout << "USB Removed" << std::endl;
                         status = 0;
                         clearUserPath();
+                        USBPortAddress="";
                     }
                 }
                 udev_device_unref(dev);
@@ -121,4 +124,52 @@ std::vector<std::string> USBMonitor::getSubdirectories(const std::string& parent
         std::cerr << "General error: " << e.what() << std::endl;
     }
     return subdirectories;
+}
+
+
+std::string USBMonitor::getUSBPort()
+{
+    return USBPortAddress;
+}
+
+std::string USBMonitor::find_usb_serial_device() {
+    struct udev *udev;
+    struct udev_enumerate *enumerate;
+    struct udev_list_entry *devices, *dev_list_entry;
+    struct udev_device *dev;
+    std::string device_path;
+
+    udev = udev_new();
+    if (!udev) {
+        printf("Can't create udev\n");
+        return NULL;
+    }
+
+    enumerate = udev_enumerate_new(udev);
+    udev_enumerate_add_match_subsystem(enumerate, "tty");
+    udev_enumerate_scan_devices(enumerate);
+    devices = udev_enumerate_get_list_entry(enumerate);
+
+    udev_list_entry_foreach(dev_list_entry, devices) {
+        const char *path;
+
+        path = udev_list_entry_get_name(dev_list_entry);
+        dev = udev_device_new_from_syspath(udev, path);
+
+        if (udev_device_get_devnode(dev) && 
+            udev_device_get_property_value(dev, "ID_VENDOR_ID") && 
+            udev_device_get_property_value(dev, "ID_MODEL_ID")) {
+
+            device_path = strdup(udev_device_get_devnode(dev));
+            udev_device_unref(dev);
+            break;
+        }
+
+        udev_device_unref(dev);
+    }
+
+    udev_enumerate_unref(enumerate);
+    udev_unref(udev);
+
+    return device_path;
 }

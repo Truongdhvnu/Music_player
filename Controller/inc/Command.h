@@ -11,10 +11,11 @@
 #include <thread>
 #include <mutex>
 
-#define PORT "/dev/ttyACM0"
+// #define PORT "/dev/ttyACM0"
 #define MESSAGE_LENGTH 3
 
 extern std::atomic<bool> running;
+extern char* PORT;
 
 class Command {
 private:
@@ -34,6 +35,7 @@ private:
     void configPort();
 
     void closePort();
+
 
 public:
     Command();
