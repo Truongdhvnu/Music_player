@@ -9,6 +9,7 @@
 #include "HomeHandler.h"
 #include "Model.h"
 #include "display.h"
+#include "Command.h"
 
 Model& Controller::model = Model::getInstance();
 deque<Handler*> Controller::recentView;
@@ -49,8 +50,11 @@ int Controller::exit() {
 
 void Controller::run() {
     string command;
+    Command cmd;
     while (true) {
-        cin >> command;
+        // cin >> command;
+        cout << endl;
+        command = cmd.getCommand();
         if (command == GO_BACK) {
             if (view_index >= 1) {
                 recentView[view_index]->leavePage();
