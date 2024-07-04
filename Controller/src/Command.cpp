@@ -30,28 +30,22 @@ void Command::com_producer() {
     int opset = 0;
     char read_buf[18] = {'\0'};
     bool checkUart = false;
-        // USBMonitor usbMonitor;
-    // std::string uart_port = usbMonitor.find_usb_serial_device();
-
-    // const char* port_str = uart_port.c_str();
-    // if (port_str == nullptr || strlen(port_str) == 0) {
-    //     std::cerr << "Error: USB serial device path is empty or null." << std::endl;
-    // }
-    // std::cout << "Connect to port:" <<uart_port<<std::endl;
-    // int serialPort = open(port_str, O_RDWR);
     while(running) {
-        // USBMonitor usbMonitor;
         std::string uart_port = USBMonitor::find_usb_serial_device();
         const char* port_str = uart_port.c_str();
         if (port_str == nullptr || strlen(port_str) == 0) {
-            // std::cerr << "Error: USB serial device path is empty or null." << std::endl;
+            if(checkUart==true)
+            {
+                // std::cerr << "USB serial port Disconnect: " << PORT<< std::endl;
+                closePort();
+            }
             checkUart = false;
         }
         else {
             PORT = const_cast<char *>(port_str);
             if(checkUart==false) 
             {
-                std::cerr << "USB serial: " << PORT<< std::endl;
+                // std::cerr << "USB serial port Connect: " << PORT<< std::endl;
                 configPort();
             }
             checkUart = true;
@@ -108,16 +102,6 @@ void Command::cin_producer() {
 }
 
 void Command::configPort() {
-    // USBMonitor usbMonitor;
-    // std::string uart_port = usbMonitor.find_usb_serial_device();
-
-    // const char* port_str = uart_port.c_str();
-    // if (port_str == nullptr || strlen(port_str) == 0) {
-    //     std::cerr << "Error: USB serial device path is empty or null." << std::endl;
-    // }
-    // std::cout << "Connect to port:" <<uart_port<<std::endl;
-    // int serialPort = open(port_str, O_RDWR);
-
     int serialPort = open(PORT, O_RDWR);
     // Kiểm tra lỗi
     if (serialPort < 0) {
@@ -193,13 +177,3 @@ Command::~Command() {
 
 bool Command::dataReady = false;
 
-// int main() {
-//     Command cm;
-//     while (running) {
-//         std::string data = cm.getCommand();
-//         std::cout << "Get Command: " << data << std::endl;
-//     }
-    
-//     std::cout << "Program terminated." << std::endl;
-//     return 0;
-// }

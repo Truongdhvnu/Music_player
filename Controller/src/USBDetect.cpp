@@ -64,7 +64,7 @@ void USBMonitor::DetectUSBEvents() {
         timeout.tv_sec = 1;
         timeout.tv_usec = 0;
         USBPortAddress=find_usb_serial_device();
-        std::cout << "USB Inserted Port: "<< USBPortAddress << std::endl;
+        // std::cout << "USB Inserted Port: "<< USBPortAddress << std::endl;
         int ret = select(fd + 1, &fds, nullptr, nullptr, &timeout);
         if (ret > 0 && FD_ISSET(fd, &fds)) {
             struct udev_device* dev = udev_monitor_receive_device(mon);
