@@ -19,7 +19,6 @@ $(OBJDIR)/%.o: %.cpp
 	$(CC) $(CFLAGS) -c $< $(LDFLAGS) -o $@
 
 # build: clean obj_build
-
 build: obj_build
 
 obj_build: $(OBJS)
@@ -28,7 +27,9 @@ obj_build: $(OBJS)
 
 .PHONY: run
 run:
-	sudo ./$(OBJDIR)/$(EXECUTE_FILE)
+	sudo dmesg -n 1
+	sudo ./$(OBJDIR)/$(EXECUTE_FILE) 2>/dev/null
+#	sudo ./$(OBJDIR)/$(EXECUTE_FILE) 
 
 .PHONY: clean
 clean:
