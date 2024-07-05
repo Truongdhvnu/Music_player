@@ -1,3 +1,4 @@
+#pragma once
 #include <iostream>
 #include <string>
 #include <string.h>
@@ -43,4 +44,8 @@ public:
     std::string getCommand();
 
     ~Command();
+
+    static void writeData(std::string data);
+    
+    void listen();
 };

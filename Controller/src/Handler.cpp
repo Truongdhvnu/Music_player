@@ -8,6 +8,11 @@ using namespace std;
 void Handler::leavePage() { 
 }
 
+void Handler::reloadDisplay(int line) {
+    (void)line;
+}
+
+
 void Handler::changeHandler(Handler *handler, void *passData) {
     Handler::changeHandelCallback(handler, passData);
 }

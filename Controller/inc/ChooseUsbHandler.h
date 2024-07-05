@@ -31,4 +31,6 @@ public:
     void handle(std::string command);
 
     void leavePage();
+
+    void reloadDisplay(int line);
 };

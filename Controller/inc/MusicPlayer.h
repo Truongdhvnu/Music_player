@@ -8,6 +8,10 @@
 #include <thread>
 #include <atomic>
 #include <chrono>
+#include <fcntl.h> // Contains file controls like O_RDWR
+#include <errno.h> // Error number definitions
+#include <termios.h> // POSIX terminal control definitions
+#include <unistd.h> // UNIX standard function definitions
 // #include <algorithm>
 // #include <random>
 #include <taglib/fileref.h>
@@ -92,6 +96,11 @@ public:
 
 /// @brief Unhides the progress bar by starting its update thread if music is playing
     void unhideProgressBar();
+    
+    // static void getPort();
+    // static void configPort();
+    // static void closePort();
+    // static int serialPort;
 
 private:
 /// @brief The thread function responsible for playing music
@@ -131,6 +140,9 @@ private:
     std::atomic<bool> stopProgress; // Thêm biến atomic để dừng progressThread
     std::mutex mtx; // Thêm mutex để đảm bảo an toàn trong multi-threading
     std::function<void()> songEndCallback; // Thêm callback
+
+    // void readPort();
+    
 };
 
 #endif // MUSICPLAYER_H

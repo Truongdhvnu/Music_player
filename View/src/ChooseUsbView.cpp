@@ -8,7 +8,7 @@ void ChooseUsbView::display(vector<string> usbpath) {
     cout << alignLeft("No", ' ', NO_COL)
          << alignLeft("USB Folder", ' ', TITLE_COL)
          << endl;
-    int index = 1;  // Biến đếm số thứ tự
+    unsigned index = 1;  // Biến đếm số thứ tự
     for (const string& path : usbpath) {
         // Tìm vị trí của ký tự '/' cuối cùng trong đường dẫn
         size_t pos = path.find_last_of("/\\");
@@ -22,9 +22,14 @@ void ChooseUsbView::display(vector<string> usbpath) {
             folderName = path;
         }
         // In tên folder
+        if((line % usbpath.size()) + 1 == index) {
+        cout << "\033[30;47m";  // Chữ đen, nền trắng
         cout << alignLeft(to_string(index), ' ', NO_COL)
-             << alignLeft(truncate(folderName,TITLE_COL), ' ', TITLE_COL) 
-             << endl;
+             << alignLeft(truncate(folderName,TITLE_COL), ' ', TITLE_COL);
+        cout << "\033[0m" << endl;
+        } else cout << alignLeft(to_string(index), ' ', NO_COL)
+                    << alignLeft(truncate(folderName,TITLE_COL), ' ', TITLE_COL)
+                    << endl;
         index++;
     }
     View::alignLength();

@@ -12,4 +12,5 @@ class SongListView : public View {
 public:
     void displayBottom();
     void displaySongs(vector<Song> songs, int pageNum, int size);
+    int line = 0;
 };

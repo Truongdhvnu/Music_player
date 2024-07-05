@@ -11,6 +11,7 @@
 #include <thread>
 #include <mutex>
 #include "Command.h"
+#include "Controller.h"
 #include "USBDetect.h"
 
 // #define PORT "/dev/ttyACM0"
@@ -70,32 +71,97 @@ void Command::com_producer() {
                 }
                 tmp[MESSAGE_LENGTH] = '\0';
 
-                if(read_buf[0] == '9') add_shared_data(std::string(tmp));
-                for(int i = 3; i < opset; i++) {
-                    read_buf[i-3] = read_buf[i];
-                }
-                opset -= 3;
-                // std::cout << "Read " << tmp << std::endl;
-            } else if (opset > 0) {
-                opset -= 1;
-                if(read_buf[0] == 's') {
-                    add_shared_data(std::string("2"));
-                }
-                else if(read_buf[0] == 'r') {
-                    add_shared_data(std::string("3"));
-                }
-                else if(read_buf[0] == 'n') add_shared_data(std::string("5"));
-                else if(read_buf[0] == 'p') add_shared_data(std::string("6"));
-                else opset += 1;
+            if(read_buf[0] == '9') {
+                std::cout << std::endl << std::flush;
+                add_shared_data("31v" + std::string(1,read_buf[2]));
+            } 
+            // else if(read_buf[0] == 'r') {
+            //     std::cout << std::endl << std::flush;
+            //     add_shared_data(std::string(1,tmp[0])+tmp[1]);
+            // } else if(read_buf[0] == 'z') {
+            //     std::cout << std::endl << std::flush;
+            //     // tmp[1] += 48;
+            //     add_shared_data(std::string(1,read_buf[1]));    
+            //     // add_shared_data("3");
+            // }
+            for(int i = 3; i < opset; i++) {
+                read_buf[i-3] = read_buf[i];
             }
+            opset -= 3;
+            // std::cout << "Read " << tmp << std::endl;
+        } 
+        else if (opset > 0) {
+            opset -= 1;
+            if(read_buf[0] == 'z') {
+                std::cout << std::endl << std::flush;
+                // add_shared_data(std::string("2"));
+                // writeData("s");
+                add_shared_data(std::string("z"));
+            }
+            else if(read_buf[0] == 'r') {
+                std::cout << std::endl << std::flush;
+                add_shared_data(std::string("r"));
+                // add_shared_data(std::string(1, read_buf[0]));
+            }
+            // else if(read_buf[0] == 'n') add_shared_data(std::string("5"));
+            // else if(read_buf[0] == 'n') add_shared_data(std::string("r2"));
+            // else if(read_buf[0] == 'p') add_shared_data(std::string("6"));
+            // else if(read_buf[0] == 'p') add_shared_data(std::string("r3"));
+            else opset += 1;
         }
     }
+    // while(running){
+    // int serialPort = open(PORT, O_RDWR);
+    // char read_buf[8];
+    // memset(&read_buf, '\0', sizeof(read_buf));
+    // int num_bytes = read(serialPort, &read_buf, sizeof(read_buf));
+
+    // if (num_bytes < 0) {
+    //     std::cerr << "Error reading: " << strerror(errno) << std::endl;
+    //     // break;
+    // }
+
+    // if(num_bytes > 0) {
+    //     if(read_buf[0] == 's') {
+    //         std::cout << "\n";
+    //         add_shared_data(std::string("2"));
+    //     }
+    //     else if(read_buf[0] == 'r') {
+    //         std::cout << "\n";
+    //         add_shared_data(std::string("3"));
+    //     }
+    //     else if(read_buf[0] == 'n') add_shared_data(std::string("5"));
+    //     else if(read_buf[0] == 'p') add_shared_data(std::string("6"));
+    //     else if(read_buf[0] == '9') {
+    //         // string vol = (string)read_buf[0] + (string)read_buf[1];
+    //         std::cout << "\n";
+    //         add_shared_data(std::string(read_buf));;
+    //     }
+
+    //     // if(read_buf[0] == '3' && read_buf[1] == '1') {
+    //     //     // string vol = (string)read_buf[0] + (string)read_buf[1];
+    //     //     std::cout << "\n";
+    //     //     Controller::recentView[view_index]->handle(read_buf);
+    //     // }
+    //     // else {
+    //     //     std::cout << "\n";
+    //     //     Controller::recentView[view_index]->handle(read_buf);
+    //     // }
+    // }
+
+    // // if (num_bytes > 0) {
+    // //     std::cout << "Read " << num_bytes << " bytes. Data: " << read_buf << std::endl;
+    // // }
+    // }
 }
 
 void Command::cin_producer() {
     std::string cmd;
     while (running) {
-        std::cin >> cmd;
+        // std::cin >> cmd;
+        // std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+        std::getline(std::cin, cmd);
+        if(cmd == EXIT) running = false;
         // Lock and push data
         add_shared_data(cmd);
     }
@@ -152,7 +218,10 @@ void Command::closePort() {
 }
 
 Command::Command() {
-    // configPort();
+}
+
+void Command::listen() {
+    //configPort();
     comProducerThread = std::thread(&Command::com_producer, this);
     cinProducerThread = std::thread(&Command::cin_producer, this);
 }
@@ -171,9 +240,22 @@ std::string Command::getCommand() {
 
 Command::~Command() {
     closePort();
+    running = false;
     comProducerThread.join();
     cinProducerThread.join();
 }
 
 bool Command::dataReady = false;
+
+void Command::writeData(std::string data) {
+    // std::string data;
+    int serialPort = open(PORT, O_RDWR);
+
+    int num_bytes = write(serialPort, data.c_str(), data.size());
+    if (num_bytes < 0) {
+        std::cerr << "Error writing: " << strerror(errno) << std::endl;
+    } else {
+        // std::cout << "Sent " << num_bytes << " bytes." << std::endl;
+    }
+}
 

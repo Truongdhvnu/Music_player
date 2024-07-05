@@ -9,4 +9,5 @@ public:
     void display();
     string path;
     string usbPath;
+    int line = 0;
 };
