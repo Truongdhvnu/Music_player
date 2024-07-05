@@ -178,6 +178,7 @@ void Command::com_producer() {
     // // }
     // }
 }
+}
 
 void Command::cin_producer() {
     std::string cmd;
