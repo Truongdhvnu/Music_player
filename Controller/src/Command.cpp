@@ -102,14 +102,18 @@ void Command::com_producer() {
                 // std::cout << "Read " << tmp << std::endl;
             } else if (opset > 0) {
                 opset -= 1;
-                if(read_buf[0] == 's') {
-                    add_shared_data(std::string("2"));
-                }
-                else if(read_buf[0] == 'r') {
-                    add_shared_data(std::string("3"));
-                }
+                if(read_buf[0] == 'R') add_shared_data(std::string("1"));
+                else if(read_buf[0] == 's') add_shared_data(std::string("2"));
+                else if(read_buf[0] == 'r') add_shared_data(std::string("3"));
+                else if(read_buf[0] == 'e') add_shared_data(std::string("4"));
                 else if(read_buf[0] == 'n') add_shared_data(std::string("5"));
                 else if(read_buf[0] == 'p') add_shared_data(std::string("6"));
+                else if(read_buf[0] == 'u') add_shared_data(std::string("7"));
+                else if(read_buf[0] == 'd') add_shared_data(std::string("8"));
+                else if(read_buf[0] == 'H') add_shared_data(std::string("h"));
+                else if(read_buf[0] == 'B') add_shared_data(std::string("<"));
+                else if(read_buf[0] == 'F') add_shared_data(std::string(">"));
+                else if(read_buf[0] == 'X') add_shared_data(std::string("x"));
                 else opset += 1;
             }
         }
