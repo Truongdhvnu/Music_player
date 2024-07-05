@@ -10,6 +10,7 @@
 #include "commonFunc.h"
 #include "Playlist.h"
 #include "EditPlaylistHandler.h"
+#include "Command.h"
 
 int ChooseSongsHandler::currentPage = 0;
 ChooseSongsHandler::ChooseSongsHandler() : model(Model::getInstance()) {
@@ -33,7 +34,7 @@ void ChooseSongsHandler::onStart(void* passData) {
 void ChooseSongsHandler::handle(string command) {
     try {
         /* Clear cin buffer */
-        std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+        // std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
         if (songListhandle(command, ChooseSongsHandler::currentPage)) {
             this->view.displayBottom();
         } else {

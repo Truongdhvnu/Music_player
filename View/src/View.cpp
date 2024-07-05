@@ -45,6 +45,7 @@ void View::displayBottom() {
     forward = forward + FORWARD + "]";
     string exit = "Exit: [";
     exit = exit + EXIT + "]-";
+
     cout << alignLeft("",'-', WIDTH) << endl;
     cout << alignLeft(home,' ', WIDTH/4)
          << alignLeft(goback,' ', WIDTH/4)
@@ -52,6 +53,20 @@ void View::displayBottom() {
          << alignRight(exit,' ', WIDTH/4)
          << endl;
     cout << alignLeft("",'-', WIDTH) << endl;
+
+    // vector<string> option = {
+    //     "-Home: [" + string(HOME) + "]",
+    //     "Go back: [" + string(GO_BACK) + "]",
+    //     "Forward: [" + string(FORWARD) + "]",
+    //     "Exit: [" + string(EXIT) + "]-"
+    // };
+    // cout << alignLeft("",'-', WIDTH) << endl;
+    // for(unsigned int i; i < option.size(); i++) {
+    //     if(i < option.size()/2) cout << alignLeft(option[i],' ', WIDTH/4);
+    //     else cout << alignRight(option[i],' ', WIDTH/4);
+    // }
+    // cout << endl;
+    // cout << alignLeft("",'-', WIDTH) << endl;
 }
 
 void View::display(Song s) {
@@ -119,7 +134,7 @@ void View::displayPlayingInfor(vector<Song> songs, int curPos) {
     }
 }
 
-void View::displaySongs(vector<Song> songs, int pageNum, int size, int line) {
+void View::displaySongs(vector<Song> songs, int pageNum, int size, int line, int highlight) {
     system("clear");
     cout << alignMiddle(" MEDIA LIST ", '=', WIDTH) << endl;
     cout << endl;
@@ -133,7 +148,7 @@ void View::displaySongs(vector<Song> songs, int pageNum, int size, int line) {
     unsigned num = songs.size();
     unsigned int count = pageNum * MAX_LINES + 1;
     for (auto it = songs.begin(); it != songs.end(); ++it) {
-        if((line % songs.size()) + 1 == count || (line % num) + 1 + MAX_LINES == count) {
+        if(((line % songs.size()) + 1 == count || (line % num) + 1 + MAX_LINES == count) && highlight == 0) {
             cout << "\033[30;47m";
             cout << alignLeft(to_string(count), ' ', NO_COL)
                 << alignLeft(truncate((*it).getTitle(), TITLE_COL), ' ', TITLE_COL) 

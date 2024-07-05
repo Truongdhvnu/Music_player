@@ -13,5 +13,5 @@ public:
     static ChoosePlaylistHandler* getInstance();
     void onStart(void* passData = nullptr);
     void handle(string command);
-    void reloadDisplay(int line){(void)line;}
+    void reloadDisplay(int line);
 };

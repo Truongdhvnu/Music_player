@@ -32,7 +32,7 @@ void SongListHandler::onStart(void* passData) {
 
 void SongListHandler::handle(string command) {
     if(command == "z") {
-        int ln = this->view.line % this->model.mediaManager.getNumberofSong() + 1 + MAX_LINES * SongListHandler::currentPage;
+        int ln = this->view.line % this->model.mediaManager.getCurPageOfSong().size() + 1 + (MAX_LINES * this->model.mediaManager.getCurPageOfSongIndex());
         // command = to_string(this->view.line % this->model.mediaManager.getNumberofSong() + 1 + MAX_LINES * SongListHandler::currentPage);
         command = to_string(ln);
     }
@@ -52,7 +52,7 @@ void SongListHandler::handle(string command) {
                 }
             }
         } catch (out_of_range &e) {
-            cout << "SongList:" << e.what() << endl;
+            cout << "SongList: " << e.what() << endl;
         } catch (exception& e) {
             cout << "SongList: No actions or Invalid command" << endl;
         }

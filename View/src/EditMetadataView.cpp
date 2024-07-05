@@ -24,12 +24,8 @@ void EditMetadataView::displayBottom() {
             if(i < (option.size()/2)) cout << alignLeft(option[i], ' ', WIDTH/4);
             else cout << alignRight(option[i], ' ', WIDTH/4);
         } 
-        
-        if(i == 3 || i == 7) {
-               cout << "\b-" << endl;
-        }
-        // else cout << i + 1 << ". " << option[i] << endl;
-     }
+    }
+    cout << endl;
     // cout << alignLeft("-1. Set Title", ' ', WIDTH/4) 
     //      << alignLeft("2. Set Artist", ' ', WIDTH/4) 
     //      << alignRight("3. Set Album", ' ', WIDTH/4)

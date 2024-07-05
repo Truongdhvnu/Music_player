@@ -30,10 +30,10 @@ EditMetadataHandler* EditMetadataHandler::getInstance() {
 
 void EditMetadataHandler::handle(string command) {
     if (command == "z") {
-        command == std::to_string(this->view.line % 4 + 1) ;
+        command = std::to_string(this->view.line % 4 + 1) ;
     }
     if (command == "r") {    
-        this->reloadDisplay(command[1]- 48);
+        this->reloadDisplay(command[1]);
     } else {
         try {
             int option = stoi(command);
@@ -68,7 +68,7 @@ void EditMetadataHandler::handle(string command) {
                 default:
                     break;
             }
-            this->onStart();
+        this->onStart();
         } catch (runtime_error& e) {
             cout << "Editmetadata: "<< e.what() << endl;
         }
