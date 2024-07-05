@@ -37,6 +37,7 @@ void Command::com_producer() {
             if(checkUart==true)
             {
                 // std::cerr << "USB serial port Disconnect: " << PORT<< std::endl;
+                std::cout << "USB serial port Disconnect: " << PORT<< std::endl;
                 closePort();
             }
             checkUart = false;
@@ -46,6 +47,7 @@ void Command::com_producer() {
             if(checkUart==false) 
             {
                 // std::cerr << "USB serial port Connect: " << PORT<< std::endl;
+                std::cout << "USB serial port Connect: " << PORT<< std::endl;
                 configPort();
             }
             checkUart = true;
