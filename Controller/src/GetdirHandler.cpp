@@ -6,6 +6,7 @@
 #include "GetdirHandler.h"
 #include "SongListHandler.h"
 #include "ChooseUsbHandler.h"
+#include "Command.h"
 
 // GetdirHandler* GetdirHandler::instancePtr = nullptr;
 // GetdirHandler* GetdirHandler::instancePtr = nullptr;
@@ -27,6 +28,7 @@ void GetdirHandler::setUsbPath(string path) {
     view.usbPath = path;
 }
 
+extern Command cmd;
 void GetdirHandler::handle(string command) {
     try {
         if (command == "1") {
@@ -51,14 +53,16 @@ void GetdirHandler::handle(string command) {
         } else if (command == "2") {
             usbmonitor.stopMonitoring();
             cout <<"Input Directory: " << flush;
-            cin >> directory;
+            // cin >> directory;
+            directory = cmd.getCommand();
             setPath(directory);
             this->model.mediaManager.setActiveLibrary();
             this->model.mediaManager.getLibrary().getSongFromPath(directory);
             if (!this->model.mediaManager.getLibrary().isAlreadyInCurDirs(directory)) {
-                cout << "Do you wanna add this folder to recent dirs? [y/n]: ";
+                cout << "Do you wanna add this folder to recent dirs? [y/n]: " << flush;
                 string input;
-                cin >> input;
+                // cin >> input;
+                input = cmd.getCommand();
                 if (input == "y" || input == "Y") {
                     this->model.mediaManager.getLibrary().addPathToCurrentDirs(directory);
                 }

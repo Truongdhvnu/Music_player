@@ -48,13 +48,19 @@ int Controller::exit() {
     return 0;
 }
 
+// Command Controller::cmd;
+
+Command cmd;
+
 void Controller::run() {
     string command;
-    Command cmd;
+    cmd.listen();
+    // Controller::cmd.listen();
     while (true) {
         // cin >> command;
-        cout << endl;
+        std::cout << std::endl;
         command = cmd.getCommand();
+        // command = Controller::cmd.getCommand();
         if (command == GO_BACK) {
             if (view_index >= 1) {
                 recentView[view_index]->leavePage();
@@ -72,6 +78,7 @@ void Controller::run() {
                 e->exit();
             }
             this->exit();
+            // cmd.~Command();
             std::exit(0);
         }
         else if(command == HOME) {

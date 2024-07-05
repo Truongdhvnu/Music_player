@@ -11,9 +11,9 @@
 #include <thread>
 #include <mutex>
 #include "Command.h"
+#include "Command_translate.h"
 
 #define PORT "/dev/ttyACM0"
-#define MESSAGE_LENGTH 3
 
 std::atomic<bool> running(true);
 
@@ -44,24 +44,30 @@ void Command::com_producer() {
             }
             tmp[MESSAGE_LENGTH] = '\0';
 
-            if(read_buf[0] == '9') add_shared_data(std::string(tmp));
-            for(int i = 3; i < opset; i++) {
-                read_buf[i-3] = read_buf[i];
+            if (isCommandValid(tmp) == MESSAGE_CORRECT) {
+                // if(read_buf[] == '9') {
+                    add_shared_data(translateCommand(tmp));
+                    // cout << "Valid\n" << endl;
+                // }
             }
-            opset -= 3;
             // std::cout << "Read " << tmp << std::endl;
-        } else if (opset > 0) {
-            opset -= 1;
-            if(read_buf[0] == 's') {
-                add_shared_data(std::string("2"));
+            for(int i = MESSAGE_LENGTH; i < opset; i++) {
+                read_buf[i - MESSAGE_LENGTH] = read_buf[i];
             }
-            else if(read_buf[0] == 'r') {
-                add_shared_data(std::string("3"));
-            }
-            else if(read_buf[0] == 'n') add_shared_data(std::string("5"));
-            else if(read_buf[0] == 'p') add_shared_data(std::string("6"));
-            else opset += 1;
-        }
+            opset -= MESSAGE_LENGTH;
+        } 
+        // else if (opset > 0) {
+        //     opset -= 1;
+        //     if(read_buf[0] == 's') {
+        //         add_shared_data(std::string("2"));
+        //     }
+        //     else if(read_buf[0] == 'r') {
+        //         add_shared_data(std::string("3"));
+        //     }
+        //     else if(read_buf[0] == 'n') add_shared_data(std::string("5"));
+        //     else if(read_buf[0] == 'p') add_shared_data(std::string("6"));
+        //     else opset += 1;
+        // }
     }
 }
 
@@ -70,6 +76,9 @@ void Command::cin_producer() {
     while (running) {
         std::cin >> cmd;
         // Lock and push data
+        if (cmd == "x") {
+            running = false;
+        } 
         add_shared_data(cmd);
     }
 }
@@ -125,6 +134,9 @@ void Command::closePort() {
 }
 
 Command::Command() {
+}
+
+void Command::listen() {
     configPort();
     comProducerThread = std::thread(&Command::com_producer, this);
     cinProducerThread = std::thread(&Command::cin_producer, this);
@@ -144,6 +156,7 @@ std::string Command::getCommand() {
 
 Command::~Command() {
     closePort();
+    running = false;
     comProducerThread.join();
     cinProducerThread.join();
 }

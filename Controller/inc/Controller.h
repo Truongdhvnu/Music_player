@@ -2,7 +2,9 @@
 #include "Model.h"
 #include "Handler.h"
 #include <deque>
+#include "Command.h"
 
+extern Command cmd;
 /// @brief Get user command, manage handlers so that there is a coresponding handler run at a time
 class Controller {
 private:
@@ -10,6 +12,8 @@ private:
     static int view_index;
     static deque<Handler*> recentView;
 public:
+    // static Command cmd;
+
     Controller();
 
     /// @brief Pop current handler and return back to previous view

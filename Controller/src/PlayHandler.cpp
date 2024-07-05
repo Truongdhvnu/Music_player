@@ -7,6 +7,7 @@
 #include "PlayHandler.h"
 #include "display.h"
 #include "EditMetadataHandler.h"
+#include "Command_translate.h"
 
 bool PlayHandler::onDisplay = false;
 
@@ -76,7 +77,14 @@ PlayHandler::PlayingInfor PlayHandler::getPlayingInfor() {
 
 void PlayHandler::handle(string command) {
     try {
-        int option = stoi(command) - 1;
+        int option;
+        int value;
+        if (command[0] == VOLTAGE_OPTION) {
+            option = SET_VOLUME;
+            value = (unsigned int)(command[DECODED_VALUE_BYTE] - 1);
+        } else {
+            option = stoi(command) - 1;
+        }
         PlayHandler::PlayingInfor infor;
         switch(option) {
             case REPLAY:
@@ -116,7 +124,7 @@ void PlayHandler::handle(string command) {
                 cout << "\033[F" << "\033[101C" << "\b \b" << flush;
                 break;
             case SET_VOLUME:
-                musicPlayer.setVolume((unsigned int)(command[2]-1));
+                musicPlayer.setVolume(value);
                 cout << "\033[F" << "\033[101C" << "\b \b" << flush;
                 break;
             default:    

@@ -1,3 +1,4 @@
+#pragma once
 #include <iostream>
 #include <string>
 #include <string.h>
@@ -12,7 +13,7 @@
 #include <mutex>
 
 #define PORT "/dev/ttyACM0"
-#define MESSAGE_LENGTH 3
+#define MESSAGE_LENGTH 5
 
 extern std::atomic<bool> running;
 
@@ -37,6 +38,8 @@ private:
 
 public:
     Command();
+
+    void listen();
 
     std::string getCommand();
 
