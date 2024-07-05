@@ -4,6 +4,7 @@
 #include "Model.h"
 #include "string"
 #include "MusicPlayer.h"
+#include "Command.h"
 
 class PlayHandler : public Handler {
 private:
@@ -24,4 +25,5 @@ public:
     void leavePage();
     void updateView();
     PlayingInfor getPlayingInfor();
+    void reloadDisplay(int line);
 };

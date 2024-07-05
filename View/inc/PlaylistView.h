@@ -9,4 +9,5 @@ using namespace std;
 class PlaylistView : public View {
 public:
     void display(vector<string> plists);
+    int line = 0;
 };

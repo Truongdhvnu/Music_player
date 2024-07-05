@@ -20,7 +20,7 @@ void SongListView::displayBottom() {
 }
 
 void SongListView::displaySongs(vector<Song> songs, int pageNum, int size) {
-    View::displaySongs(songs, pageNum, size);
+    View::displaySongs(songs, pageNum, size, line);
     View::alignLength();
     this->displayBottom(); 
 }

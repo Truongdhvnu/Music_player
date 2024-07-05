@@ -24,13 +24,29 @@ void PlaylistHandler::onStart(void* passData) {
 }
 
 void PlaylistHandler::handle(string command) {
-    try {
-        int plist_num = stoi(command);
-        if (plist_num > 0) {
-            this->model.mediaManager.setActivePList(plist_num - 1);
-            changeHandler(SongListHandler::getInstance());
+    if(command == "z") {
+        command = to_string(this->view.line % this->model.mediaManager.getPlaylistNames().size() + 1);
+    }
+
+    if (command == "r") {
+        this->reloadDisplay(command[1]);
+    } else {
+        try {
+            int plist_num = stoi(command);
+            if (plist_num > 0) {
+                this->model.mediaManager.setActivePList(plist_num - 1);
+                changeHandler(SongListHandler::getInstance());
+            }
+        } catch (const exception& e) {
+            cout << "Pl Handler: No actions or Invalid command" << endl;
         }
-    } catch (const exception& e) {
-        cout << "Pl Handler: No actions or Invalid command" << endl;
     }
 }
+
+void PlaylistHandler::reloadDisplay(int line) {
+    (void)line;
+    // this->view.line = line;
+    this->view.line ++;
+    vector<string> plists = this->model.mediaManager.getPlaylistNames();
+    this->view.display(plists);   
+};

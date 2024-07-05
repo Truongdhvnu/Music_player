@@ -39,4 +39,6 @@ public:
     /// @brief What handler need to done before leave program
     /// @return 0 if OK
     virtual int exit();
+
+    virtual void reloadDisplay(int line);
 };

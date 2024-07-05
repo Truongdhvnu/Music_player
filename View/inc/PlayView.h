@@ -10,4 +10,5 @@ class PlayView : public View {
 public:
     void display(Song s, vector<Song> songs, int curPos);
     void displayBottom();
+    int line = 0;
 };

@@ -7,6 +7,8 @@ using namespace std;
 
 int main() {
     Controller c;
+    // MusicPlayer::configPort();
     c.run();
+    // MusicPlayer::closePort();
     return 0;
 }

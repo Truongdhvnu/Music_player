@@ -58,7 +58,7 @@ public:
 /// @param songs The list of songs
 /// @param pageNum The current page number
 /// @param size The total number of songs
-    static void displaySongs(vector<Song> songs, int pageNum, int size);
+    static void displaySongs(vector<Song> songs, int pageNum, int size, int line = 0, int highlight = 0);
 
 /// @brief Displays the bottom menu with navigation option
     virtual void displayBottom();
@@ -66,4 +66,7 @@ public:
 /// @brief Displays the information of the given song
 /// @param s The song to display information of
     virtual void display(Song s);
+
+    static void highlightLine(string str);
+    static void highlightObj(string str);
 };
