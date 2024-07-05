@@ -27,8 +27,8 @@ obj_build: $(OBJS)
 
 .PHONY: run
 run:
-	sudo dmesg -n 1
-	sudo ./$(OBJDIR)/$(EXECUTE_FILE) 2>/dev/null
+	@sudo dmesg -n 1
+	@sudo ./$(OBJDIR)/$(EXECUTE_FILE) 2>/dev/null
 #	sudo ./$(OBJDIR)/$(EXECUTE_FILE) 
 
 .PHONY: clean
