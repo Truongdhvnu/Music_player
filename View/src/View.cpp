@@ -119,7 +119,7 @@ void View::displayPlayingInfor(vector<Song> songs, int curPos) {
     }
 }
 
-void View::displaySongs(vector<Song> songs, int pageNum, int size) {
+void View::displaySongs(vector<Song> songs, int pageNum, int size, int line) {
     system("clear");
     cout << alignMiddle(" MEDIA LIST ", '=', WIDTH) << endl;
     cout << endl;
@@ -130,18 +130,43 @@ void View::displaySongs(vector<Song> songs, int pageNum, int size) {
          << alignLeft("DURATION", ' ', DURATION_COL)
          << alignLeft("YEAR", ' ', YEAR_COL)
          << endl << endl;
-    int count = pageNum * MAX_LINES + 1;
+    unsigned num = songs.size();
+    unsigned int count = pageNum * MAX_LINES + 1;
     for (auto it = songs.begin(); it != songs.end(); ++it) {
-        cout << alignLeft(to_string(count), ' ', NO_COL)
-             << alignLeft(truncate((*it).getTitle(), TITLE_COL), ' ', TITLE_COL) 
-             << alignLeft(truncate((*it).getArtist(), ARTIST_COL), ' ', ARTIST_COL) 
-             << alignLeft(truncate((*it).getAlbum(), ALBUM_COL), ' ', ALBUM_COL)
-             << alignLeft(truncate((*it).getDuration(), DURATION_COL), ' ', DURATION_COL)
-             << alignLeft(truncate((*it).getYear(), YEAR_COL), ' ', YEAR_COL)
-             << endl;
+        if((line % songs.size()) + 1 == count || (line % num) + 1 + MAX_LINES == count) {
+            cout << "\033[30;47m";
+            cout << alignLeft(to_string(count), ' ', NO_COL)
+                << alignLeft(truncate((*it).getTitle(), TITLE_COL), ' ', TITLE_COL) 
+                << alignLeft(truncate((*it).getArtist(), ARTIST_COL), ' ', ARTIST_COL) 
+                << alignLeft(truncate((*it).getAlbum(), ALBUM_COL), ' ', ALBUM_COL)
+                << alignLeft(truncate((*it).getDuration(), DURATION_COL), ' ', DURATION_COL)
+                << alignLeft(truncate((*it).getYear(), YEAR_COL), ' ', YEAR_COL)
+                << "\033[0m" << endl;
+        } else {
+            cout << alignLeft(to_string(count), ' ', NO_COL)
+                << alignLeft(truncate((*it).getTitle(), TITLE_COL), ' ', TITLE_COL) 
+                << alignLeft(truncate((*it).getArtist(), ARTIST_COL), ' ', ARTIST_COL) 
+                << alignLeft(truncate((*it).getAlbum(), ALBUM_COL), ' ', ALBUM_COL)
+                << alignLeft(truncate((*it).getDuration(), DURATION_COL), ' ', DURATION_COL)
+                << alignLeft(truncate((*it).getYear(), YEAR_COL), ' ', YEAR_COL)
+                << endl;
+        }
         count++;
     }
     std::cout << "\033["<< LENGTH - 1 <<";0H";
     cout << "Page " << pageNum + 1 << " of " << ceil(size * 1.0 / MAX_LINES) << endl;
+}
+
+
+void View::highlightLine(string str) {
+    std::cout << "\033[30;47m";  // Chữ đen, nền trắng
+    std::cout << std::setw(WIDTH) << std::left << str;
+    std::cout << "\033[0m" << std::endl;  // Reset lại màu sắc và kiểu chữ mặc định
+}
+
+void View::highlightObj(string str) {
+    std::cout << "\033[30;47m";  // Chữ đen, nền trắng
+    std::cout << str;
+    std::cout << "\033[0m";  // Reset lại màu sắc và kiểu chữ mặc định
 }
 

@@ -80,3 +80,13 @@ void EditPlaylistHandler::handle(string command) {
         cout << "Edit Plist: No actions or Invalid command" << endl;
     }
 };
+
+void EditPlaylistHandler::reloadDisplay(int line) {
+    this->view.line = line;
+    try {
+        vector<Song> songs = this->model.mediaManager.getPageOfSong(0);
+        this->view.displaySongs(songs, 0, this->model.mediaManager.getNumberofSong());
+    } catch (out_of_range& e) {
+        cout << e.what() << endl;
+    }
+}

@@ -24,6 +24,9 @@ HomeHandler* HomeHandler::getInstance() {
 }
 
 void HomeHandler::handle(string command) {
+    if(command == "z") {
+        command = to_string((this->view.line % 4) + 1);
+    }
     try {
         if (command == "1") {
             changeHandler(GetdirHandler::getInstance());
@@ -35,6 +38,9 @@ void HomeHandler::handle(string command) {
             changeHandler(SongListHandler::getInstance());
         } else if (command == "4") {
             changeHandler(ChoosePlaylistHandler::getInstance());
+        } else if (command == "r"){   
+            // this->reloadDisplay(command[1]- 48);
+            this->reloadDisplay(command[1]);
         }
         else {
             cout << "No actions or Invalid command" << endl;
@@ -46,5 +52,12 @@ void HomeHandler::handle(string command) {
 
 void HomeHandler::onStart(void* passData) {
     (void)passData;
+    this->view.display();
+}
+
+void HomeHandler::reloadDisplay(int line) {
+    (void)line;
+    // this->view.line = line;
+    this->view.line++;
     this->view.display();
 }

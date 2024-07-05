@@ -33,7 +33,7 @@ enum PLAYOPTION {
     PREVIOUS,
     VOLUME_UP,
     VOLUME_DOWN,
-    SET_VOLUME = 30 
+    SET_VOLUME = 30
 };
 
 /* 

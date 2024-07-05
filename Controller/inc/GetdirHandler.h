@@ -20,4 +20,5 @@ public:
     void setPath(string path);
     void setUsbPath(string path);
     void leavePage(){}
+    void reloadDisplay(int line);
 };

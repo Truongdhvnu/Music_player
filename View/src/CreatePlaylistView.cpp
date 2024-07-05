@@ -20,7 +20,9 @@ void CreatePlaylistView::display(vector<string> plists) {
     int num = plists.size();
     cout << "You have " << num << " playlists. Please select one" << endl;
     for(int i = 0; i < num; i++) {
-        cout << i + 1 << ". " << plists[i] << endl;
+        if((line % num) == i) {
+            View::highlightLine(to_string(i+1)+ ". " + plists[i]);
+        } else cout << i + 1 << ". " << plists[i] << endl;
     }
     View::alignLength();
     CreatePlaylistView::displayBottom();

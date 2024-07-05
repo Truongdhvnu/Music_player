@@ -34,3 +34,9 @@ void PlaylistHandler::handle(string command) {
         cout << "Pl Handler: No actions or Invalid command" << endl;
     }
 }
+
+void PlaylistHandler::reloadDisplay(int line) {
+    this->view.line = line;
+    vector<string> plists = this->model.mediaManager.getPlaylistNames();
+    this->view.display(plists);   
+};

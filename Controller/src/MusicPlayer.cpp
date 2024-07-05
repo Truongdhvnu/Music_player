@@ -1,5 +1,6 @@
 #include "MusicPlayer.h"
 #include <iostream>
+#include "display.h"
 
 MusicPlayer::MusicPlayer() : music(nullptr), playing(false), paused(false), volume(50), currentIndex(-1), stopProgress(false) {
     if (SDL_Init(SDL_INIT_AUDIO) < 0) {
@@ -226,13 +227,16 @@ void MusicPlayer::displayProgress() {
 
         int totalDuration = musicDuration;
         int elapsedSeconds = getElapsedTime();
-        int progressLength = 70;
+        int progressLength = WIDTH * 7/10;
         int pos = static_cast<int>((static_cast<double>(elapsedSeconds) / totalDuration) * progressLength);
         std::string progressBar = std::string(pos, '#') + std::string(progressLength - pos, '.');
         {
             std::lock_guard<std::mutex> lock(mtx);
-            std::cout << "\r" << currentTime << " [" << progressBar << "] " << totalTime 
-                      << "    Volume: " << "    \b\b\b\b" << volume << "%" << std::flush;
+            // std::cout << "\r" << currentTime << " [" << progressBar << "] " << totalTime 
+            //           << "    Volume: " << "    \b\b\b\b" << volume << "%" << std::flush;
+            std::cout << "\r" << currentTime << " [" << progressBar << "] " << totalTime
+                      << "\033[" << WIDTH-11 << "G" << "Volume: "
+                      << "\033[K" << "\033[" << WIDTH-3 << "G" << volume << "%" << std::flush;
         }
         std::this_thread::sleep_for(std::chrono::milliseconds(1000));
     }
