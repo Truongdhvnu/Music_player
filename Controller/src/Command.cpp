@@ -37,7 +37,10 @@ void Command::com_producer() {
             if(checkUart==true)
             {
                 // std::cerr << "USB serial port Disconnect: " << PORT<< std::endl;
-                std::cout << "USB serial port Disconnect: " << PORT<< std::endl;
+                std::cout << "\033[41m" << std::flush; 
+                std::cout << "\33[2K" << std::flush;
+                std::cout << " USB serial port Disconnect: " << PORT << "\r" << std::flush;
+                std::cout << "\033[0m" << std::flush; 
                 closePort();
             }
             checkUart = false;
@@ -47,7 +50,10 @@ void Command::com_producer() {
             if(checkUart==false) 
             {
                 // std::cerr << "USB serial port Connect: " << PORT<< std::endl;
-                std::cout << "USB serial port Connect: " << PORT<< std::endl;
+                std::cout << "\033[42m" << std::flush; 
+                std::cout << "\33[2K" << std::flush;
+                std::cout << " USB serial port Connect: " << PORT << "\r" << std::flush;
+                std::cout << "\033[0m" << std::flush; 
                 configPort();
             }
             checkUart = true;
