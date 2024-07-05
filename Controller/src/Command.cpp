@@ -38,6 +38,14 @@ void Command::com_producer() {
             if(checkUart==true)
             {
                 // std::cerr << "USB serial port Disconnect: " << PORT<< std::endl;
+
+                std::cout << "\033[s"; // Lưu vị trí con trỏ hiện tại
+                std::cout << "\033[41m" << std::flush; // Đổi màu nền thành màu đỏ
+                std::cout << "   USB serial port Disconnect" << std::flush; // In dòng thông báo với nền đỏ
+                std::cout << "\033[0m" << std::flush; // Reset màu nền về mặc định
+                std::cout << "\033[J" << std::flush; // Xóa tất cả các ký tự từ vị trí con trỏ đến cuối trang
+                std::cout << "\033[u" << std::flush; // Đưa con trỏ về vị trí đã lưu trước đó
+
                 closePort();
             }
             checkUart = false;
@@ -47,6 +55,14 @@ void Command::com_producer() {
             if(checkUart==false) 
             {
                 // std::cerr << "USB serial port Connect: " << PORT<< std::endl;
+
+                std::cout << "\033[s";                  //Lưu vị trí con trỏ hiện tại
+                std::cout << "\033[42m" << std::flush; // Đổi màu nền thành màu xanh
+                std::cout << "   USB serial port Connect: " << PORT << std::flush;// In dòng thông báo với nền xanh
+                std::cout << "\033[0m" << std::flush; // Reset màu nền về mặc định
+                std::cout << "\033[J" << std::flush; // Xóa tất cả các ký tự từ vị trí con trỏ đến cuối trang
+                std::cout << "\033[u" << std::flush; // Đưa con trỏ về vị trí đã lưu trước đó
+
                 configPort();
             }
             checkUart = true;
