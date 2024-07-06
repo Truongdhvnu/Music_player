@@ -23,8 +23,7 @@ public:
     void DetectUSBEvents();
     std::vector<std::string> getSubdirectories(const std::string& parentPath);
 
-private:
-    
+private:    
     int status;
     std::string UserPath;
     struct udev* udev;

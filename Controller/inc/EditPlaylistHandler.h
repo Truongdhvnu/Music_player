@@ -13,4 +13,5 @@ public:
     static EditPlaylistHandler* getInstance();
     void onStart(void* passData = nullptr);
     void handle(string command);
+    void reloadDisplay(int line);
 };

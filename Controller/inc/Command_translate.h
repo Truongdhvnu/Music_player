@@ -1,6 +1,8 @@
 #ifndef COMMAN_TRANSLATE_H
 #define COMMAN_TRANSLATE_H
 
+#define DEBUG                   0
+
 #define START_BYTE 			    0
 #define START_BYTE_VALUE 	    '0'
 
@@ -18,10 +20,15 @@
 #define MESSAGE_ERROR 		    1
 #define MESSAGE_NO_AVALABLE	    2
 
-#define VOLTAGE_OPTION          'v'
+#define OPTION_VOLTAGE          'v'
 #define OPTION_UP               'r'
-#define OPTION_CONFIRM          'z' 
-#define NEXT_OPTION             'r'
+#define OPTION_CONFIRM          'z'
+#define OPTION_FORWARD          '>'
+#define OPTION_GO_BACK          '<'
+
+#define OPTION_PLAYING          'p'
+#define OPTION_PAUSE            't'
+#define DEFAULT_VALUE           '0'
 
 #define DECODED_OPTION_BYTE     0
 #define DECODED_VALUE_BYTE      1
@@ -30,7 +37,7 @@
 
 using namespace std;
 
-int isCommandValid(string cmd);
-string translateCommand(string cmd);
-
+int isReceiveCommandValid(string cmd);
+string translateReceiveCommand(string cmd);
+string createSendMessage(uint8_t option, uint8_t value = DEFAULT_VALUE);
 #endif

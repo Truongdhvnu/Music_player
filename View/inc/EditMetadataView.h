@@ -10,4 +10,5 @@ class EditMetadataView  : public View {
 public:
     void display(Song s);
     void displayBottom();
+    int line = 0;
 };

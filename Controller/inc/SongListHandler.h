@@ -17,4 +17,5 @@ public:
     void onStart(void* passData = nullptr);
     void handle(string command);
     void leavePage(){}  
+    void reloadDisplay(int line);
 };

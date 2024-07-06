@@ -1,10 +1,11 @@
 #include "Command_translate.h"
 #include <string>
 #include <iostream>
+#include "Command.h"
 
 using namespace std;
 
-int isCommandValid(string cmd) {
+int isReceiveCommandValid(string cmd) {
     // Check start & stop byte
     if (cmd[START_BYTE] != START_BYTE_VALUE
             || cmd[STOP_BYTE] != STOP_BYTE_VALUE) {
@@ -18,18 +19,37 @@ int isCommandValid(string cmd) {
     }
 
     if (check_sum != (uint8_t)cmd[CHECK_SUM_INDEX]) {
-        // std::cout << "in Valid 2: "<< (uint8_t)cmd[CHECK_SUM_INDEX] << " " << check_sum << std::endl;
         return MESSAGE_ERROR;
     }
     
 	return MESSAGE_CORRECT;
 }
 
-string translateCommand(string cmd) {
+string translateReceiveCommand(string cmd) {
+    std::cout << std::endl << std::flush;
     char command[3];
     command[0] = cmd[MEASSAGE_OPTION_BYTE];
-    command[1] = cmd[MEASSAGE_VALUE_BYTE];
-    command[2] = '\n';
 
-    return string(command);       
+    if(command[0] == OPTION_VOLTAGE) {
+        command[1] = cmd[MEASSAGE_VALUE_BYTE];
+        command[2] = '\0';
+        return string(command);       
+    } else if (command[0] == OPTION_UP || command[0] == OPTION_CONFIRM ||
+                command[0] == OPTION_GO_BACK || command[0] == OPTION_FORWARD) {
+        command[1] = '\0';
+        return string(command);
+    } else {
+        return to_string(-1);
+    }
+}
+
+string createSendMessage(uint8_t option, uint8_t value) {
+    char message[MESSAGE_LENGTH + 1];
+    message[0] = START_BYTE_VALUE;
+    message[1] = option;
+    message[2] = value;
+    message[3] = (uint8_t)(option + value);
+    message[4] = STOP_BYTE_VALUE;
+    message[5] = '\0';
+    return string(message);
 }

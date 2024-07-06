@@ -39,9 +39,11 @@ private:
 public:
     Command();
 
-    void listen();
-
     std::string getCommand();
 
     ~Command();
+
+    static void writeData(std::string data);
+    
+    void listen();
 };

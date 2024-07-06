@@ -10,4 +10,5 @@ class ChooseUsbView : public View {
 public:
     //Display multi USB chose
     void display(vector<string> usbpath);
+    int line = 0;
 };

@@ -12,6 +12,7 @@
 #include <mutex>
 #include "Command.h"
 #include "Command_translate.h"
+#include "Controller.h"
 
 #define PORT "/dev/ttyACM0"
 
@@ -26,16 +27,13 @@ void Command::add_shared_data(std::string cmd) {
 
 void Command::com_producer() {
     int opset = 0;
-    char read_buf[18] = {'\0'};
+    int bufer_size = 18;
+    char read_buf[bufer_size] = {'\0'};
     while(running) {
         int serialPort = open(PORT, O_RDWR);
 
-        int num_bytes = read(serialPort, read_buf + opset, 18);
+        int num_bytes = read(serialPort, read_buf + opset, bufer_size);
         opset += num_bytes;
-
-        // std::cout << "num byte: "<< num_bytes << std::endl;
-        // std::cout << "opset: "<< opset << std::endl;
-        // std::cout << "buffer: "<< read_buf << std::endl << std::endl;
 
         if(opset >= MESSAGE_LENGTH) {
             char tmp[MESSAGE_LENGTH + 1];
@@ -44,37 +42,29 @@ void Command::com_producer() {
             }
             tmp[MESSAGE_LENGTH] = '\0';
 
-            if (isCommandValid(tmp) == MESSAGE_CORRECT) {
-                // if(read_buf[] == '9') {
-                    add_shared_data(translateCommand(tmp));
-                    // cout << "Valid\n" << endl;
-                // }
+            if (isReceiveCommandValid(tmp) == MESSAGE_CORRECT) {
+                add_shared_data(translateReceiveCommand(tmp));
             }
-            // std::cout << "Read " << tmp << std::endl;
+
             for(int i = MESSAGE_LENGTH; i < opset; i++) {
-                read_buf[i - MESSAGE_LENGTH] = read_buf[i];
+                read_buf[i-MESSAGE_LENGTH] = read_buf[i];
             }
+
             opset -= MESSAGE_LENGTH;
+            if (DEBUG) {
+                std::cout << "Read " << translateReceiveCommand(tmp) << std::endl;
+            }
         } 
-        // else if (opset > 0) {
-        //     opset -= 1;
-        //     if(read_buf[0] == 's') {
-        //         add_shared_data(std::string("2"));
-        //     }
-        //     else if(read_buf[0] == 'r') {
-        //         add_shared_data(std::string("3"));
-        //     }
-        //     else if(read_buf[0] == 'n') add_shared_data(std::string("5"));
-        //     else if(read_buf[0] == 'p') add_shared_data(std::string("6"));
-        //     else opset += 1;
-        // }
     }
 }
 
 void Command::cin_producer() {
     std::string cmd;
     while (running) {
-        std::cin >> cmd;
+        // std::cin >> cmd;
+        // std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+        std::getline(std::cin, cmd);
+        if(cmd == EXIT) running = false;
         // Lock and push data
         if (cmd == "x") {
             running = false;
@@ -163,13 +153,18 @@ Command::~Command() {
 
 bool Command::dataReady = false;
 
-// int main() {
-//     Command cm;
-//     while (running) {
-//         std::string data = cm.getCommand();
-//         std::cout << "Get Command: " << data << std::endl;
-//     }
-    
-//     std::cout << "Program terminated." << std::endl;
-//     return 0;
-// }
+void Command::writeData(std::string data) {
+    int serialPort = open(PORT, O_RDWR);
+    int num_bytes = 0;
+    int total_bytes_sent = 0;
+
+    while (total_bytes_sent < MESSAGE_LENGTH) {
+        num_bytes = write(serialPort, data.c_str() + total_bytes_sent, MESSAGE_LENGTH - total_bytes_sent);
+        if (num_bytes < 0) {
+            std::cerr << "Error writing: " << strerror(errno) << std::endl;
+            break;
+        } else {
+            total_bytes_sent += num_bytes;
+        }
+    }
+}

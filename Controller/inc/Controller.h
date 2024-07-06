@@ -1,6 +1,7 @@
 #pragma once
 #include "Model.h"
 #include "Handler.h"
+#include "Command.h"
 #include <deque>
 #include "Command.h"
 
@@ -33,4 +34,14 @@ public:
 
     /// @brief This function run forever to get input command and pass the command to active handler at that time.
     void run();
+
+    // static void getPort();
+    // static void configPort();
+    // static void closePort();
+    // void readPort();
+    // void checkPort();
+
+    // std::thread portThread; // Thêm biến thread cho portProgress
+    // std::atomic<bool> running; // Thêm biến atomic để dừng portThread
+    // std::mutex mtx; // Thêm mutex để đảm bảo an toàn trong multi-threading
 };
