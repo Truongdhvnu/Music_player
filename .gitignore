@@ -3,3 +3,4 @@ Build/*.o
 Build/main
 music/*.mp3
 data/playlists/*.txt
+music/*.mp3
