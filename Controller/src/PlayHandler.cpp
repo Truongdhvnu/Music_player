@@ -37,7 +37,8 @@ void PlayHandler::onStart(void* passData) {
 
     if((passData != nullptr && *((int*)passData) != preIndex + 1)) {
         musicPlayer.play(this->model.mediaManager.getCurSong());
-        Command::writeData("r");
+        // Command::writeData("r");
+        Command::writeData(createSendMessage(OPTION_PLAYING));
     }
 }
 

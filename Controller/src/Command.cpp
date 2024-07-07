@@ -13,10 +13,12 @@
 #include "Command.h"
 #include "Command_translate.h"
 #include "Controller.h"
+#include "USBDetect.h"
 
-#define PORT "/dev/ttyACM0"
+// #define PORT "/dev/ttyACM0"
 
 std::atomic<bool> running(true);
+char* PORT=NULL;
 
 void Command::add_shared_data(std::string cmd) {
     std::unique_lock<std::mutex> lock(mtx);
@@ -29,32 +31,63 @@ void Command::com_producer() {
     int opset = 0;
     int bufer_size = 18;
     char read_buf[bufer_size] = {'\0'};
+    // bool checkUart = false;
     while(running) {
-        int serialPort = open(PORT, O_RDWR);
-
-        int num_bytes = read(serialPort, read_buf + opset, bufer_size);
-        opset += num_bytes;
-
-        if(opset >= MESSAGE_LENGTH) {
-            char tmp[MESSAGE_LENGTH + 1];
-            for (int i = 0; i < MESSAGE_LENGTH; i++) {
-                tmp[i] = read_buf[i];
+        std::string uart_port = USBMonitor::find_usb_serial_device();
+        const char* port_str = uart_port.c_str();
+        if (port_str == nullptr || strlen(port_str) == 0) {
+            if(checkUart==true) {
+                std::cout << "\033[s";                      // Save curent position
+                std::cout << "\033[41m" << std::flush;      // Red backgound colour
+                std::cout << "   USB serial port Disconnect" << std::flush;
+                std::cout << "\033[0m" << std::flush;       // Reset backgound colour
+                std::cout << "\033[J" << std::flush;        // Clear other letters in current row
+                std::cout << "\033[u" << std::flush;        // Back to saved potion 
+                closePort();
             }
-            tmp[MESSAGE_LENGTH] = '\0';
-
-            if (isReceiveCommandValid(tmp) == MESSAGE_CORRECT) {
-                add_shared_data(translateReceiveCommand(tmp));
+            checkUart = false;
+        }
+        else {
+            PORT = const_cast<char *>(port_str);
+            if(checkUart==false) {
+                std::cout << "\033[s";                 
+                std::cout << "\033[42m" << std::flush;      // Green background colour
+                std::cout << "   USB serial port Connect: " << PORT << std::flush;
+                std::cout << "\033[0m" << std::flush;
+                std::cout << "\033[J" << std::flush;
+                std::cout << "\033[u" << std::flush;
+                configPort();
             }
+            checkUart = true;
+        }
+        // this->handleComPort();
+        if(checkUart) {
+            int serialPort = open(PORT, O_RDWR);
 
-            for(int i = MESSAGE_LENGTH; i < opset; i++) {
-                read_buf[i-MESSAGE_LENGTH] = read_buf[i];
-            }
+            int num_bytes = read(serialPort, read_buf + opset, bufer_size);
+            opset += num_bytes;
 
-            opset -= MESSAGE_LENGTH;
-            if (DEBUG) {
-                std::cout << "Read " << translateReceiveCommand(tmp) << std::endl;
-            }
-        } 
+            if(opset >= MESSAGE_LENGTH) {
+                char tmp[MESSAGE_LENGTH + 1];
+                for (int i = 0; i < MESSAGE_LENGTH; i++) {
+                    tmp[i] = read_buf[i];
+                }
+                tmp[MESSAGE_LENGTH] = '\0';
+
+                if (isReceiveCommandValid(tmp) == MESSAGE_CORRECT) {
+                    add_shared_data(translateReceiveCommand(tmp));
+                }
+
+                for(int i = MESSAGE_LENGTH; i < opset; i++) {
+                    read_buf[i-MESSAGE_LENGTH] = read_buf[i];
+                }
+
+                opset -= MESSAGE_LENGTH;
+                if (DEBUG) {
+                    std::cout << "Read " << translateReceiveCommand(tmp) << std::endl;
+                }
+            } 
+        }
     }
 }
 
@@ -64,11 +97,9 @@ void Command::cin_producer() {
         // std::cin >> cmd;
         // std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
         std::getline(std::cin, cmd);
-        if(cmd == EXIT) running = false;
-        // Lock and push data
-        if (cmd == "x") {
+        if(cmd == EXIT) {
             running = false;
-        } 
+        }
         add_shared_data(cmd);
     }
 }
@@ -127,7 +158,7 @@ Command::Command() {
 }
 
 void Command::listen() {
-    configPort();
+    // configPort();
     comProducerThread = std::thread(&Command::com_producer, this);
     cinProducerThread = std::thread(&Command::cin_producer, this);
 }
@@ -166,5 +197,37 @@ void Command::writeData(std::string data) {
         } else {
             total_bytes_sent += num_bytes;
         }
+    }
+
+    // cout << "Send: " << data << endl;
+}
+
+void Command::handleComPort() {
+    std::string uart_port = USBMonitor::find_usb_serial_device();
+    const char* port_str = uart_port.c_str();
+    if (port_str == nullptr || strlen(port_str) == 0) {
+        if(checkUart==true) {
+            std::cout << "\033[s";                      // Save curent position
+            std::cout << "\033[41m" << std::flush;      // Red backgound colour
+            std::cout << "Disconnected to USB serial port: " << std::flush;
+            std::cout << "\033[0m" << std::flush;       // Reset backgound colour
+            std::cout << "\033[J" << std::flush;        // Clear other letters in current row
+            std::cout << "\033[u" << std::flush;        // Back to saved potion 
+            closePort();
+        }
+        checkUart = false;
+    }
+    else {
+        PORT = const_cast<char *>(port_str);
+        if(checkUart==false) {
+            std::cout << "\033[s";                 
+            std::cout << "\033[42m" << std::flush;      // Green background colour
+            std::cout << "Connected to USB serial port: " << PORT << std::flush;
+            std::cout << "\033[0m" << std::flush; 
+            std::cout << "\033[J" << std::flush;
+            std::cout << "\033[u" << std::flush;
+            configPort();
+        }
+        checkUart = true;
     }
 }

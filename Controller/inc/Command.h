@@ -12,7 +12,6 @@
 #include <thread>
 #include <mutex>
 
-#define PORT "/dev/ttyACM0"
 #define MESSAGE_LENGTH 5
 
 extern std::atomic<bool> running;
@@ -36,6 +35,9 @@ private:
 
     void closePort();
 
+    void handleComPort();
+
+    bool checkUart = false;
 public:
     Command();
 
