@@ -16,6 +16,7 @@
 
 class Command {
 private:
+    int serialPort;
     std::atomic<bool> running{true};
     std::vector<std::string> commands;
     std::mutex mtx;

@@ -21,7 +21,6 @@ void Command::add_shared_data(std::string cmd) {
     std::unique_lock<std::mutex> lock(mtx);
     commands.push_back(cmd);
     dataReady = true;
-    // cv.notify_all();
 }
 
 void Command::com_producer() {
@@ -59,7 +58,7 @@ void Command::com_producer() {
         }
         // this->handleComPort();
         if(checkUart) {
-            int serialPort = open(PORT, O_RDWR);
+            serialPort = open(PORT, O_RDWR);
 
             int num_bytes = read(serialPort, read_buf + opset, bufer_size);
             opset += num_bytes;
@@ -90,8 +89,7 @@ void Command::com_producer() {
 
 
 void Command::configPort() {
-    int serialPort = open(PORT, O_RDWR);
-    // Kiểm tra lỗi
+    serialPort = open(PORT, O_RDWR);
     if (serialPort < 0) {
         std::cerr << "Error " << errno << " opening " << PORT << ": " << strerror(errno) << std::endl;
         return;
@@ -135,7 +133,6 @@ void Command::configPort() {
 }
 
 void Command::closePort() {
-    int serialPort = open(PORT, O_RDWR);
     close(serialPort);
 }
 
@@ -171,10 +168,7 @@ std::string Command::getCommand() {
                 if (newline_pos != std::string::npos) {
                     std::string line = input_buffer.substr(0, newline_pos);
                     input_buffer.erase(0, newline_pos + 1);
-                    // line[newline_pos] = '\0';
                     add_shared_data(line);
-                    std::cout << "Received input: " << line << std::endl;
-                    if (line == "1") cout << "hi cau\n";
                 }
             }
         }
@@ -197,12 +191,12 @@ Command::~Command() {
 bool Command::dataReady = false;
 
 void Command::writeData(std::string data) {
-    int serialPort = open(PORT, O_RDWR);
+    int port = open(PORT, O_RDWR);
     int num_bytes = 0;
     int total_bytes_sent = 0;
 
     while (total_bytes_sent < MESSAGE_LENGTH) {
-        num_bytes = write(serialPort, data.c_str() + total_bytes_sent, MESSAGE_LENGTH - total_bytes_sent);
+        num_bytes = write(port, data.c_str() + total_bytes_sent, MESSAGE_LENGTH - total_bytes_sent);
         if (num_bytes < 0) {
             std::cerr << "Error writing: " << strerror(errno) << std::endl;
             break;
