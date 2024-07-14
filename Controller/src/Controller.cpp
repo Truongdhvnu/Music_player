@@ -11,6 +11,7 @@
 #include "display.h"
 #include "Command.h"
 
+Command cmd;
 Model& Controller::model = Model::getInstance();
 deque<Handler*> Controller::recentView;
 int Controller::view_index = 0;
@@ -45,49 +46,43 @@ void Controller::changeHandler(Handler* handler, void* paras) {
 
 int Controller::exit() {
     this->model.mediaManager.updateDatabase();
-    // running = false;
-    // Controller::closePort();
     return 0;
 }
-Command cmd;
 
 void Controller::run() {
-    // Controller::configPort();
-    // running = true;
-    // portThread = std::thread(&Controller::checkPort, this); // Bắt đầu thread cho checkPort
-    // portThread.detach();
-
     string command;
     cmd.listen();
-    // Command cmd;
     while (true) {
         // cin >> command;
         // cout << endl;
         command = cmd.getCommand();
-        // command = Controller::cmd.getCommand();
-        if (command == GO_BACK) {
-            if (view_index >= 1) {
-                recentView[view_index]->leavePage();
-                view_index--;
-                recentView[view_index]->onStart();
+        try {
+            if (command == GO_BACK) {
+                if (view_index >= 1) {
+                    recentView[view_index]->leavePage();
+                    view_index--;
+                    recentView[view_index]->onStart();
+                }
+            } else if (command == FORWARD) {
+                if (recentView.size() - 1  > (long unsigned int)view_index) {
+                    recentView[view_index]->leavePage();
+                    view_index++;
+                    recentView[view_index]->onStart();
+                }
+            } else if (command == EXIT) {
+                for(Handler* e : recentView) {
+                    e->exit();
+                }
+                this->exit();
+                // cmd.~Command();
+                std::exit(0);
+            } else if(command == HOME) {
+                Controller::changeHandler(HomeHandler::getInstance());
+            } else {
+                Controller::recentView[view_index]->handle(command);
             }
-        } else if (command == FORWARD) {
-            if (recentView.size() - 1  > (long unsigned int)view_index) {
-                recentView[view_index]->leavePage();
-                view_index++;
-                recentView[view_index]->onStart();
-            }
-        } else if (command == EXIT) {
-            for(Handler* e : recentView) {
-                e->exit();
-            }
-            this->exit();
-            // cmd.~Command();
-            std::exit(0);
-        } else if(command == HOME) {
-            Controller::changeHandler(HomeHandler::getInstance());
-        } else {
-            Controller::recentView[view_index]->handle(command);
+        } catch (exception& e) {
+            cout << e.what();
         }
     }
 }

@@ -43,7 +43,7 @@ void HomeHandler::handle(string command) {
             this->reloadDisplay(command[1]);
         }
         else {
-            cout << "No actions or Invalid command" << endl;
+            cout << "HomeHandler: No actions or Invalid command" << endl;
         }
     } catch (runtime_error& e) {
         cout << "Homehandler: " << e.what() << endl;

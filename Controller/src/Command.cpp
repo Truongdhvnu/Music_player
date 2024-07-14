@@ -15,16 +15,13 @@
 #include "Controller.h"
 #include "USBDetect.h"
 
-// #define PORT "/dev/ttyACM0"
-
-std::atomic<bool> running(true);
-char* PORT=NULL;
+static char* PORT=NULL;
 
 void Command::add_shared_data(std::string cmd) {
     std::unique_lock<std::mutex> lock(mtx);
     commands.push_back(cmd);
     dataReady = true;
-    cv.notify_all();
+    // cv.notify_all();
 }
 
 void Command::com_producer() {
@@ -91,18 +88,6 @@ void Command::com_producer() {
     }
 }
 
-void Command::cin_producer() {
-    std::string cmd;
-    while (running) {
-        // std::cin >> cmd;
-        // std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
-        std::getline(std::cin, cmd);
-        if(cmd == EXIT) {
-            running = false;
-        }
-        add_shared_data(cmd);
-    }
-}
 
 void Command::configPort() {
     int serialPort = open(PORT, O_RDWR);
@@ -158,28 +143,55 @@ Command::Command() {
 }
 
 void Command::listen() {
-    // configPort();
     comProducerThread = std::thread(&Command::com_producer, this);
-    cinProducerThread = std::thread(&Command::cin_producer, this);
 }
 
 std::string Command::getCommand() {
-    std::unique_lock<std::mutex> lock(mtx);
-    cv.wait(lock, []{ return dataReady; });
-    std::string result = commands[commands.size() - 1];
-    commands.pop_back();
-    // std::cout << "exit"<< std::endl;
-    if (commands.size() == 0) {
-        dataReady = false;
+    fd_set read_fds;
+    FD_ZERO(&read_fds);
+    FD_SET(STDIN_FILENO, &read_fds);
+
+    std::string input_buffer;
+    while (1) {
+        struct timeval timeout;
+        timeout.tv_sec = 0; 
+        timeout.tv_usec = 0;
+
+        fd_set tmp_fds = read_fds;
+        int ready = select(STDIN_FILENO + 1, &tmp_fds, NULL, NULL, &timeout);
+        
+        if (ready > 0) {
+            if (FD_ISSET(STDIN_FILENO, &tmp_fds)) {
+                char buffer[256];
+                ssize_t bytes_read = read(STDIN_FILENO, buffer, sizeof(buffer) - 1);
+                buffer[bytes_read] = '\0';
+                input_buffer.append(buffer);
+
+                size_t newline_pos = input_buffer.find('\n');
+                if (newline_pos != std::string::npos) {
+                    std::string line = input_buffer.substr(0, newline_pos);
+                    input_buffer.erase(0, newline_pos + 1);
+                    // line[newline_pos] = '\0';
+                    add_shared_data(line);
+                    std::cout << "Received input: " << line << std::endl;
+                    if (line == "1") cout << "hi cau\n";
+                }
+            }
+        }
+
+        std::unique_lock<std::mutex> lock(mtx);
+        if (commands.size() > 0) {
+            string result = commands[commands.size() - 1];
+            commands.pop_back();
+            return result;
+        }
     }
-    return result;
 }
 
 Command::~Command() {
     closePort();
     running = false;
     comProducerThread.join();
-    cinProducerThread.join();
 }
 
 bool Command::dataReady = false;

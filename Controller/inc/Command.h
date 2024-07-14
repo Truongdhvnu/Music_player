@@ -14,16 +14,15 @@
 
 #define MESSAGE_LENGTH 5
 
-extern std::atomic<bool> running;
-
 class Command {
 private:
+    std::atomic<bool> running{true};
     std::vector<std::string> commands;
     std::mutex mtx;
-    std::condition_variable cv;
+    // std::condition_variable cv;
     static bool dataReady;
     std::thread comProducerThread;
-    std::thread cinProducerThread;
+    // std::thread cinProducerThread;
 
     void add_shared_data(std::string cmd);
     
